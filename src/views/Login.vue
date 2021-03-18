@@ -9,7 +9,7 @@
       </div>
       <LoginForm class="mt-4" />
     </div>
-    <div class="right pa-4">
+    <div class="right pa-4" v-show="!$vuetify.breakpoint.mobile">
       <Intro />
     </div>
   </div>
@@ -21,6 +21,9 @@ import Intro from "../components/auth/Intro";
 export default {
   name: "Login",
   components: { LoginForm, Intro },
+  mounted() {
+    localStorage.removeItem('token')
+  }
 };
 </script>
 

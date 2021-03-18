@@ -2,19 +2,36 @@
   <v-app>
     <v-main>
       <router-view></router-view>
+      <SnackBar></SnackBar>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import axios from "axios";
+import SnackBar from "@/components/shared/SnackBar";
 export default {
   name: "App",
 
-  components: {},
+  components: {SnackBar},
 
   data: () => ({
-    //
   }),
+  mounted() {
+    // This checks if token expired, and
+    axios.interceptors.response.use(undefined, function (err) {
+      return new Promise( () => {
+        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+          console.log('hello')
+          this.$store.dispatch('logout');
+          this.$router.push('/login');
+        }
+        throw err;
+      });
+    });
+  },
+  computed: {
+  }
 };
 </script>
 

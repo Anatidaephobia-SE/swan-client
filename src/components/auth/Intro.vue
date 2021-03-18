@@ -7,16 +7,17 @@
         <router-link class="link" to="/">About Us</router-link>
       </nav>
     </div>
-    <div class="image d-flex justify-center">
+    <div class="image d-flex justify-center align-center">
       <v-img
         contain
+        min-width="500"
         max-width="550"
         :src="require('../../assets/graphics/login.svg')"
       >
       </v-img>
-    </div>
-    <div class="text-center">
-      <p>Anatidaephobia&copy;2021</p>
+      <div class="text-center">
+        <p>Anatidaephobia&copy;2021</p>
+      </div>
     </div>
   </v-container>
 </template>
@@ -38,6 +39,7 @@ export default {};
 }
 .image {
   text-align: center;
-  //   height: 100%;
+  height: 100%;
+  flex-direction: column;
 }
 </style>

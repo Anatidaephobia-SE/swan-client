@@ -4,7 +4,7 @@
       <h1 class="primary--text mb-4 ml-4">Swan</h1>
       <SignUpForm />
     </div>
-    <div class="right pa-4"><Intro /></div>
+    <div class="right pa-4" v-show="$vuetify.breakpoint.mdAndUp"><Intro /></div>
   </div>
 </template>
 

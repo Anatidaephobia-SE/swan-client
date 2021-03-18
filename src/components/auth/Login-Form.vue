@@ -7,34 +7,39 @@
         </p>
 
         <v-text-field
-          label="email"
-          filled
-          :rules="emailRule"
-          type="email"
-          placeholder="john-doe@example.com"
+            v-model="email"
+            :rules="emailRule"
+            filled
+            label="email"
+            placeholder="john-doe@example.com"
+            type="email"
         ></v-text-field>
         <v-text-field
-          :rules="passwordRule"
-          label="password"
-          filled
-          type="password"
+            v-model="password"
+            :rules="passwordRule"
+            filled
+            label="password"
+            type="password"
         ></v-text-field>
         <div class="mb-2 text-right">
           <router-link style="font-size: 14px" to="#"
-            >Forget password?</router-link
+          >Forget password?
+          </router-link
           >
         </div>
         <v-btn
-          :loading="loading"
-          :disabled="loading || !valid"
-          color="primary"
-          class="ma-1"
-          depressed
-          type="submit"
-          >Login</v-btn
+            :disabled="loading || !valid"
+            :loading="loading"
+            class="ma-1"
+            color="primary"
+            depressed
+            type="submit"
+        >Login
+        </v-btn
         >
-        <v-btn color="primary" to="/sign-up" class="ma-1" outlined
-          >Sign Up</v-btn
+        <v-btn class="ma-1" color="primary" outlined to="/sign-up"
+        >Sign Up
+        </v-btn
         >
       </v-container>
     </v-form>
@@ -66,6 +71,19 @@ export default {
   methods: {
     login: function () {
       this.loading = true;
+      const email = this.email;
+      const password = this.password;
+      this.$store.dispatch('login', {email, password})
+          .then(() => {
+            const message = "Logged in successfully, redirecting ..."
+            this.$store.dispatch('showMessage', {message, color: 'success'})
+            this.$router.push('/')
+          })
+          .catch(err => {
+            const message = err.response.data.message
+            this.$store.dispatch('showMessage', {message, color: 'error'})
+          })
+          .finally(() => this.loading = false);
     },
   },
 };

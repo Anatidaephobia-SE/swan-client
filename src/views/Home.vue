@@ -8,5 +8,8 @@
 export default {
   name: "Home",
   components: {},
+  created() {
+    this.$store.dispatch('getUserInfo');
+  }
 };
 </script>

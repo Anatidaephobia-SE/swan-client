@@ -1,21 +1,22 @@
 <template>
   <v-card class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="250">
+    <p v-show="invite">{{workspace.head_name}} invited you!</p>
     <v-avatar rounded size="80px">
-      <img v-show="workspace.logo" :src="workspace.logo"
+      <img v-show="workspace.logo" :src="logoUrl"
            class="logo">
       <span v-show="!workspace.logo">{{ shortName }}</span>
     </v-avatar>
     <v-card-title>{{ workspace.name }}</v-card-title>
     <v-card-subtitle>
       <v-icon>mdi-account-group</v-icon>
-      <span class="ml-1">{{ workspace.members }}</span>
+      <span class="ml-1">{{ workspace.members || 10 }}</span>
     </v-card-subtitle>
 
     <v-card-actions v-show="!invite">
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{on, attrs}">
-          <v-btn v-bind="attrs" v-on="on" :to="'workspace/' + workspace.id" icon>
+          <v-btn v-bind="attrs" v-on="on" :to="'workspace/' + workspace.url" icon>
             <v-icon>mdi-cog</v-icon>
           </v-btn>
         </template>
@@ -24,7 +25,7 @@
 
       <v-tooltip bottom>
         <template v-slot:activator="{on, attrs}">
-          <v-btn @click="leave" color="error" v-bind="attrs" v-on="on" icon>
+          <v-btn @click="dialog = true" color="error" v-bind="attrs" v-on="on" icon>
             <v-icon>mdi-account-remove</v-icon>
           </v-btn>
         </template>
@@ -63,35 +64,61 @@
 
 <script>
 import Dialog from "@/components/shared/Dialog";
+import axios from "axios";
 export default {
   name: "Workspace",
   components: {Dialog},
   props: {
-    // workspace: Object,
+    workspace: Object,
     invite: Boolean
   },
   data() {
     return {
       dialog: false,
-      workspace: {
-        id: 1431,
-        name: 'Swan Team',
-        members: 10,
-        logo: 'https://www.codeapi.io/app?' + Math.random()
-      },
+      // workspace: {
+      //   id: 1431,
+      //   name: 'Swan Team',
+      //   members: 10,
+      //   logo: 'https://www.codeapi.io/app?' + Math.random()
+      // },
     }
   },
   methods: {
     leave: function () {
-      this.dialog = true
+      this.$store.dispatch('leaveWorkspace', this.workspace.url)
+      .then(() => {
+        const message = "You left the workspace"
+        this.$store.dispatch('showMessage', {message, color: 'info'})
+      })
+      .catch(err => console.log(err))
     },
     accept: function () {
+      this.$store.dispatch('acceptInvite', this.workspace.url)
+      .then(() => {
+        const message = `You joined ${this.workspace.name}, Hurray!`
+        this.$store.dispatch('showMessage', {message, color: 'success'})
+      })
+      .catch(err => {
+        const message = err.response.data.message
+        this.$store.dispatch('showMessage', {message, color: 'error'})
+      });
     },
     reject: function () {
+      this.$store.dispatch('rejectInvite', this.workspace.url)
+          .then(() => {
+            const message = `Rejected ${this.workspace.name} invitation!`
+            this.$store.dispatch('showMessage', {message, color: 'info'})
+          })
+          .catch(err => {
+            const message = err.response.data.message
+            this.$store.dispatch('showMessage', {message, color: 'error'})
+          });
     },
     closeDialog: function (value) {
       this.dialog = false;
-      console.log(value);
+      if (value) {
+        this.leave();
+      }
     }
   },
   computed: {
@@ -105,6 +132,9 @@ export default {
         shortname = tokens[0][0]
       }
       return shortname
+    },
+    logoUrl: function () {
+      return axios.defaults.baseURL + this.workspace.logo
     }
   }
 }

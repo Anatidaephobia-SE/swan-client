@@ -83,7 +83,8 @@ const authModule = {
     }
   },
   getters: {
-    isLoggedIn: (state) => !!state.token
+    isLoggedIn: (state) => !!state.token,
+    userInfo: (state) => state.user
   }
 }
 

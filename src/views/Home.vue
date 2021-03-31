@@ -34,7 +34,17 @@
           </v-list-item-icon>
           <v-list-item-title>{{item.label}}</v-list-item-title>
         </v-list-item>
+
+        <v-list-item @click="newWorkspace = true">
+          <v-list-item-icon>
+            <v-icon>mdi-plus</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Create a Workspace</v-list-item-title>
+        </v-list-item>
       </v-list>
+
+      <NewWorkspace :dialog="newWorkspace" @close-dialog="newWorkspace = false"/>
+
     </v-navigation-drawer>
 
 
@@ -70,10 +80,11 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import NewWorkspace from "@/components/workspaces/NewWorkspace";
 
 export default {
   name: "Home",
-  components: {},
+  components: {NewWorkspace},
   data() {
     return {
       baseUrl: axios.defaults.baseURL,
@@ -81,9 +92,9 @@ export default {
       drawer: [
         {label: 'My Workspaces', link: 'workspaces', icon: 'mdi-account-group'},
         {label: 'Workspace Invites', link: 'invites', icon: 'mdi-account-clock'},
-        {label: 'Calendar', link: 'calendar', icon: 'mdi-calendar'},
       ],
-      pathName: ''
+      pathName: '',
+      newWorkspace: false
     }
   },
   created() {

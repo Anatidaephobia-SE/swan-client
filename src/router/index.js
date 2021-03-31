@@ -24,9 +24,9 @@ const routes = [
     //   }
     // },
     children: [
-      {path: 'workspaces', name: 'workspaces', component: Workspaces},
-      {path: 'invites', name: 'invites', component: Invites},
-      {path: 'calendar', name: 'calendar', component: Calendar}
+      {path: 'workspaces', name: 'Workspaces', component: Workspaces},
+      {path: 'invites', name: 'Invites', component: Invites},
+      {path: 'calendar', name: 'Calendar', component: Calendar}
     ]
   },
   {

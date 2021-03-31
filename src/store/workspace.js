@@ -60,6 +60,25 @@ const workspaceModule = {
           })
           .catch(err => reject(err));
       });
+    },
+    createWorkspace: function ({commit}, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/team/create_team', body).then(resp => {
+          commit('updateTeams');
+          resolve(resp);
+        }).catch(err => {
+          reject(err);
+        });
+      });
+    },
+    addUserToWorkspace: function (payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/team/invite_user', body).then(resp => {
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        });
+      })
     }
   },
   mutations: {

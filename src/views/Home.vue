@@ -12,7 +12,7 @@
           </v-list-item-avatar>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item link to="/profile">
           <v-list-item-content>
             <v-list-item-title class="title">
               {{ user.first_name }} {{ user.last_name }}
@@ -96,6 +96,9 @@ export default {
   watch: {
     $route:  function(newVal){
       this.pathName = newVal.name;
+    },
+    '$store.getters.userInfo': function (newVal) {
+      this.user = newVal
     }
   }
 };

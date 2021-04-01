@@ -1,11 +1,15 @@
 <template>
   <v-card class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="250">
     <p v-show="invite">{{workspace.head_name}} invited you!</p>
-    <v-avatar rounded size="80px">
-      <img v-show="workspace.logo" :src="logoUrl"
-           class="logo">
-      <span v-show="!workspace.logo">{{ shortName }}</span>
-    </v-avatar>
+
+    <v-container>
+      <v-avatar rounded size="80px">
+        <img v-show="workspace.logo" :src="logoUrl"
+             class="logo">
+        <span v-show="!workspace.logo">{{ shortName }}</span>
+      </v-avatar>
+    </v-container>
+
     <v-card-title>{{ workspace.name }}</v-card-title>
     <v-card-subtitle>
       <v-icon>mdi-account-group</v-icon>

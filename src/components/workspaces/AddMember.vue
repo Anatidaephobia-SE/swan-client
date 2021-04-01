@@ -19,7 +19,10 @@
       <span v-show="addedUser.length">Invited users:</span>
     <v-list dense flat>
       <v-list-item v-for="(u, i) in addedUser" :key="i">
-        {{u}}
+        <v-list-item-avatar>
+          <v-img :src="getImgUrl(u.profile_picture)"></v-img>
+        </v-list-item-avatar>
+        {{u.email}}
       </v-list-item>
     </v-list>
 
@@ -33,6 +36,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "AddMember",
   props: {
@@ -57,16 +62,22 @@ export default {
         username: this.newUser,
         team_url: this.url || 'my_workspace'
       }
-      this.$store.dispatch('addUserToWorkspace', body).then(() => {
+      this.$store.dispatch('addUserToWorkspace', body).then((res) => {
+        console.log(res.data)
         const message = `${this.newUser} invited!`;
         this.$store.dispatch('showMessage', {message, color: 'success'});
-        this.addedUser.push(this.newUser);
+        this.addedUser.push(res.data);
         this.newUser = '';
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
       });
+    },
+    getImgUrl: function (image) {
+      return axios.defaults.baseURL + image
     }
+  },
+  computed: {
   }
 }
 </script>

@@ -6,6 +6,7 @@ import SignUp from '../views/SignUp'
 import Workspaces from "@/views/Workspaces";
 import Invites from "@/views/Invites";
 import Calendar from "@/views/Calendar";
+import Profile from "@/views/Profile";
 // import store from '../store/index'
 
 
@@ -26,7 +27,8 @@ const routes = [
     children: [
       {path: 'workspaces', name: 'workspaces', component: Workspaces},
       {path: 'invites', name: 'invites', component: Invites},
-      {path: 'calendar', name: 'calendar', component: Calendar}
+      {path: 'calendar', name: 'calendar', component: Calendar},
+      {path: 'profile', name: 'Profile', component: Profile}
     ]
   },
   {

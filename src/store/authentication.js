@@ -11,11 +11,11 @@ const authModule = {
       state.user = payload.user
     },
     updateUser(state, user) {
-      state.user = user
+      state.user = user;
     },
     logout(state) {
-      state.status = ''
-      state.token = ''
+      state.user = {};
+      state.token = '';
     },
   },
   actions: {

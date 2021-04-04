@@ -1,8 +1,8 @@
 <template>
   <v-card class="pa-2">
-    <v-form class="text-center form" @submit.prevent="createWorkspace">
+    <v-form v-model="valid" class="text-center form" @submit.prevent="createWorkspace">
       <v-avatar @click="$refs.imageInput.$refs.input.click()" class="workspace-image mb-8" size="150" >
-        <v-icon v-if="!logo">
+        <v-icon size="50" v-if="!logo">
           mdi-camera-plus
         </v-icon>
         <v-img v-if="logo" :src="getImage">
@@ -26,12 +26,12 @@
           :rules="urlRule"
           filled>
       </v-text-field>
-      <v-file-input v-show="false" ref="imageInput" v-model="logo">
+      <v-file-input  v-show="false" ref="imageInput" v-model="logo">
       </v-file-input>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn outlined type="button" @click="$emit('discard')" color="error">Discard</v-btn>
-        <v-btn depressed color="primary" type="submit">Submit</v-btn>
+        <v-btn depressed :disabled="!valid" color="primary" type="submit">Create</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -43,6 +43,7 @@ export default {
   name: "BasicInfo",
   data() {
     return {
+      valid: false,
       nameRule: [
           v => !!v || 'A name is required',
           v => (v || '').length >= 4 || 'Name must be at least 4 character'
@@ -67,7 +68,7 @@ export default {
         this.$store.dispatch('showMessage', {message, color: 'success'})
         this.$emit('next', this.url);
       }).catch(err => {
-        const message = err.response.data.message
+        const message = err.response.data.error
         this.$store.dispatch('showMessage', {message, color: 'error'})
       });
     },

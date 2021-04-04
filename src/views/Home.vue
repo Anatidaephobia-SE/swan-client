@@ -43,7 +43,7 @@
         </v-list-item>
       </v-list>
 
-      <NewWorkspace :dialog="newWorkspace" @close-dialog="newWorkspace = false"/>
+      <NewWorkspace :dialog="newWorkspace" @close-dialog="closeDialog" :key="key"/>
 
     </v-navigation-drawer>
 
@@ -94,7 +94,15 @@ export default {
         {label: 'Workspace Invites', link: 'invites', icon: 'mdi-account-clock'},
       ],
       pathName: '',
-      newWorkspace: false
+      newWorkspace: false,
+      key: Math.random()
+    }
+  },
+  methods: {
+    closeDialog: function () {
+      this.newWorkspace = false;
+      setTimeout(() => this.key = Math.random(), 1000)
+
     }
   },
   created() {
@@ -102,6 +110,9 @@ export default {
     this.$store.dispatch('getUserInfo').then(
         () => this.user = this.$store.getters.userInfo
     );
+    if (this.$route.query.team_url) {
+      this.newWorkspace = true
+    }
 
   },
   watch: {

@@ -3,10 +3,10 @@
     <p v-show="invite">{{workspace.head_name}} invited you!</p>
 
     <v-container>
-      <v-avatar rounded size="80px">
+      <v-avatar rounded size="80px" :color="workspace.logo? '': getColor">
         <img v-show="workspace.logo" :src="logoUrl"
              class="logo">
-        <span v-show="!workspace.logo">{{ shortName }}</span>
+        <span class="headline white--text" v-show="!workspace.logo">{{ shortName }}</span>
       </v-avatar>
     </v-container>
 
@@ -139,6 +139,9 @@ export default {
     },
     logoUrl: function () {
       return axios.defaults.baseURL + this.workspace.logo
+    },
+    getColor: function () {
+      return '#'+((Math.random() * 0xffffff + 0x1) <<0).toString(16);
     }
   }
 }

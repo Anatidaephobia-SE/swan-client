@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+      persistent
       transition="dialog-bottom-transition"
       v-model="dialog"
       max-width="750">
@@ -64,7 +65,8 @@ export default {
   data() {
     return {
       step: 1,
-      url: ''
+      url: '',
+      // dialog: true
     }
   },
   methods: {
@@ -72,6 +74,12 @@ export default {
       this.url = url;
       this.step++;
     },
+  },
+  mounted() {
+    if (this.$route.query.team_url) {
+      this.step = 3;
+      this.url = this.$route.query.team_url
+    }
   }
 }
 </script>

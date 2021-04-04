@@ -5,17 +5,17 @@
     </v-card-text>
 
     <v-container class="users">
-    <v-text-field
-        v-model="newUser"
-        append-icon="mdi-account-plus"
-        label="teammate"
-        :rules="email"
-        placeholder="john-doe@example.com"
-        @click:append="addUser()"
-        @keydown.enter="addUser()"
-        filled>
-    </v-text-field>
-
+      <v-form ref="userForm" @submit.prevent="addUser">
+        <v-text-field
+            v-model="newUser"
+            append-icon="mdi-account-plus"
+            label="teammate"
+            :rules="email"
+            placeholder="john-doe@example.com"
+            @click:append.prevent="addUser()"
+            filled>
+        </v-text-field>
+      </v-form>
       <span v-show="addedUser.length">Invited users:</span>
     <v-list dense flat>
       <v-list-item v-for="(u, i) in addedUser" :key="i">
@@ -29,7 +29,7 @@
     </v-container>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn depressed color="primary" @click="$emit('next')" type="submit">Done</v-btn>
+      <v-btn depressed color="primary" @click="$emit('next')" type="submit">Next</v-btn>
     </v-card-actions>
 
   </v-card>
@@ -67,7 +67,7 @@ export default {
         const message = `${this.newUser} invited!`;
         this.$store.dispatch('showMessage', {message, color: 'success'});
         this.addedUser.push(res.data);
-        this.newUser = '';
+        this.$refs.userForm.reset();
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});

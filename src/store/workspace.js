@@ -79,6 +79,24 @@ const workspaceModule = {
           reject(err)
         });
       })
+    },
+    requestConnectionTwitter(payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/socialmedia/twitter/authorize/request/', body).then(resp => {
+          resolve(resp);
+        }).catch(err => {
+          reject(err);
+        });
+      });
+    },
+    sendTokensTwitter(payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/socialmedia/twitter/authorize/access/', body).then(resp => {
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        });
+      });
     }
   },
   mutations: {

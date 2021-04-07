@@ -1,9 +1,8 @@
 <template>
   <v-card class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="250">
-    <p v-show="invite">{{workspace.head_name}} invited you!</p>
+    <p v-show="invite">{{ workspace.head_name }} invited you!</p>
     <v-avatar rounded size="80px">
-      <img v-show="workspace.logo" :src="logoUrl"
-           class="logo">
+      <img v-show="workspace.logo" :src="logoUrl" class="logo" />
       <span v-show="!workspace.logo">{{ shortName }}</span>
     </v-avatar>
     <v-card-title>{{ workspace.name }}</v-card-title>
@@ -15,8 +14,8 @@
     <v-card-actions v-show="!invite">
       <v-spacer></v-spacer>
       <v-tooltip bottom>
-        <template v-slot:activator="{on, attrs}">
-          <v-btn v-bind="attrs" v-on="on" :to="'workspace/' + workspace.url" icon>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" :to="workspaceUrl()" icon>
             <v-icon>mdi-cog</v-icon>
           </v-btn>
         </template>
@@ -24,25 +23,33 @@
       </v-tooltip>
 
       <v-tooltip bottom>
-        <template v-slot:activator="{on, attrs}">
-          <v-btn @click="dialog = true" color="error" v-bind="attrs" v-on="on" icon>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            @click="dialog = true"
+            color="error"
+            v-bind="attrs"
+            v-on="on"
+            icon
+          >
             <v-icon>mdi-account-remove</v-icon>
           </v-btn>
         </template>
         <span>Leave</span>
       </v-tooltip>
 
-      <Dialog header="Leave workspace ?"
-              text="By clicking on yes, you will no longer be a part of this workspace."
-              :show="dialog" @close-dialog="closeDialog" />
-
+      <Dialog
+        header="Leave workspace ?"
+        text="By clicking on yes, you will no longer be a part of this workspace."
+        :show="dialog"
+        @close-dialog="closeDialog"
+      />
     </v-card-actions>
 
     <v-card-actions v-show="invite">
       <v-spacer></v-spacer>
 
       <v-tooltip bottom>
-        <template v-slot:activator="{on, attrs}">
+        <template v-slot:activator="{ on, attrs }">
           <v-btn color="success" v-bind="attrs" v-on="on" icon @click="accept">
             <v-icon>mdi-check</v-icon>
           </v-btn>
@@ -51,7 +58,7 @@
       </v-tooltip>
 
       <v-tooltip bottom>
-        <template v-slot:activator="{on, attrs}">
+        <template v-slot:activator="{ on, attrs }">
           <v-btn color="error" v-bind="attrs" v-on="on" icon @click="reject">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -67,77 +74,77 @@ import Dialog from "@/components/shared/Dialog";
 import axios from "axios";
 export default {
   name: "Workspace",
-  components: {Dialog},
+  components: { Dialog },
   props: {
     workspace: Object,
-    invite: Boolean
+    invite: Boolean,
   },
   data() {
     return {
       dialog: false,
-      // workspace: {
-      //   id: 1431,
-      //   name: 'Swan Team',
-      //   members: 10,
-      //   logo: 'https://www.codeapi.io/app?' + Math.random()
-      // },
-    }
+    };
   },
   methods: {
     leave: function () {
-      this.$store.dispatch('leaveWorkspace', this.workspace.url)
-      .then(() => {
-        const message = "You left the workspace"
-        this.$store.dispatch('showMessage', {message, color: 'info'})
-      })
-      .catch(err => console.log(err))
+      this.$store
+        .dispatch("leaveWorkspace", this.workspace.url)
+        .then(() => {
+          const message = "You left the workspace";
+          this.$store.dispatch("showMessage", { message, color: "info" });
+        })
+        .catch((err) => console.log(err));
     },
     accept: function () {
-      this.$store.dispatch('acceptInvite', this.workspace.url)
-      .then(() => {
-        const message = `You joined ${this.workspace.name}, Hurray!`
-        this.$store.dispatch('showMessage', {message, color: 'success'})
-      })
-      .catch(err => {
-        const message = err.response.data.message
-        this.$store.dispatch('showMessage', {message, color: 'error'})
-      });
+      this.$store
+        .dispatch("acceptInvite", this.workspace.url)
+        .then(() => {
+          const message = `You joined ${this.workspace.name}, Hurray!`;
+          this.$store.dispatch("showMessage", { message, color: "success" });
+        })
+        .catch((err) => {
+          const message = err.response.data.message;
+          this.$store.dispatch("showMessage", { message, color: "error" });
+        });
     },
     reject: function () {
-      this.$store.dispatch('rejectInvite', this.workspace.url)
-          .then(() => {
-            const message = `Rejected ${this.workspace.name} invitation!`
-            this.$store.dispatch('showMessage', {message, color: 'info'})
-          })
-          .catch(err => {
-            const message = err.response.data.message
-            this.$store.dispatch('showMessage', {message, color: 'error'})
-          });
+      this.$store
+        .dispatch("rejectInvite", this.workspace.url)
+        .then(() => {
+          const message = `Rejected ${this.workspace.name} invitation!`;
+          this.$store.dispatch("showMessage", { message, color: "info" });
+        })
+        .catch((err) => {
+          const message = err.response.data.message;
+          this.$store.dispatch("showMessage", { message, color: "error" });
+        });
     },
     closeDialog: function (value) {
       this.dialog = false;
       if (value) {
         this.leave();
       }
-    }
+    },
+    workspaceUrl: function () {
+      return "workspace/" + this.workspace.url;
+    },
   },
   computed: {
     shortName: function () {
-      let tokens = this.workspace.name.split(' ');
+      let tokens = this.workspace.name.split(" ");
       let shortname;
       if (tokens.length >= 2) {
         tokens = tokens.slice(0, 2);
-        shortname = tokens[0][0] + tokens[1][0]
+        shortname = tokens[0][0] + tokens[1][0];
       } else {
-        shortname = tokens[0][0]
+        shortname = tokens[0][0];
       }
-      return shortname
+      return shortname;
     },
     logoUrl: function () {
-      return axios.defaults.baseURL + this.workspace.logo
-    }
-  }
-}
+      return axios.defaults.baseURL + this.workspace.logo;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

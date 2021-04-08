@@ -106,6 +106,15 @@ const workspaceModule = {
           reject(err);
         });
       });
+    },
+    getWorkspaceInfo(payload, teamUrl) {
+      return new Promise((resolve, reject) => {
+        axios.get('api/team/get_team_info?team_url='+teamUrl).then(resp => {
+          resolve(resp);
+        }).catch(err => {
+          reject(err);
+        });
+      });
     }
   },
   mutations: {

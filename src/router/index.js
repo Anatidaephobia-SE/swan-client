@@ -7,6 +7,7 @@ import Workspaces from "@/views/Workspaces";
 import Invites from "@/views/Invites";
 import Calendar from "@/views/Calendar";
 import Settings from "@/views/Settings";
+import Dispatch from "@/views/Dispatch";
 // import store from '../store/index'
 
 
@@ -28,10 +29,13 @@ const routes = [
     // },
     children: [
       {path: 'workspaces', name: 'workspaces', component: Workspaces},
-      {path: 'workspaces/:name/settings', component: Settings},
+      {path: 'workspaces/:url/settings', component: Settings},
       {path: 'invites', name: 'invites', component: Invites},
       {path: 'calendar', name: 'calendar', component: Calendar}
     ]
+  },
+  {
+    path: '/dispatch', component: Dispatch, name: 'Dispatcher'
   },
   {
     path: '/login',

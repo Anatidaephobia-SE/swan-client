@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "@/router";
 
 const authModule = {
   state: {
@@ -79,6 +80,7 @@ const authModule = {
     },
     logout({commit}) {
       localStorage.removeItem('token');
+      router.push('/login').then()
       commit('logout');
     }
   },

@@ -17,17 +17,13 @@ export default {
 
   data: () => ({
   }),
-  mounted() {
+  created() {
     // This checks if token expired, and
-    axios.interceptors.response.use(undefined, function (err) {
-      return new Promise( () => {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-          console.log('hello')
-          this.$store.dispatch('logout');
-          this.$router.push('/login');
-        }
-        throw err;
-      });
+    axios.interceptors.response.use(undefined, (err) => {
+      if (err.response.status === 403 && err.config && !err.config.__isRetryRequest) {
+        this.$store.dispatch('logout');
+      }
+      return Promise.reject(err)
     });
   },
   computed: {

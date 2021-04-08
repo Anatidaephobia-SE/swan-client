@@ -7,7 +7,7 @@
     >
       <v-list>
         <v-list-item class="px-2">
-          <v-list-item-avatar>
+          <v-list-item-avatar rounded>
             <v-img :src="baseUrl + user.profile_picture"></v-img>
           </v-list-item-avatar>
         </v-list-item>

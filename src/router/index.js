@@ -6,6 +6,7 @@ import SignUp from '../views/SignUp'
 import Workspaces from "@/views/Workspaces";
 import Invites from "@/views/Invites";
 import Calendar from "@/views/Calendar";
+import Settings from "@/views/Settings";
 // import store from '../store/index'
 
 
@@ -16,6 +17,8 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    default: "workspaces",
+    redirect: '/workspaces',
     // beforeEnter: (to, from, next) => {
     //   if (store.getters.isLoggedIn) {
     //     next()
@@ -25,6 +28,7 @@ const routes = [
     // },
     children: [
       {path: 'workspaces', name: 'workspaces', component: Workspaces},
+      {path: 'workspaces/:name/settings', component: Settings},
       {path: 'invites', name: 'invites', component: Invites},
       {path: 'calendar', name: 'calendar', component: Calendar}
     ]

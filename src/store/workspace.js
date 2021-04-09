@@ -82,7 +82,7 @@ const workspaceModule = {
     },
     requestConnectionTwitter(payload, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/socialmedia/twitter/authorize/request/', body).then(resp => {
+        axios.post('api/v1/socialmedia/twitter/authorize/request/', body).then(resp => {
           resolve(resp);
         }).catch(err => {
           reject(err);
@@ -91,7 +91,7 @@ const workspaceModule = {
     },
     sendTokensTwitter(payload, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/socialmedia/twitter/authorize/access/', body).then(resp => {
+        axios.post('api/v1/socialmedia/twitter/authorize/access/', body).then(resp => {
           resolve(resp)
         }).catch(err => {
           reject(err)
@@ -114,6 +114,31 @@ const workspaceModule = {
         }).catch(err => {
           reject(err);
         });
+      });
+    },
+    editWorkspaceInfo(payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.put('api/team/update_team_info', body).then(resp => {
+          resolve(resp);
+        }).catch(error => {
+          reject(error)
+        });
+      })
+    },
+    removeUser: function (payload, body) {
+      console.log(body)
+      return new Promise((resolve, reject) => {
+        axios.delete(`api/team/remove_user/${body.team_url}?username=${body.email}`).then(resp => {
+          resolve(resp);
+        }).catch(error => {
+          reject(error);
+        });
+      })
+    },
+    getTwitterAccount: function (payload, team_url) {
+      return new Promise((resolve, reject) => {
+        axios.get('api/v1/socialmedia/twitter/accounts?team_url='+team_url)
+          .then(resp => resolve(resp)).catch(err => reject(err));
       });
     }
   },

@@ -103,27 +103,30 @@ export default {
     },
     saveChanges: function () {
       this.loading = true;
-      const body = {
-        firstname: this.user.firstname,
-        lastname: this.user.lastname,
+      const body = new FormData()
+      body.append('name', this.info.name)
+      body.append('team_url', this.getWorkspaceName)
+      body.append('url', this.info.url)
+      if (typeof this.info.logo === 'object' || this.info.logo === '') {
+        body.append('logo', this.info.logo)
       }
-      if (typeof this.user.profileImg === 'object' || this.user.profileImg === '') {
-        body.profileImg = this.user.profileImg
-      }
-      // this.$store.dispatch('updateUserInfo', body).then(() => {
-      //   const message = `Profile updated!`;
-      //   this.$store.dispatch('showMessage', {message , color: 'success'});
-      //   this.editMode = false;
-      //   this.$store.dispatch('getUserInfo').then();
-      // }).catch(err => {
-      //   const message = err.response.data.error;
-      //   this.$store.dispatch('showMessage', {message , color: 'error'});
-      // }).finally(() => this.loading = false);
+      this.$store.dispatch('editWorkspaceInfo', body).then(() => {
+        const message = `Workspace info updated!`;
+        this.$store.dispatch('showMessage', {message , color: 'success'});
+        this.editMode = false;
+        this.$router.replace({params: {url: this.info.url}});
+        this.getInfo();
+      }).catch(err => {
+        const message = err.response.data.error;
+        this.$store.dispatch('showMessage', {message , color: 'error'});
+      }).finally(() => this.loading = false);
     },
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.user-avatar {
+  border: 1px solid #424242;
+}
 </style>

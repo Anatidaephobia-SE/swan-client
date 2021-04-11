@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Post :dialog="dialog" :key="key" @close="close" />
+    <Post :dialog="dialog" :key="key" @close="close" :edit-mode="false"/>
     <v-btn @click="dialog = !dialog">Click</v-btn>
   </v-container>
 </template>
@@ -15,6 +15,8 @@ export default {
       dialog: false,
       key: Math.random()
     }
+  },
+  mounted() {
   },
   methods: {
     close: function () {

@@ -82,6 +82,7 @@ export default {
         {label: 'My Workspaces', link: 'workspaces', icon: 'mdi-account-group'},
         {label: 'Workspace Invites', link: 'invites', icon: 'mdi-account-clock'},
         {label: 'Calendar', link: 'calendar', icon: 'mdi-calendar'},
+        {label: 'Calendar', link: 'post', icon: 'mdi-calendar'},
       ],
       pathName: ''
     }

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Post :dialog="dialog" :key="key" @close="close" :edit-mode="false"/>
+    <Post :dialog="dialog" :key="key" @close="close" :edit-mode="true"/>
     <v-btn @click="dialog = !dialog">Click</v-btn>
   </v-container>
 </template>

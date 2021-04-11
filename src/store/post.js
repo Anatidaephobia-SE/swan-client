@@ -4,7 +4,6 @@ const postModule = {
   state: {
     id: '',
     author: {},
-    editMode: false,
     newPost: {
       name: '',
       caption: '',
@@ -15,6 +14,9 @@ const postModule = {
     }
   },
   actions: {
+    reset: function ({commit}) {
+      commit('RESET')
+    },
     setPost: function ({commit}, payload) {
       commit('SET_POST', payload)
     },
@@ -93,6 +95,18 @@ const postModule = {
     },
     SET_AUTHOR: function (state, author) {
       state.author = author
+    },
+    RESET: function (state) {
+      state.id = ''
+      state.author = {}
+      state.newPost = {
+        name: '',
+        caption: '',
+        team: '',
+        multimedia: '',
+        status: '',
+        created_at: ''
+      }
     }
   },
   getters: {

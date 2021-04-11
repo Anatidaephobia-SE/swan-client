@@ -10,13 +10,13 @@
             flat
             dark>
 
-          <v-toolbar-title>{{editMode? 'View Post': 'new Post'}}</v-toolbar-title>
+          <v-toolbar-title>{{isEditMode? 'View Post': 'new Post'}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn
                 dark
                 icon
-                @click="$emit('close')">
+                @click="closeDialog()">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-toolbar-items>
@@ -26,9 +26,9 @@
         <v-divider></v-divider>
         <PostVisualizer/>
         <v-divider></v-divider>
-        <PostActions :editMode="editMode"/>
+        <PostActions :editMode="isEditMode"/>
         <v-divider></v-divider>
-        <PostComments v-if="editMode"/>
+        <PostComments v-if="isEditMode"/>
         <br>
         <br>
       </v-card>
@@ -47,14 +47,33 @@ export default {
     dialog: Boolean,
     editMode: Boolean
   },
+  data() {
+    return {
+      postSubmitted: false
+    }
+  },
   mounted() {
     if (this.editMode) {
       this.getPostById()
     }
+    this.$store.subscribe((mutation) =>  {
+      if (mutation.type === 'SET_ID') {
+        this.postSubmitted = true
+      }
+    })
   },
   methods: {
     getPostById: function () {
-      this.$store.dispatch('getPostById', '9').then().catch()
+      this.$store.dispatch('getPostById', '15').then().catch()
+    },
+    closeDialog: function () {
+      this.$store.dispatch('reset')
+      this.$emit('close')
+    }
+  },
+  computed: {
+    isEditMode: function () {
+      return this.editMode || this.postSubmitted
     }
   }
 }

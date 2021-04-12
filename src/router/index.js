@@ -32,8 +32,8 @@ const routes = [
     ]
   },
   {
-    path: '/teams',
-    name: 'Teams',
+    path: '/workspaces/:workspace/',
+    name: 'Team',
     component: Teams,
     children: [
       {path: 'posts', name: 'posts', component: Posts},

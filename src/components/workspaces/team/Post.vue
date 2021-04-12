@@ -8,6 +8,7 @@
          <v-img
             v-if="hasImg"
             :aspect-ratio="16/9"
+            class="rounded"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWgAi_LMISHBg_Jn8jFuMeKJ0lkmkbnkOV5Q&usqp=CAU"
         >
             <v-expand-transition>
@@ -69,10 +70,11 @@
             <div class="postText" style="-webkit-line-clamp: 1;"> 
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati harum commodi sequi temporibus quidem nobis? Molestias ipsa provident deleniti dolores illum optio nesciunt magni impedit ipsum doloremque praesentium culpa voluptates modi error, vel mollitia quas, tempora ab asperiores odio eius nihil soluta? Quo aspernatur eos, quaerat, libero labore culpa deserunt illo autem corporis, ipsam voluptatibus. Doloribus incidunt saepe blanditiis similique.
             </div>
+
         </v-card-text>
+
         <v-card-actions v-if="!hasImg">
             <v-spacer></v-spacer>
-
             <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                     <div v-on="on">
@@ -111,14 +113,17 @@
                 <span>Edit Post</span>
             </v-tooltip>
         </v-card-actions>
-
     </v-card>
   </v-hover>
 </template>
 
 <script>
+
 export default {
     name: "Post",
+    components: {
+        
+    },
     data() {
         return {
             hasImg: true
@@ -126,6 +131,9 @@ export default {
     },
     created() {
         this.hasImg =  Math.random() < 0.5;
+    },
+    methods: {
+
     }
 }
 </script>

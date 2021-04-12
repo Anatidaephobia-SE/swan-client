@@ -68,7 +68,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import axios from "axios";
 
 export default {
@@ -78,31 +77,27 @@ export default {
     return {
       baseUrl: axios.defaults.baseURL,
       team: {
-          name: "haha",
+          name: "",
           admins: [
               "lolo",
               "lala"
           ]
       },
-      drawer: [
-        {label: 'Posts', link: 'posts', icon: 'mdi-account-group'},
-        {label: 'Add Post', link: 'add-post', icon: 'mdi-account-clock'},
-        {label: 'Settings', link: 'settings', icon: 'mdi-calendar'},
-      ],
-      pathName: ''
+      pathName: '',
     }
   },
+    computed: {
+      drawer() {
+          return [
+          {label: 'Posts', link: `posts`, icon: 'mdi-account-group'},
+          {label: 'Create new post', link: `create-post`, icon: 'mdi-account-clock'},
+          {label: 'Settings', link: `settings`, icon: 'mdi-calendar'},
+        ]
+      }
+    },
   created() {
     this.pathName = this.$route.name
-    // this.$store.dispatch('getUserInfo').then(
-    //     () => this.user = this.$store.getters.userInfo
-    // );
-
-  },
-  watch: {
-    $route:  function(newVal){
-      this.pathName = newVal.name;
-    }
+    this.team.name = this.$route.params.workspace + " workspace"
   }
 };
 </script>
@@ -110,8 +105,6 @@ export default {
 <style lang="scss" scoped>
 .home {
   height: 100%;
-  //display: flex;
-  //flex-direction: row-reverse;
 
   .toolbar {
     border-bottom: 1px solid #dddd;

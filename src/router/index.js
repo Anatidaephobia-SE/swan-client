@@ -8,6 +8,7 @@ import Invites from "@/views/Invites";
 import Calendar from "@/views/Calendar";
 import Logout from "@/views/Logout";
 import store from '../store/index'
+import Profile from "@/views/Profile";
 
 
 Vue.use(VueRouter)
@@ -27,7 +28,8 @@ const routes = [
     children: [
       {path: 'workspaces', name: 'workspaces', component: Workspaces},
       {path: 'invites', name: 'invites', component: Invites},
-      {path: 'calendar', name: 'calendar', component: Calendar}
+      {path: 'calendar', name: 'calendar', component: Calendar},
+      {path: 'profile', name: 'Profile', component: Profile}
     ]
   },
   {

@@ -158,7 +158,7 @@ export default {
         profileImg: this.profileImg
       };
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
-      this.$store.dispatch('completeRegister', data)
+      this.$store.dispatch('updateUserInfo', data)
           .then(() => {
             const message = `You have registered successfully`;
             this.$store.dispatch('showMessage', {message , color: 'success'});

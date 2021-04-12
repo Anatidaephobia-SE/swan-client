@@ -48,11 +48,13 @@ const authModule = {
           })
       })
     },
-    completeRegister({commit}, user) {
+    updateUserInfo({commit}, user) {
       const body = new FormData();
       body.append('first_name', user.firstname);
       body.append('last_name', user.lastname);
-      body.append('profile_picture', user.profileImg)
+      if (user.profileImg) {
+        body.append('profile_picture', user.profileImg)
+      }
       return new Promise((resolve, reject) => {
         axios.put('/api/users/profile/update/', body)
           .then(resp => {

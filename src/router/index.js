@@ -6,6 +6,7 @@ import SignUp from '../views/SignUp'
 import Workspaces from "@/views/Workspaces";
 import Invites from "@/views/Invites";
 import Calendar from "@/views/Calendar";
+import PostView from "@/views/PostView";
 // import store from '../store/index'
 
 
@@ -38,6 +39,11 @@ const routes = [
     path: '/sign-up',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/post',
+    name: 'Post',
+    component: PostView
   }
 ]
 

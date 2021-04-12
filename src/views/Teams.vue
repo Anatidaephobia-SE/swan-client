@@ -7,17 +7,17 @@
     >
       <v-list>
         <v-list-item class="px-2">
-          <v-list-item-avatar rounded>
-            <v-img :src="baseUrl + user.profile_picture"></v-img>
+          <v-list-item-avatar>
+            <v-img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"></v-img>
           </v-list-item-avatar>
         </v-list-item>
 
-        <v-list-item link to="/profile">
+        <v-list-item link>
           <v-list-item-content>
             <v-list-item-title class="title">
-              {{ user.first_name }} {{ user.last_name }}
+              {{ team.name }}
             </v-list-item-title>
-            <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ team.admins }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -34,17 +34,7 @@
           </v-list-item-icon>
           <v-list-item-title>{{item.label}}</v-list-item-title>
         </v-list-item>
-
-        <v-list-item @click="newWorkspace = true">
-          <v-list-item-icon>
-            <v-icon>mdi-plus</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Create a Workspace</v-list-item-title>
-        </v-list-item>
       </v-list>
-
-      <NewWorkspace :dialog="newWorkspace" @close-dialog="closeDialog" :key="key"/>
-
     </v-navigation-drawer>
 
 
@@ -59,7 +49,6 @@
       <v-tooltip bottom>
         <template v-slot:activator="{on, attr}">
           <v-btn
-              to="/logout"
               v-bind="attr"
               v-on="on"
               icon
@@ -79,50 +68,36 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import axios from "axios";
-import NewWorkspace from "@/components/workspaces/NewWorkspace";
 
 export default {
-  name: "Home",
-  components: {NewWorkspace},
+  name: "Teams",
+  components: {},
   data() {
     return {
       baseUrl: axios.defaults.baseURL,
-      user: {},
-      drawer: [
-        {label: 'My Workspaces', link: 'workspaces', icon: 'mdi-account-group'},
-        {label: 'Workspace Invites', link: 'invites', icon: 'mdi-account-clock'},
-      ],
+      team: {
+          name: "",
+          admins: [
+              "lolo",
+              "lala"
+          ]
+      },
       pathName: '',
-      newWorkspace: false,
-      key: Math.random()
     }
   },
-  methods: {
-    closeDialog: function () {
-      this.newWorkspace = false;
-      setTimeout(() => this.key = Math.random(), 1000)
-
-    }
-  },
+    computed: {
+      drawer() {
+          return [
+          {label: 'Posts', link: `posts`, icon: 'mdi-account-group'},
+          {label: 'Create new post', link: `create-post`, icon: 'mdi-account-clock'},
+          {label: 'Settings', link: `settings`, icon: 'mdi-calendar'},
+        ]
+      }
+    },
   created() {
     this.pathName = this.$route.name
-    this.$store.dispatch('getUserInfo').then(
-        () => this.user = this.$store.getters.userInfo
-    );
-    if (this.$route.query.team_url) {
-      this.newWorkspace = true
-    }
-
-  },
-  watch: {
-    $route:  function(newVal){
-      this.pathName = newVal.name;
-    },
-    '$store.getters.userInfo': function (newVal) {
-      this.user = newVal
-    }
+    this.team.name = this.$route.params.workspace + " workspace"
   }
 };
 </script>
@@ -130,8 +105,6 @@ export default {
 <style lang="scss" scoped>
 .home {
   height: 100%;
-  //display: flex;
-  //flex-direction: row-reverse;
 
   .toolbar {
     border-bottom: 1px solid #dddd;

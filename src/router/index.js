@@ -9,7 +9,7 @@ import Calendar from "@/views/Calendar";
 import Logout from "@/views/Logout";
 import store from '../store/index'
 import Profile from "@/views/Profile";
-
+import PostView from "@/views/PostView";
 
 Vue.use(VueRouter)
 
@@ -46,6 +46,11 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     component: Logout
+  },
+  {
+    path: '/post',
+    name: 'Post',
+    component: PostView
   }
 ]
 

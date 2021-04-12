@@ -11,6 +11,10 @@ import Settings from "@/views/Settings";
 import Dispatch from "@/views/Dispatch";
 import Posts from "@/views/teams-subpaths/Posts"
 
+import Logout from "@/views/Logout";
+import store from '../store/index'
+import Profile from "@/views/Profile";
+import PostView from "@/views/PostView";
 
 Vue.use(VueRouter)
 
@@ -19,20 +23,20 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    default: "workspaces",
     redirect: '/workspaces',
-    // beforeEnter: (to, from, next) => {
-    //   if (store.getters.isLoggedIn) {
-    //     next()
-    //   } else {
-    //     next('/login')
-    //   }
-    // },
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isLoggedIn) {
+        next()
+      } else {
+        next('/login')
+      }
+    },
     children: [
       {path: 'workspaces', name: 'workspaces', component: Workspaces},
       {path: 'workspaces/:url/settings', component: Settings},
       {path: 'invites', name: 'invites', component: Invites},
-      {path: 'calendar', name: 'calendar', component: Calendar}
+      {path: 'calendar', name: 'calendar', component: Calendar},
+      {path: 'profile', name: 'Profile', component: Profile}
     ]
   },
   {
@@ -55,6 +59,16 @@ const routes = [
     path: '/sign-up',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
+  },
+  {
+    path: '/post',
+    name: 'Post',
+    component: PostView
   }
 ]
 

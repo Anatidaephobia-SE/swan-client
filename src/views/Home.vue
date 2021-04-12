@@ -49,6 +49,7 @@
       <v-tooltip bottom>
         <template v-slot:activator="{on, attr}">
           <v-btn
+              to="/logout"
               v-bind="attr"
               v-on="on"
               icon

@@ -10,8 +10,8 @@
     <div class="image d-flex justify-center align-center">
       <v-img
         contain
-        min-width="500"
-        max-width="550"
+        min-width="650"
+        max-width="750"
         :src="require('../../assets/graphics/login.svg')"
       >
       </v-img>

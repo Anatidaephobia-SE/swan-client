@@ -6,8 +6,9 @@ import SignUp from '../views/SignUp'
 import Workspaces from "@/views/Workspaces";
 import Invites from "@/views/Invites";
 import Calendar from "@/views/Calendar";
+import Logout from "@/views/Logout";
+import store from '../store/index'
 import Profile from "@/views/Profile";
-// import store from '../store/index'
 
 
 Vue.use(VueRouter)
@@ -17,13 +18,13 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    // beforeEnter: (to, from, next) => {
-    //   if (store.getters.isLoggedIn) {
-    //     next()
-    //   } else {
-    //     next('/login')
-    //   }
-    // },
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isLoggedIn) {
+        next()
+      } else {
+        next('/login')
+      }
+    },
     children: [
       {path: 'workspaces', name: 'workspaces', component: Workspaces},
       {path: 'invites', name: 'invites', component: Invites},
@@ -40,6 +41,11 @@ const routes = [
     path: '/sign-up',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
   }
 ]
 

@@ -6,9 +6,10 @@ import SignUp from '../views/SignUp'
 import Workspaces from "@/views/Workspaces";
 import Invites from "@/views/Invites";
 import Calendar from "@/views/Calendar";
+import Teams from "@/views/Teams"
 import Settings from "@/views/Settings";
 import Dispatch from "@/views/Dispatch";
-// import store from '../store/index'
+import Posts from "@/views/teams-subpaths/Posts"
 
 
 Vue.use(VueRouter)
@@ -32,6 +33,14 @@ const routes = [
       {path: 'workspaces/:url/settings', component: Settings},
       {path: 'invites', name: 'invites', component: Invites},
       {path: 'calendar', name: 'calendar', component: Calendar}
+    ]
+  },
+  {
+    path: '/workspaces/:workspace/',
+    name: 'Team',
+    component: Teams,
+    children: [
+      {path: 'posts', name: 'posts', component: Posts},
     ]
   },
   {

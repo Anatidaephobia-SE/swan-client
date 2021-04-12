@@ -16,6 +16,13 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
+        <v-btn
+            color="primary"
+            depressed
+            @click="$emit('close-dialog', false)"
+        >
+          Cancel
+        </v-btn>
 
         <v-btn
             color="error"
@@ -23,14 +30,6 @@
             @click="$emit('close-dialog', true)"
         >
           Yes
-        </v-btn>
-
-        <v-btn
-            color="primary"
-            depressed
-            @click="$emit('close-dialog', false)"
-        >
-          Cancel
         </v-btn>
       </v-card-actions>
     </v-card>

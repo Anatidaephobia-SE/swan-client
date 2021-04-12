@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "@/router";
 
 const authModule = {
   state: {
@@ -11,11 +12,11 @@ const authModule = {
       state.user = payload.user
     },
     updateUser(state, user) {
-      state.user = user
+      state.user = user;
     },
     logout(state) {
-      state.status = ''
-      state.token = ''
+      state.user = {};
+      state.token = '';
     },
   },
   actions: {
@@ -47,11 +48,13 @@ const authModule = {
           })
       })
     },
-    completeRegister({commit}, user) {
+    updateUserInfo({commit}, user) {
       const body = new FormData();
       body.append('first_name', user.firstname);
       body.append('last_name', user.lastname);
-      body.append('profile_picture', user.profileImg)
+      if (user.profileImg) {
+        body.append('profile_picture', user.profileImg)
+      }
       return new Promise((resolve, reject) => {
         axios.put('/api/users/profile/update/', body)
           .then(resp => {
@@ -79,6 +82,7 @@ const authModule = {
     },
     logout({commit}) {
       localStorage.removeItem('token');
+      router.push('/login').then()
       commit('logout');
     }
   },

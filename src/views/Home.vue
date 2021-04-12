@@ -7,12 +7,12 @@
     >
       <v-list>
         <v-list-item class="px-2">
-          <v-list-item-avatar>
+          <v-list-item-avatar rounded>
             <v-img :src="baseUrl + user.profile_picture"></v-img>
           </v-list-item-avatar>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item link to="/profile">
           <v-list-item-content>
             <v-list-item-title class="title">
               {{ user.first_name }} {{ user.last_name }}
@@ -49,6 +49,7 @@
       <v-tooltip bottom>
         <template v-slot:activator="{on, attr}">
           <v-btn
+              to="/logout"
               v-bind="attr"
               v-on="on"
               icon
@@ -97,6 +98,9 @@ export default {
   watch: {
     $route:  function(newVal){
       this.pathName = newVal.name;
+    },
+    '$store.getters.userInfo': function (newVal) {
+      this.user = newVal
     }
   }
 };

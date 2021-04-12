@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     getWorkspaceUrl: function (){
-      return this.$route.params.url
+      return this.$route.params.workspace
     }
   },
   methods: {

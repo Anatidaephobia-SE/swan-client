@@ -12,7 +12,7 @@
           <v-list-item-content>
             <v-list-item-title>{{s.name}}</v-list-item-title>
             <v-list-item-subtitle v-if="twitterInfo">
-              @{{twitterInfo.screen_name}} | {{twitterInfo.name}}
+              @{{twitterInfo.secreen_name}} | {{twitterInfo.name}}
             </v-list-item-subtitle>
             <v-list-item-subtitle v-if="twitterInfo">
               <v-chip color="accent" x-small>Connected</v-chip>
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     getWorkspaceUrl: function () {
-      return this.$route.params.url
+      return this.$route.params.workspace
     }
   },
   mounted() {

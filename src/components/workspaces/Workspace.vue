@@ -130,7 +130,7 @@ export default {
       }
     },
     workspaceUrl: function () {
-      return "workspace/" + this.workspace.url;
+      return '/workspaces/' + this.workspace.url + '/';
     },
   },
   computed: {

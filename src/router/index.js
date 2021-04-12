@@ -33,18 +33,19 @@ const routes = [
     },
     children: [
       {path: 'workspaces', name: 'workspaces', component: Workspaces},
-      {path: 'workspaces/:url/settings', component: Settings},
       {path: 'invites', name: 'invites', component: Invites},
-      {path: 'calendar', name: 'calendar', component: Calendar},
       {path: 'profile', name: 'Profile', component: Profile}
     ]
   },
   {
     path: '/workspaces/:workspace/',
-    name: 'Team',
+    name: 'Workspace',
+    redirect: '/workspaces/:workspace/posts',
     component: Teams,
     children: [
-      {path: 'posts', name: 'posts', component: Posts},
+      {path: 'posts', name: 'Posts', component: Posts},
+      {path: 'settings', name: 'Settings', component: Settings},
+      {path: 'compose', name: 'Compose', component: Posts, meta: {compose: true}},
     ]
   },
   {

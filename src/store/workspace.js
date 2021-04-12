@@ -82,7 +82,7 @@ const workspaceModule = {
     },
     requestConnectionTwitter(payload, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/v1/socialmedia/twitter/authorize/request/', body).then(resp => {
+        axios.post('api/socialmedia/twitter/authorize/request', body).then(resp => {
           resolve(resp);
         }).catch(err => {
           reject(err);
@@ -91,7 +91,7 @@ const workspaceModule = {
     },
     sendTokensTwitter(payload, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/v1/socialmedia/twitter/authorize/access/', body).then(resp => {
+        axios.post('api/socialmedia/twitter/authorize/access', body).then(resp => {
           resolve(resp)
         }).catch(err => {
           reject(err)
@@ -137,7 +137,7 @@ const workspaceModule = {
     },
     getTwitterAccount: function (payload, team_url) {
       return new Promise((resolve, reject) => {
-        axios.get('api/v1/socialmedia/twitter/accounts?team_url='+team_url)
+        axios.get('api/socialmedia/twitter/accounts?team_url='+team_url)
           .then(resp => resolve(resp)).catch(err => reject(err));
       });
     }

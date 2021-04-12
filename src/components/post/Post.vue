@@ -10,7 +10,7 @@
             flat
             dark>
 
-          <v-toolbar-title>{{isEditMode? 'View Post': 'new Post'}}</v-toolbar-title>
+          <v-toolbar-title>{{isEditMode? 'View Post': 'New Post'}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn

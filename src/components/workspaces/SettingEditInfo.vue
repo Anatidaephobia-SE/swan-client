@@ -74,7 +74,7 @@ export default {
   },
   computed: {
     getWorkspaceName: function () {
-      return this.$route.params.url
+      return this.$route.params.workspace
     },
     getImgUrl: function () {
       if (typeof(this.info.logo) === 'string') {

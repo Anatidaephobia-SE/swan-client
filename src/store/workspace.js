@@ -60,6 +60,86 @@ const workspaceModule = {
           })
           .catch(err => reject(err));
       });
+    },
+    createWorkspace: function ({commit}, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/team/create_team', body).then(resp => {
+          commit('updateTeams');
+          resolve(resp);
+        }).catch(err => {
+          reject(err);
+        });
+      });
+    },
+    addUserToWorkspace: function (payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/team/invite_user', body).then(resp => {
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        });
+      })
+    },
+    requestConnectionTwitter(payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/v1/socialmedia/twitter/authorize/request/', body).then(resp => {
+          resolve(resp);
+        }).catch(err => {
+          reject(err);
+        });
+      });
+    },
+    sendTokensTwitter(payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.post('api/v1/socialmedia/twitter/authorize/access/', body).then(resp => {
+          resolve(resp)
+        }).catch(err => {
+          reject(err)
+        });
+      });
+    },
+    getWorkspaceMembers(payload, teamUrl) {
+      return new Promise((resolve, reject) => {
+        axios.get('api/team/get_members?team_url='+teamUrl).then(resp => {
+          resolve(resp);
+        }).catch(err => {
+          reject(err);
+        });
+      });
+    },
+    getWorkspaceInfo(payload, teamUrl) {
+      return new Promise((resolve, reject) => {
+        axios.get('api/team/get_team_info?team_url='+teamUrl).then(resp => {
+          resolve(resp);
+        }).catch(err => {
+          reject(err);
+        });
+      });
+    },
+    editWorkspaceInfo(payload, body) {
+      return new Promise((resolve, reject) => {
+        axios.put('api/team/update_team_info', body).then(resp => {
+          resolve(resp);
+        }).catch(error => {
+          reject(error)
+        });
+      })
+    },
+    removeUser: function (payload, body) {
+      console.log(body)
+      return new Promise((resolve, reject) => {
+        axios.delete(`api/team/remove_user/${body.team_url}?username=${body.email}`).then(resp => {
+          resolve(resp);
+        }).catch(error => {
+          reject(error);
+        });
+      })
+    },
+    getTwitterAccount: function (payload, team_url) {
+      return new Promise((resolve, reject) => {
+        axios.get('api/v1/socialmedia/twitter/accounts?team_url='+team_url)
+          .then(resp => resolve(resp)).catch(err => reject(err));
+      });
     }
   },
   mutations: {

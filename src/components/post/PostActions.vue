@@ -33,15 +33,16 @@ export default {
     return {
       status: '',
       buttons: [
-        {label: 'publish', color: 'primary', type: 'Pu'},
+        {label: 'publish', color: 'primary', type: 'Published'},
         {label: 'schedule', color: 'accent'},
-        {label: 'draft', color: 'info', type: 'Dr'},
+        {label: 'draft', color: 'info', type: 'Drafts'},
         {label: 'remove', color: 'error'}
       ]
     }
   },
   mounted() {
     this.status = this.$store.getters.getNewPost.status
+    this.getPostData()
   },
   methods: {
     action: function (status) {
@@ -69,6 +70,16 @@ export default {
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
+      })
+    },
+    getPostData: function () {
+      const data = this.$store.getters.getNewPost;
+      this.status = data.status
+
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'SET_POST') {
+          this.status = state.post.newPost.status
+        }
       })
     }
   },

@@ -28,7 +28,7 @@ const postModule = {
     },
     createNewPost: function ({commit, state}) {
       return new Promise((resolve, reject) => {
-        axios.post('api/post/create_post', state.newPost).then(resp => {
+        axios.post('api/v1.0.0/post/create_post/', state.newPost).then(resp => {
           commit('SET_POST', resp.data)
           commit('SET_ID', resp.data.id)
           commit('SET_AUTHOR', resp.data.owner)
@@ -38,7 +38,7 @@ const postModule = {
     },
     getPostById: function ({commit}, id) {
       return new Promise((resolve, reject) => {
-        axios.get(`api/post/single_post/${id}/`).then(resp => {
+        axios.get(`api/v1.0.0/post/single_post/${id}/`).then(resp => {
           const data = resp.data;
           commit('SET_ID', data.id)
           commit('SET_POST', data);
@@ -49,7 +49,7 @@ const postModule = {
     },
     updatePost: function({commit, state}) {
       return new Promise((resolve, reject) => {
-        axios.put(`api/post/update_post/${state.id}/`, state.newPost).then(resp => {
+        axios.put(`api/v1.0.0/post/update_post/${state.id}/`, state.newPost).then(resp => {
           const data = resp.data;
           commit('SET_POST', data);
           resolve(resp)
@@ -58,19 +58,25 @@ const postModule = {
     },
     addComment: function({state}, payload) {
       return new Promise((resolve, reject) => {
-        axios.put(`api/post/create_comment/${state.id}/`, payload).
+        axios.put(`api/v1.0.0/post/create_comment/${state.id}/`, payload).
         then(resp => resolve(resp)).catch(err => reject(err))
       });
     },
     getComments: function ({state}) {
       return new Promise((resolve, reject) => {
-        axios.get(`api/post/all_comment/${state.id}`)
+        axios.get(`api/v1.0.0/post/all_comment/${state.id}`)
           .then(resp => resolve(resp)).catch(err => reject(err))
       })
     },
     deleteComment: function (store, id) {
       return new Promise((resolve, reject) => {
-        axios.delete(`api/post/delete_comment/${id}`)
+        axios.delete(`api/v1.0.0/post/delete_comment/${id}`)
+          .then(resp => resolve(resp)).catch(err => reject(err))
+      })
+    },
+    getAllPosts: function ({state}, team_id) {
+      return new Promise((resolve, reject) => {
+        axios.get(`api/v1.0.0/post/all_post/${team_id}/`)
           .then(resp => resolve(resp)).catch(err => reject(err))
       })
     }

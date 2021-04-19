@@ -3,12 +3,13 @@ import axios from "axios";
 const workspaceModule = {
   state: {
     updated: false,
-    invitesUpdated: false
+    invitesUpdated: false,
+    teamID: ''
   },
   actions: {
     getWorkspaces: function ({commit}) {
       return new Promise((resolve, reject) => {
-        axios.get('/api/team/get_user_teams')
+        axios.get('/api/v1.0.0/team/get_user_teams')
           .then(res => {
             commit('updateTeams', true);
             resolve(res)
@@ -18,7 +19,7 @@ const workspaceModule = {
     },
     leaveWorkspace: function ({commit}, team) {
       return new Promise((resolve, reject) => {
-        axios.delete(`/api/team/leave_team/${team}`)
+        axios.delete(`/api/v1.0.0/team/leave_team/${team}`)
           .then(res => {
             commit('updateTeams', false);
             resolve(res)
@@ -28,7 +29,7 @@ const workspaceModule = {
     },
     getInvites: function ({commit}) {
       return new Promise((resolve, reject) => {
-        axios.get('/api/team/get_invites')
+        axios.get('/api/v1.0.0/team/get_invites')
           .then(res => {
             commit('updateInvites', true);
             resolve(res)
@@ -41,7 +42,7 @@ const workspaceModule = {
         team_url: url
       }
       return new Promise((resolve, reject) => {
-        axios.post('/api/team/accept_invite', body)
+        axios.post('/api/v1.0.0/team/accept_invite', body)
           .then(res => {
           commit('updateInvites', false);
           commit('updateTeams', false);
@@ -52,7 +53,7 @@ const workspaceModule = {
     },
     rejectInvite: function ({commit}, url) {
       return new Promise((resolve, reject) => {
-        axios.delete(`/api/team/reject_invite/${url}`)
+        axios.delete(`/api/v1.0.0/team/reject_invite/${url}`)
           .then(res => {
             commit('updateInvites', false);
             commit('updateTeams', false);
@@ -63,7 +64,7 @@ const workspaceModule = {
     },
     createWorkspace: function ({commit}, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/team/create_team', body).then(resp => {
+        axios.post('api/v1.0.0/team/create_team', body).then(resp => {
           commit('updateTeams');
           resolve(resp);
         }).catch(err => {
@@ -73,7 +74,7 @@ const workspaceModule = {
     },
     addUserToWorkspace: function (payload, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/team/invite_user', body).then(resp => {
+        axios.post('api/v1.0.0/team/invite_user', body).then(resp => {
           resolve(resp)
         }).catch(err => {
           reject(err)
@@ -82,7 +83,7 @@ const workspaceModule = {
     },
     requestConnectionTwitter(payload, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/v1/socialmedia/twitter/authorize/request/', body).then(resp => {
+        axios.post('api/v1.0.0/socialmedia/twitter/authorize/request', body).then(resp => {
           resolve(resp);
         }).catch(err => {
           reject(err);
@@ -91,7 +92,7 @@ const workspaceModule = {
     },
     sendTokensTwitter(payload, body) {
       return new Promise((resolve, reject) => {
-        axios.post('api/v1/socialmedia/twitter/authorize/access/', body).then(resp => {
+        axios.post('api/v1.0.0/socialmedia/twitter/authorize/access', body).then(resp => {
           resolve(resp)
         }).catch(err => {
           reject(err)
@@ -100,17 +101,18 @@ const workspaceModule = {
     },
     getWorkspaceMembers(payload, teamUrl) {
       return new Promise((resolve, reject) => {
-        axios.get('api/team/get_members?team_url='+teamUrl).then(resp => {
+        axios.get('api/v1.0.0/team/get_members?team_url='+teamUrl).then(resp => {
           resolve(resp);
         }).catch(err => {
           reject(err);
         });
       });
     },
-    getWorkspaceInfo(payload, teamUrl) {
+    getWorkspaceInfo({commit}, teamUrl) {
       return new Promise((resolve, reject) => {
-        axios.get('api/team/get_team_info?team_url='+teamUrl).then(resp => {
+        axios.get('api/v1.0.0/team/get_team_info?team_url='+teamUrl).then(resp => {
           resolve(resp);
+          commit('set_workspace_id', resp.data.team.id)
         }).catch(err => {
           reject(err);
         });
@@ -118,7 +120,7 @@ const workspaceModule = {
     },
     editWorkspaceInfo(payload, body) {
       return new Promise((resolve, reject) => {
-        axios.put('api/team/update_team_info', body).then(resp => {
+        axios.put('api/v1.0.0/team/update_team_info', body).then(resp => {
           resolve(resp);
         }).catch(error => {
           reject(error)
@@ -128,7 +130,7 @@ const workspaceModule = {
     removeUser: function (payload, body) {
       console.log(body)
       return new Promise((resolve, reject) => {
-        axios.delete(`api/team/remove_user/${body.team_url}?username=${body.email}`).then(resp => {
+        axios.delete(`api/v1.0.0/team/remove_user/${body.team_url}?username=${body.email}`).then(resp => {
           resolve(resp);
         }).catch(error => {
           reject(error);
@@ -137,7 +139,7 @@ const workspaceModule = {
     },
     getTwitterAccount: function (payload, team_url) {
       return new Promise((resolve, reject) => {
-        axios.get('api/v1/socialmedia/twitter/accounts?team_url='+team_url)
+        axios.get('api/v1.0.0/socialmedia/twitter/accounts?team_url='+team_url)
           .then(resp => resolve(resp)).catch(err => reject(err));
       });
     }
@@ -148,11 +150,15 @@ const workspaceModule = {
     },
     updateInvites: function (state, value) {
       state.invitesUpdated = value
+    },
+    set_workspace_id: function (state, value) {
+      state.teamID = value
     }
   },
   getters: {
     isTeamsUpdated: (state) => state.updated,
-    isInvitesUpdated: (state) => state.invitesUpdated
+    isInvitesUpdated: (state) => state.invitesUpdated,
+    getTeamId: (state) => state.teamID
   }
 };
 

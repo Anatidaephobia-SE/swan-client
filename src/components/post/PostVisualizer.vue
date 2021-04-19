@@ -13,12 +13,12 @@
                 class="profile"
                 color="grey"
                 size="50">
-              <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+              <v-img :src="twitter.profile_image"></v-img>
             </v-avatar>
             </v-col>
             <v-col cols="10" md="11">
-              <v-card-title class="mt-0 pt-0">Amir Esmaeili</v-card-title>
-              <v-card-subtitle>@amiresm17</v-card-subtitle>
+              <v-card-title class="mt-0 pt-0">{{twitter.name}}</v-card-title>
+              <v-card-subtitle>@{{twitter.screen_name}}</v-card-subtitle>
             </v-col>
           </v-row>
       <div class="pa-2">
@@ -42,22 +42,44 @@ export default {
     return {
       post: {
         caption: '',
-        media: ''
+        media: '',
+      },
+      twitter: {
+        name: '',
+        profile_image: '',
+        screen_name: ''
       }
     }
   },
   mounted() {
     this.post.caption = this.$store.getters.getNewPost.caption
     this.getPostCaption()
+    this.getTwitter()
   },
   methods: {
     getPostCaption: function () {
       this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'SET_POST') {
-          console.log("Hello")
           this.post.caption = state.post.newPost.caption
         }
       })
+    },
+    getTwitter: function () {
+      this.$store.dispatch('getTwitterAccount', this.teamUrl).then(resp => {
+        const data = resp.data
+        this.twitter = {
+          name: data.name,
+          profile_image: data.profile_image,
+          screen_name: data.screen_name
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  },
+  computed: {
+    teamUrl: function () {
+      return this.$route.params.workspace
     }
   },
   watch: {

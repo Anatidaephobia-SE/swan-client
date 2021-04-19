@@ -1,11 +1,12 @@
 <template>
   <v-app-bar
-      absolute
+      fixed
       color="primary"
       dark
       flat
+      app
   >
-    <v-card-title>Your Workspaces</v-card-title>
+    <v-card-title @click="$router.push('/')">Swan</v-card-title>
 
     <v-spacer></v-spacer>
 
@@ -85,7 +86,7 @@ export default {
   computed: {
     menuItems: function () {
       return [
-        {label: 'Profile', link: 'profile', icon: 'mdi-account'},
+        {label: 'Profile', link: '/profile', icon: 'mdi-account'},
         {label: 'Logout', link: '/logout', icon: 'mdi-logout'}
       ]
     }

@@ -1,8 +1,12 @@
 <template>
   <v-card elevation="0" outlined>
     <v-row class="pa-2">
-      <v-col cols="3">
-        <UserAvatar :alt="workspace.name" :image="workspace.logo" :size="40"/>
+      <v-col cols="2" class="mr-2">
+        <UserAvatar
+            other-cls="rounded"
+            :alt="workspace.name"
+            :image="workspace.logo"
+            :size="40"/>
       </v-col>
       <v-col cols="9">
         <span>{{ workspace.name }}</span>

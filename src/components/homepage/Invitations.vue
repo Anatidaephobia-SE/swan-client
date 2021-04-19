@@ -1,7 +1,8 @@
 <template>
   <v-card max-width="600px">
     <v-card-title>Invitees</v-card-title>
-    <v-card-text>
+    <v-divider></v-divider>
+    <v-card-text class="pa-2">
       <invitation
           @update="getInvitees"
           class="ma-1"

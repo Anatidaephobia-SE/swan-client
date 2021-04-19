@@ -33,7 +33,6 @@ const routes = [
     },
     children: [
       {path: 'workspaces', name: 'Workspaces', component: Workspaces},
-      {path: 'invites', name: 'Invites', component: Invites},
       {path: 'profile', name: 'Profile', component: Profile}
     ]
   },

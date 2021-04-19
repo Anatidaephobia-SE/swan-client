@@ -1,22 +1,22 @@
 <template>
   <v-card class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="250">
-    <p v-show="invite">{{workspace.head_name}} invited you!</p>
-
-    <v-container>
-      <v-avatar rounded size="80px" :color="workspace.logo? '': getColor">
-        <img v-show="workspace.logo" :src="logoUrl"
-             class="logo">
-        <span class="headline white--text" v-show="!workspace.logo">{{ shortName }}</span>
-      </v-avatar>
+    <v-container class="d-flex">
+      <UserAvatar
+          :image="workspace.logo"
+          :alt="workspace.name"
+          other-cls="rounded"
+          :size="60"/>
+      <div class="ml-3">
+        <div class="text-sm-h6">{{ workspace.name }}</div>
+        <div class="text-subtitle-1">
+          <v-icon>mdi-account-group</v-icon>
+          <span class="ml-1">{{ workspace.members || 10 }}</span>
+        </div>
+      </div>
     </v-container>
 
-    <v-card-title>{{ workspace.name }}</v-card-title>
-    <v-card-subtitle>
-      <v-icon>mdi-account-group</v-icon>
-      <span class="ml-1">{{ workspace.members || 10 }}</span>
-    </v-card-subtitle>
 
-    <v-card-actions v-show="!invite">
+    <v-card-actions>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
@@ -49,40 +49,18 @@
         @close-dialog="closeDialog"
       />
     </v-card-actions>
-
-    <v-card-actions v-show="invite">
-      <v-spacer></v-spacer>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="success" v-bind="attrs" v-on="on" icon @click="accept">
-            <v-icon>mdi-check</v-icon>
-          </v-btn>
-        </template>
-        <span>Accept</span>
-      </v-tooltip>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="error" v-bind="attrs" v-on="on" icon @click="reject">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </template>
-        <span>Reject</span>
-      </v-tooltip>
-    </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import Dialog from "@/components/shared/Dialog";
 import axios from "axios";
+import UserAvatar from "@/components/shared/UserAvatar";
 export default {
   name: "Workspace",
-  components: { Dialog },
+  components: {UserAvatar, Dialog },
   props: {
     workspace: Object,
-    invite: Boolean,
   },
   data() {
     return {
@@ -98,30 +76,6 @@ export default {
           this.$store.dispatch("showMessage", { message, color: "info" });
         })
         .catch((err) => console.log(err));
-    },
-    accept: function () {
-      this.$store
-        .dispatch("acceptInvite", this.workspace.url)
-        .then(() => {
-          const message = `You joined ${this.workspace.name}, Hurray!`;
-          this.$store.dispatch("showMessage", { message, color: "success" });
-        })
-        .catch((err) => {
-          const message = err.response.data.message;
-          this.$store.dispatch("showMessage", { message, color: "error" });
-        });
-    },
-    reject: function () {
-      this.$store
-        .dispatch("rejectInvite", this.workspace.url)
-        .then(() => {
-          const message = `Rejected ${this.workspace.name} invitation!`;
-          this.$store.dispatch("showMessage", { message, color: "info" });
-        })
-        .catch((err) => {
-          const message = err.response.data.message;
-          this.$store.dispatch("showMessage", { message, color: "error" });
-        });
     },
     closeDialog: function (value) {
       this.dialog = false;

@@ -9,7 +9,7 @@ export default {
   name: "Dispatch",
   mounted() {
     const query = this.$route.query;
-    if (query.modify) {
+    if (query.modify === "1") {
       const url = `/workspaces/${query.team_url}/settings?oauth_token=${query.oauth_token}&oauth_verifier=${query.oauth_verifier}`
       this.$router.push(url)
     } else {

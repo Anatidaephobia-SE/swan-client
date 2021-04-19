@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-md4">
+  <v-container class="pa-md4" v-if="!loading">
     <v-card-title>
       <v-icon class="mr-2">mdi-pencil</v-icon>
       Text And Multimedia
@@ -49,6 +49,7 @@ export default {
   name: "PostData",
   data() {
     return {
+      loading: false,
       valid: false,
       name: '',
       caption: '',
@@ -64,26 +65,22 @@ export default {
       ]
     }
   },
-  mounted() {
-    const data = this.$store.getters.getNewPost;
-    this.name = data.name;
-    this.caption = data.caption;
-    this.created_at = data.created_at
+  created() {
     this.getPostAuthor();
+    this.getPostData()
   },
   methods: {
     setPostData: function () {
       const newPost = {
         name: this.name,
         caption: this.caption,
-        team: this.teamUrl
+        team: this.teamId
       }
       this.$store.dispatch('setPost', newPost);
     },
     getPostAuthor: function () {
       const author = this.$store.getters.getPostAuthor;
       if (author) {
-        console.log(author.last_name)
         this.author = author
       }
       this.$store.subscribe((mutation, state) => {
@@ -95,11 +92,26 @@ export default {
           }
         }
       })
+    },
+    getPostData: function () {
+      const data = this.$store.getters.getNewPost;
+      this.name = data.name;
+      this.caption = data.caption;
+      this.created_at = data.created_at
+
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'SET_POST') {
+          const post = state.post.newPost;
+          this.name = post.name;
+          this.caption = post.caption;
+          this.created_at = post.created_at
+        }
+      })
     }
   },
   computed: {
-    teamUrl: function () {
-      return this.$route.params.url || 'twitter';
+    teamId: function () {
+      return this.$store.getters.getTeamId
     },
     imageUrl: function () {
       return axios.defaults.baseURL + this.author.profile_picture;

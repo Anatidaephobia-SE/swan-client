@@ -48,7 +48,7 @@
         app
         class="toolbar rounded-0" dense flat>
 
-      <v-toolbar-title>Swan | {{ pathName }}</v-toolbar-title>
+      <v-toolbar-title>{{ $route.params.workspace }} | {{ pathName }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-tooltip bottom>
@@ -57,11 +57,12 @@
               v-bind="attr"
               v-on="on"
               icon
+              to="/workspaces"
           >
             <v-icon>mdi-logout</v-icon>
           </v-btn>
         </template>
-        <span>Logout</span>
+        <span>Workspaces</span>
       </v-tooltip>
 
 
@@ -85,10 +86,6 @@ export default {
       baseUrl: axios.defaults.baseURL,
       team: {
         name: "",
-        admins: [
-          "lolo",
-          "lala"
-        ]
       },
       pathName: '',
       dialogKey: Math.random()
@@ -112,7 +109,7 @@ export default {
   computed: {
     drawer() {
       return [
-        {label: 'Posts', link: `posts`, icon: 'mdi-account-group'},
+        {label: 'Posts', link: `posts`, icon: 'mdi-note'},
         {label: 'Create new post', link: `compose`, icon: 'mdi-note-plus'},
         {label: 'Settings', link: `settings`, icon: 'mdi-cog'},
       ]

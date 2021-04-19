@@ -56,7 +56,7 @@ export default {
       comments: []
     }
   },
-  mounted() {
+  created() {
     this.getUserInfo()
     this.getAllComments()
   },

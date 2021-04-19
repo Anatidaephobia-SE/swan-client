@@ -60,7 +60,6 @@ export default {
     getPostCaption: function () {
       this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'SET_POST') {
-          console.log("Hello")
           this.post.caption = state.post.newPost.caption
         }
       })
@@ -71,7 +70,7 @@ export default {
         this.twitter = {
           name: data.name,
           profile_image: data.profile_image,
-          screen_name: data.secreen_name
+          screen_name: data.screen_name
         }
       }).catch(err => {
         console.log(err)

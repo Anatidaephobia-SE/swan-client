@@ -25,6 +25,10 @@ export default {
       }
       return Promise.reject(err)
     });
+
+    this.$store.dispatch('getUserInfo').then(
+        () => this.user = this.$store.getters.userInfo
+    );
   },
   computed: {
   }

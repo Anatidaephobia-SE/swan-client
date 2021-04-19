@@ -45,7 +45,8 @@ export default {
   components: {PostComments, PostActions, PostVisualizer, PostData},
   props: {
     dialog: Boolean,
-    editMode: Boolean
+    editMode: Boolean,
+    id: Number||String
   },
   data() {
     return {
@@ -53,18 +54,21 @@ export default {
     }
   },
   mounted() {
-    if (this.editMode) {
-      this.getPostById()
-    }
-    this.$store.subscribe((mutation) =>  {
+
+    this.$store.subscribe((mutation, state) =>  {
       if (mutation.type === 'SET_ID') {
-        this.postSubmitted = true
+        if (state.post.id) {
+          if (this.editMode) {
+            this.getPostById()
+          }
+          this.postSubmitted = true
+        }
       }
     })
   },
   methods: {
     getPostById: function () {
-      this.$store.dispatch('getPostById', '15').then().catch()
+      this.$store.dispatch('getPostById', this.id).then().catch()
     },
     closeDialog: function () {
       this.$store.dispatch('reset')

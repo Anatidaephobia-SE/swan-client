@@ -21,13 +21,29 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn
-          color="error"
-          outlined
-          small
-          @click.stop="dialog = true">
-        Leave
-      </v-btn>
+      <v-menu v-model="menu" bottom offset-y>
+        <template v-slot:activator="{on, attrs}">
+          <v-btn
+              icon
+              @click.stop="menu = true">
+            <v-icon>mdi-dots-horizontal</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list dense outlined>
+          <v-list-item :to="workspaceUrl + 'settings'">
+            <v-list-item-title>
+              Preferences
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item @click="dialog = true">
+            <v-list-item-title>
+              Leave
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <Dialog
           :show="dialog"
@@ -52,6 +68,7 @@ export default {
   data() {
     return {
       dialog: false,
+      menu: false
     };
   },
   methods: {
@@ -76,7 +93,7 @@ export default {
   },
   computed: {
     workspaceUrl: function () {
-      return '/workspaces/' + this.workspace.url + '/';
+      return '/workspace/' + this.workspace.url + '/';
     },
   }
 }

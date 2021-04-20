@@ -69,9 +69,9 @@ export default {
     hideAdd: function () {
       const currentScrollPos = window.pageYOffset;
       if (this.pos > currentScrollPos) {
-        document.getElementById("btn").style.visibility = 'visible';
+        document.getElementById("btn").style.opacity = '1';
       } else {
-        document.getElementById("btn").style.visibility = 'hidden';
+        document.getElementById("btn").style.opacity = '0';
       }
       this.pos = currentScrollPos;
     }

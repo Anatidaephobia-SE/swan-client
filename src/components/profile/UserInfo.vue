@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <v-row>
       <v-col cols="12" md="3">
 
@@ -17,7 +17,11 @@
             </v-avatar>
           </template>
 
-          <v-file-input ref="imageInput" v-show="false" v-model="user.profileImg" accpet="image/*"></v-file-input>
+          <v-file-input ref="imageInput"
+                        v-show="false"
+                        v-model="user.profileImg"
+                        accpet="image/*">
+          </v-file-input>
 
           <v-list>
             <v-list-item @click="user.profileImg = ''" v-if="user.profileImg">
@@ -35,7 +39,7 @@
       <v-col cols="12" md="4" class="pt-md-10 pb-0">
         <v-text-field
             v-model="user.email"
-            label="email"
+            label="Email"
             disabled
             filled>
         </v-text-field>
@@ -50,8 +54,8 @@
         <v-text-field
             :disabled="!editMode"
             v-model="user.lastname"
-            filled label="First Name"
-            placeholder="John">
+            filled label="Last Name"
+            placeholder="Doe">
         </v-text-field>
       </v-col>
     </v-row>
@@ -62,7 +66,7 @@
       <v-btn outlined @click="discardChanges" v-show="editMode" color="error">Discard</v-btn>
       <v-btn depressed @click="saveChanges" :loading="loading" v-show="editMode" color="primary">Save</v-btn>
     </v-card-actions>
-  </div>
+  </v-container>
 </template>
 
 <script>

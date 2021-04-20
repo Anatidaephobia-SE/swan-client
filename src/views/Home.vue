@@ -6,8 +6,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import axios from "axios";
 import NewWorkspace from "@/components/homepage/NewWorkspace";
 import UserAvatar from "@/components/shared/UserAvatar";
 import NavBar from "@/components/homepage/NavBar";
@@ -23,9 +21,21 @@ export default {
   },
   created() {
     this.pathName = this.$route.name
-    this.$store.dispatch('getUserInfo').then(
-        () => this.user = this.$store.getters.userInfo
-    );
+    this.getUserInfo();
+  },
+  methods: {
+    getUserInfo: function () {
+      this.$store.dispatch('getUserInfo').then(
+          () => {
+            this.user = this.$store.getters.userInfo
+          }
+      );
+    }
+  },
+  watch: {
+    '$store.getters.userInfo': function (newVal) {
+      this.user = newVal
+    }
   }
 };
 </script>

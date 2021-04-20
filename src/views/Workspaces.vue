@@ -4,7 +4,7 @@
       <v-icon class="mr-2">mdi-account-multiple</v-icon>
       Your Workspaces
     </v-card-title>
-    <v-card-text class="d-flex flex-wrap">
+    <v-card-text class="d-flex flex-wrap justify-center">
       <Workspace v-for="(w, i) in workspaces" :key="i" :workspace="w"/>
 
       <v-container v-if="workspaces.length === 0" class="d-flex flex-column align-center">

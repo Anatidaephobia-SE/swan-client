@@ -1,7 +1,9 @@
 <template>
-  <v-avatar v-if="alt || image" :color="color" :class="otherCls" :size="size">
+  <v-avatar
+      @click="$emit('clicked')"
+      v-if="alt || image" :color="color" :class="otherCls" :size="size">
     <v-img v-if="image" :src="imageUrl"></v-img>
-    <span style="font-size: larger" v-else>{{alt.slice(0, 1)}}</span>
+    <span class="headline" v-else>{{alt.slice(0, 1)}}</span>
   </v-avatar>
 </template>
 

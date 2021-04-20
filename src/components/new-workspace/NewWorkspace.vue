@@ -48,9 +48,9 @@
 </template>
 
 <script>
-import BasicInfo from "@/components/workspaces/BasicInfo";
-import AddMember from "@/components/workspaces/AddMember";
-import ConnectToSocialMedia from "@/components/workspaces/ConnectToSocialMedia";
+import BasicInfo from "@/components/new-workspace/BasicInfo";
+import AddMember from "@/components/new-workspace/AddMember";
+import ConnectToSocialMedia from "@/components/new-workspace/ConnectToSocialMedia";
 export default {
   name: "NewWorkspace",
   props: {

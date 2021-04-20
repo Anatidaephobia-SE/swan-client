@@ -20,7 +20,7 @@
     <v-list dense flat>
       <v-list-item v-for="(u, i) in addedUser" :key="i">
         <v-list-item-avatar>
-          <v-img :src="getImgUrl(u.profile_picture)"></v-img>
+          <UserAvatar :image="u.profile_picture" :alt="u.first_name" :size="30"/>
         </v-list-item-avatar>
         {{u.email}}
       </v-list-item>
@@ -37,9 +37,11 @@
 
 <script>
 import axios from "axios";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "AddMember",
+  components: {UserAvatar},
   props: {
     url: String
   },

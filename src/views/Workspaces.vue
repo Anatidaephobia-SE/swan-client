@@ -38,7 +38,7 @@
 
 <script>
 import Workspace from "@/components/workspaces/Workspace";
-import NewWorkspace from "@/components/homepage/NewWorkspace";
+import NewWorkspace from "@/components/new-workspace/NewWorkspace";
 
 export default {
   name: "Workspaces",

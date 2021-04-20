@@ -1,7 +1,9 @@
 <template>
   <v-card class="pa-2">
     <v-form v-model="valid" class="text-center form" @submit.prevent="createWorkspace">
-      <v-avatar @click="$refs.imageInput.$refs.input.click()" class="workspace-image mb-8" size="150" >
+      <v-avatar
+          @click="$refs.imageInput.$refs.input.click()"
+          class="workspace-image mb-8 rounded" size="150" >
         <v-icon size="50" v-if="!logo">
           mdi-camera-plus
         </v-icon>
@@ -21,12 +23,16 @@
       <v-text-field
           class="field"
           v-model="url"
-          label="Workspace url"
+          label="Workspace Url"
           placeholder="my_workspace"
           :rules="urlRule"
           filled>
       </v-text-field>
-      <v-file-input  v-show="false" ref="imageInput" v-model="logo">
+      <v-file-input
+          accept="image/*"
+          v-show="false"
+          ref="imageInput"
+          v-model="logo">
       </v-file-input>
       <v-card-actions>
         <v-spacer></v-spacer>

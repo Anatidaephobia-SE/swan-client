@@ -53,12 +53,14 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {dontUpdate: false}
   },
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
+    meta: {dontUpdate: false}
   },
   {
     path: '/logout',

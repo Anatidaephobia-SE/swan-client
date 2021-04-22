@@ -14,7 +14,7 @@
                 v-model="email"
                 :rules="rules.email"
                 filled
-                label="email"
+                label="Email"
                 placeholder="john-doe@exapmle.com"
                 type="text"
             >
@@ -23,7 +23,7 @@
                 v-model="password"
                 :rules="rules.password"
                 filled
-                label="password"
+                label="Password"
                 type="password"
             >
             </v-text-field>
@@ -31,7 +31,7 @@
                 v-model="confirmPassword"
                 :rules="rules.confirmPassword"
                 filled
-                label="confirm password"
+                label="Confirm Password"
                 type="password"
             >
             </v-text-field>
@@ -62,7 +62,7 @@
                 v-model="firstname"
                 :rules="rules.name"
                 filled
-                label="first name"
+                label="First Name"
                 placeholder="John"
                 type="text"
             >
@@ -71,7 +71,7 @@
                 v-model="lastname"
                 :rules="rules.name"
                 filled
-                label="last name"
+                label="Last Name"
                 placeholder="Doe"
                 type="text"
             >

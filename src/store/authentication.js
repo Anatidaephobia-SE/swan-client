@@ -52,7 +52,7 @@ const authModule = {
       const body = new FormData();
       body.append('first_name', user.firstname);
       body.append('last_name', user.lastname);
-      if (user.profileImg) {
+      if (user.hasOwnProperty('profileImg')) {
         body.append('profile_picture', user.profileImg)
       }
       return new Promise((resolve, reject) => {

@@ -49,7 +49,7 @@
           </v-text-field>
         </v-col>
       </v-row>
-      <v-card-actions>
+      <v-card-actions v-if="canEdit">
         <v-spacer>
         </v-spacer>
         <v-btn v-show="!editMode" @click="editMode = true" depressed color="primary">Edit</v-btn>
@@ -69,7 +69,8 @@ export default {
       info: {},
       editMode: false,
       imageMenu: false,
-      loading: false
+      loading: false,
+      canEdit: false
     }
   },
   computed: {
@@ -92,6 +93,7 @@ export default {
     getInfo: function () {
       this.$store.dispatch('getWorkspaceInfo', this.getWorkspaceId).then(resp => {
         this.info = resp.data.team;
+        this.canEdit = resp.data.can_edit
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message , color: 'error'});

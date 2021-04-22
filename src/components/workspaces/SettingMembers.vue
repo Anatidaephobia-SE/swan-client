@@ -23,7 +23,7 @@
         </v-list-item-content>
         <v-list-item-action>
 
-          <v-btn icon @click="showRemoveDialog = true" v-if="!m.is_head">
+          <v-btn icon @click="showRemoveDialog = true" v-if="!m.is_head && canEdit">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-list-item-action>
@@ -34,7 +34,7 @@
     </v-list>
 
 
-    <v-form @submit.prevent="addMember" class="add-form mt-4" ref="addForm">
+    <v-form @submit.prevent="addMember" class="add-form mt-4" ref="addForm" v-if="canEdit">
       <p>You can add new people to your team. Enter their email and click on ADD button.</p>
       <v-text-field filled
                     v-model="newEmail"
@@ -68,7 +68,8 @@ export default {
           }
       ],
       newEmail: '',
-      showRemoveDialog: false
+      showRemoveDialog: false,
+      canEdit: false
     }
   },
   mounted() {
@@ -116,6 +117,7 @@ export default {
     getWorkspaceMembers: function () {
       this.$store.dispatch('getWorkspaceMembers', this.getWorkspaceId).then(resp => {
         this.people = resp.data.members
+        this.canEdit = resp.data.can_edit
       }).catch();
     },
     getImageUrl: function (img) {

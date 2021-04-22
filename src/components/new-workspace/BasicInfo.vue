@@ -69,10 +69,11 @@ export default {
       body.append('name', this.name);
       body.append('logo', this.logo);
       body.append('url', this.url);
-      this.$store.dispatch('createWorkspace', body).then(() => {
+      this.$store.dispatch('createWorkspace', body).then((res) => {
         const message = `${this.name} created. Add your teammates now!`
         this.$store.dispatch('showMessage', {message, color: 'success'})
-        this.$emit('next', this.url);
+        const id = res.data.team.id
+        this.$emit('next', id);
       }).catch(err => {
         const message = err.response.data.error
         this.$store.dispatch('showMessage', {message, color: 'error'})

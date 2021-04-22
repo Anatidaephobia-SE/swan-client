@@ -79,7 +79,7 @@ export default {
   created() {
     this.getWorkspaces()
     window.addEventListener('scroll', this.hideAdd)
-    if (this.$route.query.team_url) {
+    if (this.$route.query.team_id) {
       this.newWorkspace = true
     }
   },

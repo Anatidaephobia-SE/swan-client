@@ -43,7 +43,7 @@ export default {
   name: "AddMember",
   components: {UserAvatar},
   props: {
-    url: String
+    id: String
   },
   data() {
     return {
@@ -62,7 +62,7 @@ export default {
     addUser: function () {
       const body = {
         username: this.newUser,
-        team_url: this.url || 'my_workspace'
+        team_id: this.id
       }
       this.$store.dispatch('addUserToWorkspace', body).then((res) => {
         console.log(res.data)

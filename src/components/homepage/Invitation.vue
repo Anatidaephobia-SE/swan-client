@@ -34,7 +34,7 @@ export default {
   methods: {
     accept: function () {
       this.$store
-          .dispatch("acceptInvite", this.workspace.url)
+          .dispatch("acceptInvite", this.workspace.id)
           .then(() => {
             const message = `You joined ${this.workspace.name}, Hurray!`;
             this.$store.dispatch("showMessage", { message, color: "success" });
@@ -47,7 +47,7 @@ export default {
     },
     reject: function () {
       this.$store
-          .dispatch("rejectInvite", this.workspace.url)
+          .dispatch("rejectInvite", this.workspace.id)
           .then(() => {
             const message = `Rejected ${this.workspace.name} invitation!`;
             this.$store.dispatch("showMessage", { message, color: "info" });

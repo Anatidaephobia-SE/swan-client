@@ -74,7 +74,7 @@ export default {
   methods: {
     leave: function () {
       this.$store
-          .dispatch("leaveWorkspace", this.workspace.url)
+          .dispatch("leaveWorkspace", this.workspace.id)
           .then(() => {
             const message = "You left the workspace";
             this.$store.dispatch("showMessage", {message, color: "info"});

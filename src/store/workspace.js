@@ -37,9 +37,9 @@ const workspaceModule = {
           .catch(err => reject(err));
       });
     },
-    acceptInvite: function ({commit}, url) {
+    acceptInvite: function ({commit}, id) {
       const body = {
-        team_url: url
+        team_id: id
       }
       return new Promise((resolve, reject) => {
         axios.post('/api/v1.0.0/team/accept_invite', body)
@@ -51,9 +51,9 @@ const workspaceModule = {
       .catch(err => reject(err));
       });
     },
-    rejectInvite: function ({commit}, url) {
+    rejectInvite: function ({commit}, id) {
       return new Promise((resolve, reject) => {
-        axios.delete(`/api/v1.0.0/team/reject_invite/${url}`)
+        axios.delete(`/api/v1.0.0/team/reject_invite/${id}`)
           .then(res => {
             commit('updateInvites', false);
             commit('updateTeams', false);

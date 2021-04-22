@@ -88,12 +88,12 @@ export default {
       }
     },
     goToWorkspace: function () {
-      this.$router.push(`/workspace/${this.workspace.url}/`)
+      this.$router.push(`/workspace/${this.workspace.id}/`)
     }
   },
   computed: {
     workspaceUrl: function () {
-      return '/workspace/' + this.workspace.url + '/';
+      return '/workspace/' + this.workspace.id + '/';
     },
   }
 }

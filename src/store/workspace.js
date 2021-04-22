@@ -17,9 +17,9 @@ const workspaceModule = {
           .catch(err => reject(err));
       });
     },
-    leaveWorkspace: function ({commit}, team) {
+    leaveWorkspace: function ({commit}, team_id) {
       return new Promise((resolve, reject) => {
-        axios.delete(`/api/v1.0.0/team/leave_team/${team}`)
+        axios.delete(`/api/v1.0.0/team/leave_team/${team_id}`)
           .then(res => {
             commit('updateTeams', false);
             resolve(res)

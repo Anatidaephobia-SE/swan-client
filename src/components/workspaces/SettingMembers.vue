@@ -7,11 +7,11 @@
 
     <v-list rounded>
       <v-list-item two-line v-for="(m, i) in people" :key="i">
-        <v-list-item-avatar v-if="m.profile_picture">
-          <v-img :src="getImageUrl(m.profile_picture)"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-avatar v-else>
-          <v-icon>mdi-account</v-icon>
+        <v-list-item-avatar>
+          <UserAvatar :image="m.profile_picture"
+                      :alt="m.first_name"
+                      :size="30"
+                      />
         </v-list-item-avatar>
         <v-list-item-content>
         <v-list-item-title>{{m.first_name}} {{m.last_name}}
@@ -23,7 +23,7 @@
         </v-list-item-content>
         <v-list-item-action>
 
-          <v-btn icon @click="showRemoveDialog = true">
+          <v-btn icon @click="showRemoveDialog = true" v-if="!m.is_head">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-list-item-action>
@@ -40,7 +40,6 @@
                     v-model="newEmail"
                     label="Email"
                     :rules="emailRule"
-                    @keyup.enter="addMember"
                     placeholder="john-doe@example.com"
                     append-icon="mdi-account-plus">
 
@@ -53,10 +52,11 @@
 <script>
 import axios from "axios";
 import Dialog from "@/components/shared/Dialog";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "SettingsMember",
-  components: {Dialog},
+  components: {UserAvatar, Dialog},
   data() {
     return {
       people: [],
@@ -75,7 +75,7 @@ export default {
     this.getWorkspaceMembers();
   },
   computed: {
-    getWorkspaceUrl: function (){
+    getWorkspaceId: function (){
       return this.$route.params.workspace
     }
   },
@@ -87,7 +87,7 @@ export default {
         return;
       }
       const data = {
-        team_url: this.getWorkspaceUrl,
+        team_id: this.getWorkspaceId,
         email
       }
       this.$store.dispatch('removeUser', data).then(() => {
@@ -102,7 +102,7 @@ export default {
     addMember: function () {
       const body = {
         username: this.newEmail,
-        team_url: this.getWorkspaceUrl
+        team_id: this.getWorkspaceId
       }
       this.$store.dispatch('addUserToWorkspace', body).then(() => {
         const message = "User invited";
@@ -114,7 +114,7 @@ export default {
       }).finally(() => this.$refs.addForm.reset());
     },
     getWorkspaceMembers: function () {
-      this.$store.dispatch('getWorkspaceMembers', this.getWorkspaceUrl).then(resp => {
+      this.$store.dispatch('getWorkspaceMembers', this.getWorkspaceId).then(resp => {
         this.people = resp.data.members
       }).catch();
     },

@@ -99,9 +99,9 @@ const workspaceModule = {
         });
       });
     },
-    getWorkspaceMembers(payload, teamUrl) {
+    getWorkspaceMembers(payload, team_id) {
       return new Promise((resolve, reject) => {
-        axios.get('api/v1.0.0/team/get_members?team_url='+teamUrl).then(resp => {
+        axios.get('api/v1.0.0/team/get_members?team_id='+team_id).then(resp => {
           resolve(resp);
         }).catch(err => {
           reject(err);
@@ -110,7 +110,7 @@ const workspaceModule = {
     },
     getWorkspaceInfo({commit}, teamUrl) {
       return new Promise((resolve, reject) => {
-        axios.get('api/v1.0.0/team/get_team_info?team_url='+teamUrl).then(resp => {
+        axios.get('api/v1.0.0/team/get_team_info?team_id='+teamUrl).then(resp => {
           resolve(resp);
           commit('set_workspace_id', resp.data.team.id)
         }).catch(err => {
@@ -130,7 +130,7 @@ const workspaceModule = {
     removeUser: function (payload, body) {
       console.log(body)
       return new Promise((resolve, reject) => {
-        axios.delete(`api/v1.0.0/team/remove_user/${body.team_url}?username=${body.email}`).then(resp => {
+        axios.delete(`api/v1.0.0/team/remove_user/${body.team_id}?username=${body.email}`).then(resp => {
           resolve(resp);
         }).catch(error => {
           reject(error);

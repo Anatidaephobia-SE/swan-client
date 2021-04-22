@@ -73,7 +73,7 @@ export default {
     }
   },
   computed: {
-    getWorkspaceName: function () {
+    getWorkspaceId: function () {
       return this.$route.params.workspace
     },
     getImgUrl: function () {
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     getInfo: function () {
-      this.$store.dispatch('getWorkspaceInfo', this.getWorkspaceName).then(resp => {
+      this.$store.dispatch('getWorkspaceInfo', this.getWorkspaceId).then(resp => {
         this.info = resp.data.team;
       }).catch(err => {
         const message = err.response.data.error;
@@ -105,7 +105,7 @@ export default {
       this.loading = true;
       const body = new FormData()
       body.append('name', this.info.name)
-      body.append('team_url', this.getWorkspaceName)
+      body.append('team_id', this.getWorkspaceId)
       body.append('url', this.info.url)
       if (typeof this.info.logo === 'object' || this.info.logo === '') {
         body.append('logo', this.info.logo)

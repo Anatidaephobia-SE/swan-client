@@ -4,7 +4,7 @@
       <v-icon class="mr-2">mdi-checkbox-marked-outline</v-icon>
       Actions
     </v-card-title>
-    <v-card-subtitle v-if="status">
+    <v-card-subtitle v-if="post.status">
       Current State: <v-chip x-small :color="statusType.color">{{statusType.label.toUpperCase()}}</v-chip>
     </v-card-subtitle>
     <v-card-text>
@@ -24,14 +24,12 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: "PostActions",
-  props: {
-    editMode: Boolean
-  },
   data() {
     return {
-      status: '',
       buttons: [
         {label: 'publish', color: 'primary', type: 'Published'},
         {label: 'schedule', color: 'accent'},
@@ -41,21 +39,18 @@ export default {
     }
   },
   mounted() {
-    this.status = this.$store.getters.getNewPost.status
-    this.getPostData()
   },
   methods: {
     action: function (status) {
-      this.status = status
-      this.$store.dispatch('setStatus', status)
-      if (this.editMode) {
+      this.$store.commit('post/SET_STATUS', status)
+      if (this.update) {
         this.updatePost()
       } else {
         this.createPost()
       }
     },
     createPost: function () {
-      this.$store.dispatch('createNewPost').then(() => {
+      this.$store.dispatch('post/createNewPost').then(() => {
         const message = "new post created successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
@@ -64,7 +59,7 @@ export default {
       })
     },
     updatePost: function () {
-      this.$store.dispatch('updatePost').then(() => {
+      this.$store.dispatch('post/updatePost').then(() => {
         const message = "Post updated successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
@@ -72,21 +67,12 @@ export default {
         this.$store.dispatch('showMessage', {message, color: 'error'});
       })
     },
-    getPostData: function () {
-      const data = this.$store.getters.getNewPost;
-      this.status = data.status
-
-      this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'SET_POST') {
-          this.status = state.post.newPost.status
-        }
-      })
-    }
   },
   computed: {
     statusType: function () {
-      return this.buttons.filter(b => b.type === this.status)[0]
-    }
+      return this.buttons.filter(b => b.type === this.post.status)[0]
+    },
+    ...mapState('post', ['post', 'update'])
   }
 }
 </script>

@@ -7,19 +7,28 @@
     <v-card-text style="max-width: 720px; margin: auto">
       <p>This field is only for you, to find your posts quickly.</p>
       <v-text-field filled
-                    v-model="name"
+                    v-model="post.name"
                     :rules="nameRule"
                     label="Name"
                     @input="setPostData"
                     placeholder="My First Post">
       </v-text-field>
 
+      <p>Set a tag for your post, it makes them organized and easy to find.</p>
+      <v-select
+        :items="tags"
+        filled
+        label="Tag"
+        v-model="post.tag"
+        @input="setPostData"
+        ></v-select>
+
       <p>Please enter the caption you want to post, then click on the "next" button.</p>
       <v-textarea
           :rules="rule"
           label="Your tweet"
           auto-grow filled
-          v-model="caption"
+          v-model="post.caption"
           @input="setPostData"
           counter >
       </v-textarea>
@@ -28,11 +37,11 @@
         <span>Created By:</span>
         <div class="ma-4 d-flex align-center">
           <v-avatar class="ma-2" size="40px">
-            <v-img v-if="author.profile_picture" :src="imageUrl"></v-img>
+            <v-img v-if="author.profile" :src="imageUrl"></v-img>
             <v-icon v-else>mdi-account</v-icon>
           </v-avatar>
           <div>
-            <span>{{author.first_name}} {{author.last_name}}</span>
+            <span>{{author.firstName}} {{author.lastName}}</span>
             <br>
             <span style="font-size: x-small">{{date}}</span>
           </div>
@@ -44,6 +53,7 @@
 
 <script>
 import axios from "axios";
+import {mapState} from "vuex";
 
 export default {
   name: "PostData",
@@ -51,10 +61,12 @@ export default {
     return {
       loading: false,
       valid: false,
-      name: '',
-      caption: '',
-      created_at: '',
-      author: {},
+      // post: {
+      //   name: '',
+      //   caption: '',
+      //   tag: '',
+      //   createdAt: ''
+      // },
       rule: [
           v => !!v || 'This field is required',
           v => (v || '').length <= 250 || 'Maximum length is over !'
@@ -66,48 +78,17 @@ export default {
     }
   },
   created() {
-    this.getPostAuthor();
-    this.getPostData()
   },
   methods: {
     setPostData: function () {
-      const newPost = {
-        name: this.name,
-        caption: this.caption,
-        team: this.teamId
+      const post = {
+        name: this.post.name,
+        caption: this.post.caption,
+        tag: this.post.tag,
+        team: this.$route.params.workspace
       }
-      this.$store.dispatch('setPost', newPost);
+      this.$store.commit('post/SET_POST_DATA', post);
     },
-    getPostAuthor: function () {
-      const author = this.$store.getters.getPostAuthor;
-      if (author) {
-        this.author = author
-      }
-      this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'SET_AUTHOR') {
-          const author = state.post.author;
-          if (author) {
-            this.author = author
-            this.created_at = state.post.newPost.created_at
-          }
-        }
-      })
-    },
-    getPostData: function () {
-      const data = this.$store.getters.getNewPost;
-      this.name = data.name;
-      this.caption = data.caption;
-      this.created_at = data.created_at
-
-      this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'SET_POST') {
-          const post = state.post.newPost;
-          this.name = post.name;
-          this.caption = post.caption;
-          this.created_at = post.created_at
-        }
-      })
-    }
   },
   computed: {
     teamId: function () {
@@ -118,7 +99,11 @@ export default {
     },
     date: function () {
       return new Date(this.created_at).toLocaleString('en-En')
-    }
+    },
+    tags: function () {
+      return ['-', 'Holiday', 'Sales', 'Ad']
+    },
+    ...mapState('post', ['author', 'post'])
   }
 }
 </script>

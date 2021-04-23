@@ -36,14 +36,16 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: "PostVisualizer",
   data() {
     return {
-      post: {
-        caption: '',
-        media: '',
-      },
+      postSub: '',
+      // post: {
+      //   caption: '',
+      //   media: '',
+      // },
       twitter: {
         name: '',
         profile_image: '',
@@ -52,18 +54,19 @@ export default {
     }
   },
   mounted() {
-    this.post.caption = this.$store.getters.getNewPost.caption
-    this.getPostCaption()
-    this.getTwitter()
+    // this.post.caption = this.$store.getters.getNewPost.caption
+    // this.getPostCaption()
+    // this.getTwitter()
+    console.log(this.post)
   },
   methods: {
-    getPostCaption: function () {
-      this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'SET_POST') {
-          this.post.caption = state.post.newPost.caption
-        }
-      })
-    },
+    // getPostCaption: function () {
+    //   this.postSub = this.$store.subscribe((mutation, state) => {
+    //     if (mutation.type === 'setPostData') {
+    //       this.post.caption = state.post.post.caption
+    //     }
+    //   })
+    // },
     getTwitter: function () {
       this.$store.dispatch('getTwitterAccount', this.teamUrl).then(resp => {
         const data = resp.data
@@ -78,6 +81,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('post',['post']),
     teamUrl: function () {
       return this.$route.params.workspace
     }

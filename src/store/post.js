@@ -1,34 +1,24 @@
 import axios from "axios";
 
 const postModule = {
+  namespaced: true,
   state: {
-    id: '',
     author: {},
-    newPost: {
+    post: {
       name: '',
       caption: '',
-      team: '',
+      tag: '',
+      team: 1,
       multimedia: '',
       status: '',
       created_at: ''
-    }
+    },
+    update: false,
   },
   actions: {
-    reset: function ({commit}) {
-      commit('RESET')
-    },
-    setPost: function ({commit}, payload) {
-      commit('SET_POST', payload)
-    },
-    setStatus: function ({commit}, status) {
-      commit('SET_STATUS', status);
-    },
-    setPrimaryKey: function ({commit}, id) {
-      commit('SET_ID', id);
-    },
     createNewPost: function ({commit, state}) {
       return new Promise((resolve, reject) => {
-        axios.post('api/v1.0.0/post/create_post/', state.newPost).then(resp => {
+        axios.post('api/v1.0.0/post/create_post/', state.post).then(resp => {
           commit('SET_POST', resp.data)
           commit('SET_ID', resp.data.id)
           commit('SET_AUTHOR', resp.data.owner)
@@ -82,30 +72,20 @@ const postModule = {
     }
   },
   mutations: {
-    SET_POST: function (state, payload) {
-      state.newPost = {
-        name: payload.name,
-        caption: payload.caption,
-        team: payload.team,
-        multimedia: payload.multimedia || '',
-        status: payload.status || '',
-        created_at: payload.created_at
-      }
+    SET_POST_DATA: function (state, payload) {
+      state.post.name = payload.name
+      state.post.caption = payload.caption
+      state.post.tag = payload.tag
     },
     SET_STATUS: function (state, status) {
-      state.newPost.status = status
-    },
-    SET_ID: function (state, id) {
-      state.id = id
-      state.editMode = true
+      state.post.status = status
     },
     SET_AUTHOR: function (state, author) {
       state.author = author
     },
     RESET: function (state) {
-      state.id = ''
       state.author = {}
-      state.newPost = {
+      state.post = {
         name: '',
         caption: '',
         team: '',
@@ -116,7 +96,7 @@ const postModule = {
     }
   },
   getters: {
-    getNewPost: state => state.newPost,
+    getNewPost: state => state.post,
     getPostAuthor: state => state.author
   }
 }

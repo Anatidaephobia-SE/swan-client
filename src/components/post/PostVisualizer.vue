@@ -57,7 +57,6 @@ export default {
     // this.post.caption = this.$store.getters.getNewPost.caption
     // this.getPostCaption()
     // this.getTwitter()
-    console.log(this.post)
   },
   methods: {
     // getPostCaption: function () {

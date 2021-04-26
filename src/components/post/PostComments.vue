@@ -6,7 +6,8 @@
     </v-card-title>
     <v-card-text>
       <p>You can share your ideas around this post with your teammates.</p>
-      <v-form v-model="valid"
+      <v-form
+              v-model="valid"
               ref="commentForm"
               @submit.prevent="addComment"
               style="max-width: 750px; margin: auto"
@@ -41,6 +42,7 @@
 <script>
 import PostComment from "@/components/post/PostComment";
 import axios from "axios";
+import {mapState} from "vuex";
 export default {
   name: "PostComments",
   components: {PostComment},
@@ -52,18 +54,15 @@ export default {
           v => !!v || 'This field is required',
           v => (v || '').length <= 250 || 'You passed the maximum characters'
       ],
-      user: {},
       comments: []
     }
   },
   created() {
-    this.getUserInfo()
-    this.getAllComments()
+    // this.getUserInfo()
+    // this.getAllComments()
+    console.log(this.user)
   },
   methods: {
-    getUserInfo: function () {
-      this.user = this.$store.getters.userInfo
-    },
     addComment: function () {
       this.$store.dispatch('addComment', {context: this.context})
       .then(() => {
@@ -87,7 +86,8 @@ export default {
   computed: {
     imageUrl: function () {
       return axios.defaults.baseURL + this.user.profile_picture
-    }
+    },
+    ...mapState({user: state => state.auth.user})
   }
 }
 </script>

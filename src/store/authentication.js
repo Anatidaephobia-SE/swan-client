@@ -4,7 +4,12 @@ import router from "@/router";
 const authModule = {
   state: {
     token: localStorage.getItem('token') || '',
-    user: {}
+    user: {
+      first_name: '',
+      last_name: '',
+      email: '',
+      profile_picture: ''
+    }
   },
   mutations: {
     authenticated(state, payload) {

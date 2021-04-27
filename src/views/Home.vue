@@ -8,7 +8,7 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
-import NewWorkspace from "@/components/homepage/NewWorkspace";
+import NewWorkspace from "@/components/new-workspace/NewWorkspace";
 import UserAvatar from "@/components/shared/UserAvatar";
 import NavBar from "@/components/homepage/NavBar";
 import Workspaces from "@/views/Workspaces";

@@ -49,7 +49,7 @@
           </v-text-field>
         </v-col>
       </v-row>
-      <v-card-actions>
+      <v-card-actions v-if="canEdit">
         <v-spacer>
         </v-spacer>
         <v-btn v-show="!editMode" @click="editMode = true" depressed color="primary">Edit</v-btn>
@@ -69,11 +69,12 @@ export default {
       info: {},
       editMode: false,
       imageMenu: false,
-      loading: false
+      loading: false,
+      canEdit: false
     }
   },
   computed: {
-    getWorkspaceName: function () {
+    getWorkspaceId: function () {
       return this.$route.params.workspace
     },
     getImgUrl: function () {
@@ -90,8 +91,9 @@ export default {
   },
   methods: {
     getInfo: function () {
-      this.$store.dispatch('getWorkspaceInfo', this.getWorkspaceName).then(resp => {
+      this.$store.dispatch('getWorkspaceInfo', this.getWorkspaceId).then(resp => {
         this.info = resp.data.team;
+        this.canEdit = resp.data.can_edit
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message , color: 'error'});
@@ -105,7 +107,7 @@ export default {
       this.loading = true;
       const body = new FormData()
       body.append('name', this.info.name)
-      body.append('team_url', this.getWorkspaceName)
+      body.append('team_id', this.getWorkspaceId)
       body.append('url', this.info.url)
       if (typeof this.info.logo === 'object' || this.info.logo === '') {
         body.append('logo', this.info.logo)

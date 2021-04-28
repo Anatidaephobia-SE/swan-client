@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     deleteComment: function () {
-      this.$store.dispatch('deleteComment', this.comment.id).then(() => {
+      this.$store.dispatch('post/deleteComment', this.comment.id).then(() => {
         const message = "Comment deleted!"
         this.$store.dispatch('showMessage', {message, color: 'success'})
         this.$emit('changed')

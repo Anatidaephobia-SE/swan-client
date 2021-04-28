@@ -37,45 +37,58 @@
       </v-textarea>
 
       <p>You can add multimedia to your post.</p>
-      <v-container v-if="post.multimedia.length > 0" class="d-flex flex-wrap">
-        <v-card
-            v-for="(img, i) in multimedia"
-            :key="i"
-            class="ma-1 img-card"
-            elevation="0"
-            outlined>
-          <v-img :src="img" max-height="100px" width="200px"></v-img>
-          <v-btn class="remove-btn"
-                 elevation="0"
-                 icon
-                 small
-                 @click="removeImage(i)">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card>
-      </v-container>
-
-      <v-menu bottom offset-y>
-        <template v-slot:activator="{on, attrs}">
-          <v-btn
-              v-bind="attrs"
-              v-on="on"
-              :disabled="!addImage && !canEdit"
-              color="primary"
-              depressed>
-            Add image
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-              v-for="(item, i) in addImageMenu"
+      <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap" v-if="post.multimedia.length > 0">
+          <v-card
+              v-for="(img, i) in multimedia"
               :key="i"
-              @click="item.func">
-            <v-list-item-title>{{ item.label }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+              class="ma-1 img-card"
+              elevation="0"
+              outlined>
+            <v-img :src="img" height="100px" width="200px"></v-img>
+            <v-btn
+                v-if="canEdit"
+                class="remove-btn"
+                elevation="0"
+                icon
+                small
+                @click="removeImage(i)">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card>
+        </div>
+
+
+        <v-menu bottom offset-y>
+          <template v-slot:activator="{on, attrs}">
+            <v-card
+                v-if="addImage && canEdit"
+                v-bind="attrs"
+                v-on="on"
+                class="ma-1 add-img"
+                height="100px"
+                hover
+                outlined
+                width="200px">
+              <v-container
+                  class="d-flex justify-center align-center flex-column add-container"
+                  fluid>
+                <v-icon>mdi-camera-plus</v-icon>
+                <span>Add Image</span>
+              </v-container>
+            </v-card>
+          </template>
+
+          <v-list>
+            <v-list-item
+                v-for="(item, i) in addImageMenu"
+                :key="i"
+                @click="item.func">
+              <v-list-item-title>{{ item.label }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
 
       <v-file-input
           v-show="false"
@@ -84,22 +97,22 @@
           accept="image/*"
           @change="multimediaAdded">
       </v-file-input>
-
-      <v-container v-if="author.email">
-        <span>Created By:</span>
-        <div class="ma-4 d-flex align-center">
-          <v-avatar class="ma-2" size="40px">
-            <v-img v-if="author.profile_picture" :src="imageUrl"></v-img>
-            <v-icon v-else>mdi-account</v-icon>
-          </v-avatar>
-          <div>
-            <span>{{ author.first_name }} {{ author.last_name }}</span>
-            <br>
-            <span style="font-size: x-small">{{ date }}</span>
-          </div>
-        </div>
-      </v-container>
     </v-card-text>
+
+    <v-container v-if="author.email">
+      <span>Created By:</span>
+      <div class="ma-4 d-flex align-center">
+        <v-avatar class="ma-2" size="40px">
+          <v-img v-if="author.profile_picture" :src="imageUrl"></v-img>
+          <v-icon v-else>mdi-account</v-icon>
+        </v-avatar>
+        <div>
+          <span>{{ author.first_name }} {{ author.last_name }}</span>
+          <br>
+          <span style="font-size: x-small">{{ date }}</span>
+        </div>
+      </div>
+    </v-container>
   </v-container>
 </template>
 
@@ -153,10 +166,15 @@ export default {
       return axios.defaults.baseURL + this.author.profile_picture;
     },
     multimedia: function () {
-      if (this.post.multimedia[0].hasOwnProperty('media')) {
-        return this.post.multimedia.map((img) => axios.defaults.baseURL + img.media)
+      const media = []
+      for (const img of this.post.multimedia) {
+        if (img.hasOwnProperty('media')) {
+          media.push(axios.defaults.baseURL + img.media)
+        } else {
+          media.push(URL.createObjectURL(img))
+        }
       }
-      return this.post.multimedia.map((img) => URL.createObjectURL(img))
+      return media
     },
     date: function () {
       return new Date(this.post.created_at).toLocaleString('en-En')
@@ -191,6 +209,15 @@ export default {
     position: absolute;
     top: 5px;
     right: 5px;
+  }
+}
+
+.add-img {
+  border: dashed 1px #424242;
+  border-radius: 5px;
+
+  .add-container {
+    height: 100%;
   }
 }
 </style>

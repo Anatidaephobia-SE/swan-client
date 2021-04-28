@@ -59,13 +59,12 @@ export default {
     }
   },
   created() {
-    // this.getUserInfo()
-    // this.getAllComments()
+    this.getAllComments()
     console.log(this.user)
   },
   methods: {
     addComment: function () {
-      this.$store.dispatch('addComment', {context: this.context})
+      this.$store.dispatch('post/addComment', {context: this.context})
           .then(() => {
             const message = "New comment is added!"
             this.$store.dispatch('showMessage', {message, color: 'success'})
@@ -77,7 +76,8 @@ export default {
       });
     },
     getAllComments: function () {
-      this.$store.dispatch('getComments').then(resp => {
+      const id = this.$route.params.postId
+      this.$store.dispatch('post/getComments', id).then(resp => {
         this.comments = resp.data.reverse()
       }).catch(err => {
         console.log(err)

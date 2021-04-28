@@ -53,28 +53,31 @@ export default {
     },
     connectToTwitter: function () {
       const body = {
-        team_url: this.getWorkspaceUrl
+        team_id: this.getWorkspaceId,
+        modify: 1
       };
       this.$store.dispatch('requestConnectionTwitter', body).then(resp => {
         const message = "Redirecting to twitter.com. Authorize this app";
         this.$store.dispatch('showMessage', {message , color: 'info'});
         setTimeout(() => window.location = resp.data.address, 1000);
       }).catch(err => {
-        const message = err.response.data.error;
+        const message = err.response.data.error | 'Something\'s wrong, try again please';
         this.$store.dispatch('showMessage', {message , color: 'error'});
       });
-    }
-  },
-  computed: {
-    getWorkspaceUrl: function () {
-      return this.$route.params.workspace
-    }
-  },
-  mounted() {
-    if (this.$route.query.oauth_token) {
+    },
+    getTwitter: function () {
+      this.$store.dispatch('getTwitterAccount', this.getWorkspaceId)
+          .then(resp => {
+            this.twitterInfo = resp.data
+            console.log(this.twitterInfo)
+          }).catch(() => {
+        console.log()
+      })
+    },
+    getAccessTwitter: function () {
       this.team_url = this.$route.query.team_url
       const body = {
-        team_url: this.getWorkspaceUrl,
+        team_id: this.getWorkspaceId,
         oauth_token: this.$route.query.oauth_token,
         oauth_verifier: this.$route.query.oauth_verifier
       }
@@ -86,17 +89,19 @@ export default {
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message , color: 'error'});
-      });
+      }).finally(() => this.getTwitter());
     }
-    // else {
-    this.$store.dispatch('getTwitterAccount', this.getWorkspaceUrl)
-        .then(resp => {
-          this.twitterInfo = resp.data
-          console.log(this.twitterInfo)
-        }).catch(() => {
-      console.log()
-    })
-    // }
+  },
+  computed: {
+    getWorkspaceId: function () {
+      return this.$route.params.workspace
+    }
+  },
+  mounted() {
+    if (this.$route.query.oauth_token) {
+      this.getAccessTwitter()
+    }
+    this.getTwitter()
   }
 }
 </script>

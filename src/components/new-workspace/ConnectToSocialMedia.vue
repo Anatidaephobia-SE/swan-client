@@ -18,7 +18,7 @@
 export default {
   name: "ConnectToSocialMedia",
   props: {
-    id: String
+    id: Number
   },
   data() {
     return {
@@ -44,7 +44,8 @@ export default {
         this.$store.dispatch('showMessage', {message , color: 'info'});
         setTimeout(() => window.location = resp.data.address, 1000);
       }).catch(err => {
-        const message = err.response.data.error;
+        this.loading = false
+        const message = err.response.data.error | 'Something\'s wrong, try again please';
         this.$store.dispatch('showMessage', {message , color: 'error'});
       });
     }

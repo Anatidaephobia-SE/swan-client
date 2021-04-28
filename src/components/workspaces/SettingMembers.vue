@@ -23,16 +23,15 @@
         </v-list-item-content>
         <v-list-item-action>
 
-          <v-btn icon @click="showRemoveDialog = true" v-if="!m.is_head && canEdit">
+          <v-btn icon @click="askRemoval(m.email)" v-if="!m.is_head && canEdit">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-list-item-action>
-
-        <Dialog text="Are you sure you want to remove this user?"
-                header="Remove a user" :show="showRemoveDialog" @close-dialog="removeUser(m.email, $event)"/>
       </v-list-item>
     </v-list>
 
+    <Dialog text="Are you sure you want to remove this user?"
+            header="Remove a user" :show="showRemoveDialog" @close-dialog="removeUser($event)"/>
 
     <v-form @submit.prevent="addMember" class="add-form mt-4" ref="addForm" v-if="canEdit">
       <p>You can add new people to your team. Enter their email and click on ADD button.</p>
@@ -69,7 +68,8 @@ export default {
       ],
       newEmail: '',
       showRemoveDialog: false,
-      canEdit: false
+      canEdit: false,
+      selectedUser: ''
     }
   },
   mounted() {
@@ -81,15 +81,18 @@ export default {
     }
   },
   methods: {
-    removeUser: function (email, resp) {
+    askRemoval: function (email) {
+      this.selectedUser = email
+      this.showRemoveDialog = true
+    },
+    removeUser: function (resp) {
       this.showRemoveDialog = false
-      console.log(resp)
       if (!resp) {
         return;
       }
       const data = {
         team_id: this.getWorkspaceId,
-        email
+        email: this.selectedUser
       }
       this.$store.dispatch('removeUser', data).then(() => {
         const message = "User removed";

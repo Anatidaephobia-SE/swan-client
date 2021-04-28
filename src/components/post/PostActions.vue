@@ -57,7 +57,7 @@ export default {
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
-      })
+      }).finally(() => {})
     },
     updatePost: function () {
       this.$store.dispatch('post/updatePost').then(() => {

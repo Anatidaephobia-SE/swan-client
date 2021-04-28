@@ -13,8 +13,8 @@ const postModule = {
       name: '',
       caption: '',
       tag: '',
-      team: 1,
-      multimedia: '',
+      team: 15,
+      multimedia: [],
       status: '',
       created_at: ''
     },
@@ -24,8 +24,19 @@ const postModule = {
   actions: {
     createNewPost: function ({commit, state}) {
       return new Promise((resolve, reject) => {
-        axios.post('api/v1.0.0/post/create_post/', state.post).then(resp => {
-          commit('SET_POST_ALL', resp.data)
+        const post = state.post
+        const body = new FormData()
+        body.append('name', post.name)
+        body.append('caption', post.caption)
+        body.append('tag', post.tag)
+        body.append('team', post.team)
+        for (const img of post.multimedia) {
+          body.append('multimedia[]', img)
+        }
+        // body.append('multimedia[]', post.multimedia)
+        body.append('status', post.status)
+        axios.post('api/v1.0.0/post/create_post/', body).then(resp => {
+          commit('RESET')
           resolve(resp)
         }).catch(err => reject(err))
       });
@@ -80,6 +91,7 @@ const postModule = {
       state.post.name = payload.name
       state.post.caption = payload.caption
       state.post.tag = payload.tag
+      state.post.multimedia = payload.multimedia
     },
     SET_STATUS: function (state, status) {
       state.post.status = status

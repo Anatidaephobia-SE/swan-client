@@ -21,10 +21,11 @@
               <v-card-subtitle>@{{twitter.screen_name}}</v-card-subtitle>
             </v-col>
           </v-row>
-      <div class="pa-2">
-          <p>
-            {{this.post.caption}}
-          </p>
+      <div class="pa-2 ml-16">
+        <p >
+          {{this.post.caption}}
+        </p>
+        <MultiMediaVisualizer/>
       </div>
       <div class="d-flex justify-space-around pa-2">
         <v-icon>mdi-comment-outline</v-icon>
@@ -37,8 +38,10 @@
 
 <script>
 import {mapState} from 'vuex'
+import MultiMediaVisualizer from "@/components/post/MultiMediaVisualizer";
 export default {
   name: "PostVisualizer",
+  components: {MultiMediaVisualizer},
   data() {
     return {
       postSub: '',
@@ -54,20 +57,11 @@ export default {
     }
   },
   mounted() {
-    // this.post.caption = this.$store.getters.getNewPost.caption
-    // this.getPostCaption()
-    // this.getTwitter()
+    this.getTwitter()
   },
   methods: {
-    // getPostCaption: function () {
-    //   this.postSub = this.$store.subscribe((mutation, state) => {
-    //     if (mutation.type === 'setPostData') {
-    //       this.post.caption = state.post.post.caption
-    //     }
-    //   })
-    // },
     getTwitter: function () {
-      this.$store.dispatch('getTwitterAccount', this.teamUrl).then(resp => {
+      this.$store.dispatch('getTwitterAccount', 15).then(resp => {
         const data = resp.data
         this.twitter = {
           name: data.name,
@@ -81,7 +75,7 @@ export default {
   },
   computed: {
     ...mapState('post',['post']),
-    teamUrl: function () {
+    workspaceId: function () {
       return this.$route.params.workspace
     }
   },

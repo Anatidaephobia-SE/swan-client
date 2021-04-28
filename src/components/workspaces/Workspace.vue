@@ -79,7 +79,10 @@ export default {
             const message = "You left the workspace";
             this.$store.dispatch("showMessage", {message, color: "info"});
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            const message = err.response.data.error;
+            this.$store.dispatch("showMessage", {message, color: "error"});
+          });
     },
     closeDialog: function (value) {
       this.dialog = false;

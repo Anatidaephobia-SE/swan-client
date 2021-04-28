@@ -7,23 +7,23 @@
     <v-card
         class="mx-auto ma-4 pa-4"
         max-width="700">
-          <v-row>
-            <v-col cols="2" md="1">
-            <v-avatar
-                class="profile"
-                color="grey"
-                size="50">
-              <v-img :src="twitter.profile_image"></v-img>
-            </v-avatar>
-            </v-col>
-            <v-col cols="10" md="11">
-              <v-card-title class="mt-0 pt-0">{{twitter.name}}</v-card-title>
-              <v-card-subtitle>@{{twitter.screen_name}}</v-card-subtitle>
-            </v-col>
-          </v-row>
+      <v-row>
+        <v-col cols="2" md="1">
+          <v-avatar
+              class="profile"
+              color="grey"
+              size="50">
+            <v-img :src="twitter.profile_image"></v-img>
+          </v-avatar>
+        </v-col>
+        <v-col cols="10" md="11">
+          <v-card-title class="mt-0 pt-0">{{ twitter.name }}</v-card-title>
+          <v-card-subtitle>@{{ twitter.screen_name }}</v-card-subtitle>
+        </v-col>
+      </v-row>
       <div class="pa-2 ml-16">
-        <p >
-          {{this.post.caption}}
+        <p>
+          {{ this.post.caption }}
         </p>
         <MultiMediaVisualizer/>
       </div>
@@ -39,6 +39,7 @@
 <script>
 import {mapState} from 'vuex'
 import MultiMediaVisualizer from "@/components/post/MultiMediaVisualizer";
+
 export default {
   name: "PostVisualizer",
   components: {MultiMediaVisualizer},
@@ -74,13 +75,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('post',['post']),
+    ...mapState('post', ['post']),
     workspaceId: function () {
       return this.$route.params.workspace
     }
   },
-  watch: {
-  }
+  watch: {}
 }
 </script>
 

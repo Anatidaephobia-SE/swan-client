@@ -45,7 +45,7 @@ const routes = [
     component: Teams,
     children: [
       {path: 'posts', name: 'Posts', component: Posts},
-      {path: 'posts/:id', name: 'PostView', component: PostView},
+      {path: 'posts/:postId', name: 'PostView', component: PostView},
       {path: 'settings', name: 'Settings', component: Settings},
       {path: 'compose', name: 'Compose', component: Compose},
     ]

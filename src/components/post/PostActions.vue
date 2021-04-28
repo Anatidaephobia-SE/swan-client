@@ -5,20 +5,22 @@
       Actions
     </v-card-title>
     <v-card-subtitle v-if="post.status">
-      Current State: <v-chip x-small :color="statusType.color">{{statusType.label.toUpperCase()}}</v-chip>
+      Current State:
+      <v-chip :color="statusType.color" x-small>{{ statusType.label.toUpperCase() }}</v-chip>
     </v-card-subtitle>
     <v-card-text>
-    <p>Now you're done with creating your content, select the action you want to do with it.</p>
+      <p>Now you're done with creating your content, select the action you want to do with it.</p>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn depressed
-             v-for="(b, i) in buttons"
+      <v-btn v-for="(b, i) in buttons"
              :key="i"
+             :color="b.color"
              :disabled="!canEdit"
              :small="$vuetify.breakpoint.mobile"
-             @click="action(b.type)"
-             :color="b.color">{{b.label}}</v-btn>
+             depressed
+             @click="action(b.type)">{{ b.label }}
+      </v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
   </v-container>
@@ -57,7 +59,8 @@ export default {
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
-      }).finally(() => {})
+      }).finally(() => {
+      })
     },
     updatePost: function () {
       this.$store.dispatch('post/updatePost').then(() => {

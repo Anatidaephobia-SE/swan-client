@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined class="pa-4 my-2 ma-auto" max-width="750px">
+  <v-card class="pa-4 my-2 ma-auto" max-width="750px" outlined>
     <v-row>
       <v-col cols="2" md="1">
         <v-avatar
@@ -10,13 +10,13 @@
         </v-avatar>
       </v-col>
       <v-col cols="9" md="10">
-        <v-card-title class="mt-0 pt-0">{{comment.author.first_name}} {{comment.author.last_name}}</v-card-title>
-        <v-card-subtitle>{{date}}</v-card-subtitle>
+        <v-card-title class="mt-0 pt-0">{{ comment.author.first_name }} {{ comment.author.last_name }}</v-card-title>
+        <v-card-subtitle>{{ date }}</v-card-subtitle>
       </v-col>
       <v-col cols="1" md="1">
         <v-menu bottom offset-y>
           <template v-slot:activator="{on, attrs}">
-            <v-btn v-on="on" v-bind="attrs" icon depressed>
+            <v-btn v-bind="attrs" v-on="on" depressed icon>
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
           </template>
@@ -35,7 +35,7 @@
     </v-row>
     <div class="pa-2">
       <p>
-        {{comment.context}}
+        {{ comment.context }}
       </p>
     </div>
   </v-card>

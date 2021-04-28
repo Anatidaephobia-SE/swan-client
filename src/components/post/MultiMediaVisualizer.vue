@@ -3,13 +3,13 @@
     <v-col
         v-for="(img, i) in post.multimedia"
         :key="i"
-        class="pa-0 ma-0"
-        :cols="getColumnNumber">
+        :cols="getColumnNumber"
+        class="pa-0 ma-0">
       <v-img
           :height="height"
-          class="float-right"
           :src="getImageUrl(img)"
-          alt="img"></v-img>
+          alt="img"
+          class="float-right"></v-img>
     </v-col>
   </v-row>
 </template>
@@ -17,6 +17,7 @@
 <script>
 import axios from "axios";
 import {mapState} from 'vuex'
+
 export default {
   name: "MultiMediaVisualizer",
   methods: {
@@ -29,7 +30,7 @@ export default {
   },
   computed: {
     getColumnNumber: function () {
-      return this.post.multimedia.length === 1 ? 12: 6
+      return this.post.multimedia.length === 1 ? 12 : 6
     },
     height: function () {
       const sizes = {

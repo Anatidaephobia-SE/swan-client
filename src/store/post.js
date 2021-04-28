@@ -45,9 +45,7 @@ const postModule = {
       return new Promise((resolve, reject) => {
         axios.get(`api/v1.0.0/post/single_post/${id}/`).then(resp => {
           const data = resp.data;
-          commit('SET_ID', data.id)
-          commit('SET_POST', data);
-          commit('SET_AUTHOR', resp.data.owner)
+          commit('SET_POST_ALL', data)
           resolve(resp)
         }).catch(err => reject(err));
       })

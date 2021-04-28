@@ -58,11 +58,11 @@
       <v-menu bottom offset-y>
         <template v-slot:activator="{on, attrs}">
           <v-btn
+              v-bind="attrs"
+              v-on="on"
               :disabled="!addImage && !canEdit"
               color="primary"
-              depressed
-              v-on="on"
-              v-bind="attrs">
+              depressed>
             Add image
           </v-btn>
         </template>
@@ -72,7 +72,7 @@
               v-for="(item, i) in addImageMenu"
               :key="i"
               @click="item.func">
-            <v-list-item-title>{{item.label}}</v-list-item-title>
+            <v-list-item-title>{{ item.label }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -167,7 +167,10 @@ export default {
     addImageMenu: function () {
       return [
         {label: 'Upload an image', func: () => this.$refs.imageInput.$refs.input.click()},
-        {label: 'Use library', func: () => {}}
+        {
+          label: 'Use library', func: () => {
+          }
+        }
       ]
     }
   },

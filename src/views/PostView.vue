@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <PostData />
+    <PostData/>
     <v-divider></v-divider>
-    <PostVisualizer />
+    <PostVisualizer/>
     <v-divider></v-divider>
-    <PostActions />
+    <PostActions/>
     <v-divider></v-divider>
-    <PostComments />
+    <PostComments/>
   </v-container>
 </template>
 
@@ -26,8 +26,8 @@ export default {
     }
   },
   mounted() {
-    const id = this.$route.params.workspace
-    this.$store.commit('post/SET_POST_ALL', this.post)
+    const id = this.$route.params.postId
+    this.getPostData(id)
   },
   computed: {
     post: function () {

@@ -20,7 +20,35 @@ import PostComments from "@/components/post/PostComments";
 export default {
   name: "PostView",
   components: {PostComments, PostActions, PostVisualizer, PostData, Post},
-
+  methods: {
+    getPostData: function (id) {
+      this.$store.dispatch('post/getPostById', id)
+    }
+  },
+  mounted() {
+    const id = this.$route.params.workspace
+    this.$store.commit('post/SET_POST_ALL', this.post)
+  },
+  computed: {
+    post: function () {
+      const post = {
+        name: 'My Post',
+        caption: 'Yooooo, SUP!',
+        tag: 'Sales',
+        team: 1,
+        multimedia: '',
+        status: 'Published',
+        created_at: '2020-04-10 20:31:12',
+        owner: {
+          email: 'amir-esmaeili@outlook.com',
+          first_name: 'Amir',
+          last_name: 'Esmaeili',
+          profile_picture: 'https://i.pravatar.cc/30'
+        },
+      }
+      return post
+    }
+  }
 }
 </script>
 

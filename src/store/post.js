@@ -3,7 +3,12 @@ import axios from "axios";
 const postModule = {
   namespaced: true,
   state: {
-    author: {},
+    author: {
+      email: '',
+      first_name: '',
+      last_name: '',
+      profile_picture: ''
+    },
     post: {
       name: '',
       caption: '',
@@ -14,14 +19,13 @@ const postModule = {
       created_at: ''
     },
     update: false,
+    canEdit: true
   },
   actions: {
     createNewPost: function ({commit, state}) {
       return new Promise((resolve, reject) => {
         axios.post('api/v1.0.0/post/create_post/', state.post).then(resp => {
-          commit('SET_POST', resp.data)
-          commit('SET_ID', resp.data.id)
-          commit('SET_AUTHOR', resp.data.owner)
+          commit('SET_POST_ALL', resp.data)
           resolve(resp)
         }).catch(err => reject(err))
       });
@@ -80,8 +84,28 @@ const postModule = {
     SET_STATUS: function (state, status) {
       state.post.status = status
     },
-    SET_AUTHOR: function (state, author) {
-      state.author = author
+    SET_POST_ALL: function (state, payload) {
+      state.post = {
+        id: payload.id,
+        name: payload.name,
+        caption: payload.caption,
+        tag: payload.tag,
+        team: payload.team,
+        multimedia: payload.multimedia || '',
+        status: payload.status || '',
+        created_at: payload.created_at
+      }
+      const author = payload.owner
+      state.author = {
+        email: author.email,
+        first_name: author.first_name,
+        last_name: author.last_name,
+        profile_picture: author.profile_picture
+      }
+      state.update = true
+      if (state.post.status === 'Published') {
+        state.canEdit = false
+      }
     },
     RESET: function (state) {
       state.author = {}

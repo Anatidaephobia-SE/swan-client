@@ -7,6 +7,7 @@
     <v-card-text style="max-width: 720px; margin: auto">
       <p>This field is only for you, to find your posts quickly.</p>
       <v-text-field filled
+                    :disabled="!canEdit"
                     v-model="post.name"
                     :rules="nameRule"
                     label="Name"
@@ -17,6 +18,7 @@
       <p>Set a tag for your post, it makes them organized and easy to find.</p>
       <v-select
         :items="tags"
+        :disabled="!canEdit"
         filled
         label="Tag"
         v-model="post.tag"
@@ -27,6 +29,7 @@
       <v-textarea
           :rules="rule"
           label="Your tweet"
+          :disabled="!canEdit"
           auto-grow filled
           v-model="post.caption"
           @input="setPostData"
@@ -37,11 +40,11 @@
         <span>Created By:</span>
         <div class="ma-4 d-flex align-center">
           <v-avatar class="ma-2" size="40px">
-            <v-img v-if="author.profile" :src="imageUrl"></v-img>
+            <v-img v-if="author.profile_picture" :src="imageUrl"></v-img>
             <v-icon v-else>mdi-account</v-icon>
           </v-avatar>
           <div>
-            <span>{{author.firstName}} {{author.lastName}}</span>
+            <span>{{author.first_name}} {{author.last_name}}</span>
             <br>
             <span style="font-size: x-small">{{date}}</span>
           </div>
@@ -61,12 +64,6 @@ export default {
     return {
       loading: false,
       valid: false,
-      // post: {
-      //   name: '',
-      //   caption: '',
-      //   tag: '',
-      //   createdAt: ''
-      // },
       rule: [
           v => !!v || 'This field is required',
           v => (v || '').length <= 250 || 'Maximum length is over !'
@@ -98,12 +95,12 @@ export default {
       return axios.defaults.baseURL + this.author.profile_picture;
     },
     date: function () {
-      return new Date(this.created_at).toLocaleString('en-En')
+      return new Date(this.post.created_at).toLocaleString('en-En')
     },
     tags: function () {
       return ['-', 'Holiday', 'Sales', 'Ad']
     },
-    ...mapState('post', ['author', 'post'])
+    ...mapState('post', ['author', 'post', 'canEdit'])
   }
 }
 </script>

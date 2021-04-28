@@ -15,6 +15,7 @@
       <v-btn depressed
              v-for="(b, i) in buttons"
              :key="i"
+             :disabled="!canEdit"
              :small="$vuetify.breakpoint.mobile"
              @click="action(b.type)"
              :color="b.color">{{b.label}}</v-btn>
@@ -72,7 +73,7 @@ export default {
     statusType: function () {
       return this.buttons.filter(b => b.type === this.post.status)[0]
     },
-    ...mapState('post', ['post', 'update'])
+    ...mapState('post', ['post', 'update', 'canEdit'])
   }
 }
 </script>

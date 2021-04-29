@@ -93,8 +93,11 @@ export default {
         firstname: this.user.firstname,
         lastname: this.user.lastname,
       }
-      if (typeof this.user.profileImg === 'object' || this.user.profileImg === '') {
-        body.profileImg = this.user.profileImg
+      if (this.user.profileImg !== null) {
+        let image = this.user.profileImg
+        if (typeof image === 'object' || image === '') {
+          body.profileImg = image
+        }
       }
       this.$store.dispatch('updateUserInfo', body).then(() => {
         const message = `Profile updated!`;

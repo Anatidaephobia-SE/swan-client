@@ -9,7 +9,7 @@
           :height="height"
           :src="getImageUrl(img)"
           alt="img"
-          class="float-right"></v-img>
+          class="float-right rounded"></v-img>
     </v-col>
   </v-row>
 </template>
@@ -35,9 +35,9 @@ export default {
     height: function () {
       const sizes = {
         1: '',
-        2: '300',
-        3: '200',
-        4: '200'
+        2: '200',
+        3: '150',
+        4: '150'
       }
       return sizes[this.post.multimedia.length]
     },

@@ -38,7 +38,7 @@
 
       <p>You can add multimedia to your post.</p>
       <div class="d-flex flex-wrap">
-        <div class="d-flex flex-wrap" v-if="post.multimedia.length > 0">
+        <div v-if="post.multimedia.length > 0" class="d-flex flex-wrap">
           <v-card
               v-for="(img, i) in multimedia"
               :key="i"
@@ -48,10 +48,11 @@
             <v-img :src="img" height="100px" width="200px"></v-img>
             <v-btn
                 v-if="canEdit"
-                class="remove-btn"
+                class="remove-btn rounded"
                 elevation="0"
                 icon
                 small
+                tile
                 @click="removeImage(i)">
               <v-icon>mdi-close</v-icon>
             </v-btn>
@@ -180,7 +181,7 @@ export default {
       return new Date(this.post.created_at).toLocaleString('en-En')
     },
     tags: function () {
-      return ['-', 'Holiday', 'Sales', 'Ad']
+      return ['-', 'Sales', 'Ads', 'Branding', 'News', 'Quote', 'Celebration']
     },
     addImageMenu: function () {
       return [
@@ -205,10 +206,10 @@ export default {
   position: relative;
 
   .remove-btn {
-    background-color: rgba(255, 0, 0, 0.6);
+    background-color: rgba(255, 255, 255, 0.5);
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0;
+    right: 0;
   }
 }
 

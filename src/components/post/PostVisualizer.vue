@@ -5,6 +5,7 @@
       How people will see
     </v-card-title>
     <v-card
+        outlined
         class="mx-auto ma-4 pa-4"
         max-width="700">
       <v-row>
@@ -46,10 +47,6 @@ export default {
   data() {
     return {
       postSub: '',
-      // post: {
-      //   caption: '',
-      //   media: '',
-      // },
       twitter: {
         name: '',
         profile_image: '',

@@ -11,10 +11,8 @@
             <UserAvatar
               :alt="team.name"
               :image="team.logo"
-              :size="250"
-              substitutionCharClasses="mr-auto ml-3"
-              :substitutionCharSize="20"
-              other-cls="rounded"/>
+              other-cls="rounded mr-2"
+              :size="40"/>
           </v-list-item-avatar>
         </v-list-item>
 
@@ -24,7 +22,7 @@
               {{ team.name }}
             </v-list-item-title>
             <v-list-item-subtitle>Admin: {{ team.head_name }}</v-list-item-subtitle>
-            <v-list-item-subtitle>{{ team.members }} <v-icon>mdi-account-multiple</v-icon></v-list-item-subtitle>
+            <v-list-item-subtitle> <v-icon>mdi-account-multiple</v-icon>{{ team.members }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 

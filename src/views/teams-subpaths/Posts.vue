@@ -34,20 +34,26 @@ export default {
   },
   methods: {
     getAllPosts: function () {
-      const teamID = this.$store.getters.getTeamId
-      this.$store.dispatch('getAllPosts',teamID).then(resp => {
-        this.posts = resp.data
-      }).catch()
+      setTimeout(() => {
+        const teamID = this.$store.getters.getTeamId
+        this.$store.dispatch('getAllPosts',teamID).then(resp => {
+          this.posts = resp.data
+        }).catch()
+      }, 1000);
     },
     goToPost: function (id) {
       this.selectedPostId = id
       this.dialog = true
+      this.routeToSelectedPostId()
     },
     closeDialog: function () {
       this.$store.dispatch('reset')
       this.selectedPostId = ''
       this.dialog = false
       setTimeout(() => this.key = Math.random(), 300)
+    },
+    routeToSelectedPostId() {
+      this.$router.push(`${this.$route.path}/${this.selectedPostId}`)
     }
   }
 }

@@ -5,11 +5,16 @@
         dark enable-resize-watcher expand-on-hover mini-variant
         permanent
     >
-      <v-list>
-        <v-list-item class="px-2">
+      <v-list class="mt-8">
+        <v-list-item class="px-3">
           <v-list-item-avatar class="rounded">
-            <v-img
-                :src="workspaceLogo"></v-img>
+            <UserAvatar
+              :alt="team.name"
+              :image="team.logo"
+              :size="250"
+              substitutionCharClasses="mr-auto ml-3"
+              :substitutionCharSize="20"
+              other-cls="rounded"/>
           </v-list-item-avatar>
         </v-list-item>
 
@@ -76,16 +81,20 @@
 <script>
 import axios from "axios";
 import Post from "@/components/post/Post";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "Teams",
-  components: {Post},
+  components: {
+    Post,
+    UserAvatar
+  },
   data() {
     return {
       dialog: false,
       baseUrl: axios.defaults.baseURL,
       team: {
-        name: "",
+        name: ""
       },
       pathName: '',
       dialogKey: Math.random()
@@ -101,8 +110,9 @@ export default {
       this.$store.dispatch('getWorkspaceInfo', this.workspaceUrl)
           .then(resp => {
             this.team = resp.data.team
+            console.log(this.team)
           }).catch(err => {
-
+            console.log(err)
       })
     }
   },

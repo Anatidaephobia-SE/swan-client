@@ -16,6 +16,19 @@ function generateFormData(post) {
   return body
 }
 
+async function imageToFile(images) {
+  const res = []
+  for (const img of images) {
+    const url = img.media.replace('http://localhost:9090', '')
+    const response = await fetch(axios.defaults.baseURL + url)
+    const contentType = response.headers.get('content-type')
+    const blob = await response.blob()
+    const file = new File([blob], `${Math.random()}.png`, {contentType})
+    res.push(file)
+  }
+  return res
+}
+
 const postModule = {
   namespaced: true,
   state: {
@@ -100,14 +113,15 @@ const postModule = {
     SET_STATUS: function (state, status) {
       state.post.status = status
     },
-    SET_POST_ALL: function (state, payload) {
+    SET_POST_ALL: async function (state, payload) {
+      const multimedia = await imageToFile(payload.multimedia)
       state.post = {
         id: payload.id,
         name: payload.name,
         caption: payload.caption,
         tag: payload.tag,
         team: payload.team,
-        multimedia: payload.multimedia || '',
+        multimedia: multimedia,
         status: payload.status || '',
         created_at: payload.created_at
       }

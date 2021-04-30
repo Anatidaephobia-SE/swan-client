@@ -53,7 +53,7 @@
         app
         class="toolbar rounded-0" dense flat>
 
-      <v-toolbar-title>{{ $route.params.workspace }} | {{ pathName }}</v-toolbar-title>
+      <v-toolbar-title>{{ team.name }} | {{ pathName }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-tooltip bottom>

@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:80"
     networks: 
-      - swan-prod
+      - swan-prod-front
 
 networks: 
-  swan-prod:
+  swan-prod-front:

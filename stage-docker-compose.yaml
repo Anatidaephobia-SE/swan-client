@@ -9,7 +9,7 @@ services:
     ports:
       - "9090:80"
     networks: 
-      - swan-stage
+      - swan-stage-front
 
 networks: 
-  swan-stage:
+  swan-stage-front:

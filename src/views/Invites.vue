@@ -18,27 +18,11 @@ export default {
     }
   },
   methods: {
-    getInvites: function () {
-      this.$store.dispatch('getInvites')
-          .then(res => {
-            this.invites = res.data
-          })
-          .catch(err => {
-            const message = err.response.data.message
-            this.$store.dispatch('showMessage', {message, color: 'error'})
-          });
-    }
+
   },
   created() {
-    this.getInvites();
   },
   watch: {
-    '$store.getters.isInvitesUpdated': function () {
-      const value = this.$store.getters.isInvitesUpdated
-      if (!value) {
-        this.getInvites();
-      }
-    }
   }
 }
 </script>

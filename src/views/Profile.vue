@@ -1,6 +1,12 @@
 <template>
   <v-container>
-    <UserInfo/>
+    <v-card-title>
+      <v-icon class="mr-2">mdi-account</v-icon>
+      Profile
+    </v-card-title>
+    <v-card-text>
+      <UserInfo/>
+    </v-card-text>
   </v-container>
 </template>
 

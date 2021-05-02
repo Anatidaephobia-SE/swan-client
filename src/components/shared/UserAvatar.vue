@@ -9,7 +9,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   name: "UserAvatar",
   props: {
@@ -30,5 +29,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

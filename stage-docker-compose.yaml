@@ -1,0 +1,15 @@
+version: "3"
+   
+services:
+  swan-front-stage:
+    image: "${SWAN_IMAGE}"
+    build: .
+    hostname: swan
+    restart: on-failure
+    ports:
+      - "9090:80"
+    networks: 
+      - swan-stage
+
+networks: 
+  swan-stage:

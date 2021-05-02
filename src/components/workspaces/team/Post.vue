@@ -1,14 +1,15 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card @click="$emit('clickedOn')" class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="300">
+    <v-card class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="300" @click="$emit('clickedOn')">
       <v-card-title>
         {{ post.name }}
       </v-card-title>
       <v-card-subtitle>
-        {{date}}
+        {{ date }}
       </v-card-subtitle>
       <v-card-subtitle>
-        <v-chip x-small :color="statusColor">{{post.status}}</v-chip>
+        <v-chip :color="statusColor" x-small>{{ post.status }}</v-chip>
+        <v-chip v-if="post.tag" dark :color="tagColor" x-small class="ml-1">{{ post.tag }}</v-chip>
       </v-card-subtitle>
 
       <v-img
@@ -81,45 +82,11 @@
       </v-card-text>
 
       <v-card-actions v-if="!hasImg">
-        <v-avatar size="30" class="mr-2">
+        <v-avatar class="mr-2" size="30">
           <v-img v-if="post.owner.profile_picture" :src="imageUrl"></v-img>
           <v-icon v-else>mdi-account</v-icon>
-        </v-avatar> {{post.owner.first_name}} {{post.owner.last_name}}
-<!--        <v-spacer></v-spacer>-->
-<!--        <v-tooltip bottom>-->
-<!--          <template v-slot:activator="{ on }">-->
-<!--            <div v-on="on">-->
-<!--              <v-btn icon>-->
-<!--                <v-icon>mdi-eye</v-icon>-->
-<!--              </v-btn>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <span>See Post</span>-->
-<!--        </v-tooltip>-->
-
-
-<!--        <v-tooltip bottom>-->
-<!--          <template v-slot:activator="{ on }">-->
-<!--            <div v-on="on">-->
-<!--              <v-btn icon>-->
-<!--                <v-icon>mdi-delete</v-icon>-->
-<!--              </v-btn>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <span>Delete Post</span>-->
-<!--        </v-tooltip>-->
-
-
-<!--        <v-tooltip bottom>-->
-<!--          <template v-slot:activator="{ on }">-->
-<!--            <div v-on="on">-->
-<!--              <v-btn icon>-->
-<!--                <v-icon>mdi-message-settings</v-icon>-->
-<!--              </v-btn>-->
-<!--            </div>-->
-<!--          </template>-->
-<!--          <span>Edit Post</span>-->
-<!--        </v-tooltip>-->
+        </v-avatar>
+        {{ post.owner.first_name }} {{ post.owner.last_name }}
       </v-card-actions>
     </v-card>
   </v-hover>
@@ -154,7 +121,19 @@ export default {
         'Published': 'primary'
       }
       return colors[this.post.status]
+    },
+    tagColor: function () {
+      const colors = {
+        'Sales': '#D32F2F',
+        'Ads': '#C2185B',
+        'Branding': '#7B1FA2',
+        'News': '#512DA8',
+        'Quote': '#303F9F',
+        'Celebration': '#1976D2'
+      }
+      return colors[this.post.tag]
     }
+
   },
   methods: {}
 }

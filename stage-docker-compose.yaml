@@ -7,7 +7,7 @@ services:
     hostname: swan
     restart: on-failure
     ports:
-      - "9090:80"
+      - "11000:80"
     networks: 
       - swan-stage-front
 

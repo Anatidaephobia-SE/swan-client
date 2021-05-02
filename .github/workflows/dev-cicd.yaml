@@ -73,7 +73,7 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./server.env ./swan.env ./pg.env ./pgadmin.env ./${{ env.COMPOSE_FILE }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:~/swan-stage-front
+          scp  -o StrictHostKeyChecking=no -r ./server.env ./${{ env.COMPOSE_FILE }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:~/swan-stage-front
           ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'ENDSSH'
             cd ~/swan-stage-front
             source server.env

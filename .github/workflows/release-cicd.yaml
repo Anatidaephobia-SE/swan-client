@@ -1,0 +1,41 @@
+name: Swan Release CI/CD
+
+on:
+  pull_request:
+    branches:
+      - release-**
+
+env:
+  COMPOSE_FILE: prod-docker-compose.yaml
+  SWAN_IMAGE: swan-prod-front
+  SWAN_IMAGE_WITH_URL: ${{ secrets.PRODEUCTION_REGISTRY_URL }}/release/swan-prod-front
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/release-**' #for pull request and create
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: Build image
+      run: |
+        docker-compose -f ${{ env.COMPOSE_FILE }} build
+    
+    - name: Pull request event tag
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        echo "DOCKER_ALPHA_TAG=${{ github.base_ref }}" >> tag.env
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+
+    - name: Push image
+      run: |
+        source tag.env
+        docker login ${{ secrets.PRODEUCTION_REGISTRY_URL }} --username "${{ secrets.PRODEUCTION_REGISTRY_USERNAME }}" --password "${{ secrets.PRODEUCTION_REGISTRY_PASSWORD }}"
+        docker tag ${{ env.SWAN_IMAGE }} ${{ env.SWAN_IMAGE_WITH_URL }}:$DOCKER_ALPHA_TAG
+        docker push ${{ env.SWAN_IMAGE_WITH_URL }}:$DOCKER_ALPHA_TAG
+        

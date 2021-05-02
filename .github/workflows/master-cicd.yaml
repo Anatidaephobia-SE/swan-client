@@ -1,0 +1,59 @@
+name: Swan application
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+env:
+  COMPOSE_FILE: prod-docker-compose.yaml
+  SWAN_IMAGE: swan-prod-front
+  SWAN_IMAGE_WITH_URL: ${{ secrets.PRODEUCTION_REGISTRY_URL }}/release/swan-prod-front
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: add server utils env
+        run: |
+          echo "PRODEUCTION_REGISTRY_USERNAME=${{ secrets.PRODEUCTION_REGISTRY_USERNAME }}" >> server.env
+          echo "PRODEUCTION_REGISTRY_PASSWORD=${{ secrets.PRODEUCTION_REGISTRY_PASSWORD }}" >> server.env
+          echo "PRODEUCTION_REGISTRY_URL=${{ secrets.PRODEUCTION_REGISTRY_URL }}" >> server.env
+          echo "SWAN_IMAGE=${{ env.SWAN_IMAGE }}" >> server.env
+          echo "SWAN_IMAGE_WITH_URL=${{ env.SWAN_IMAGE_WITH_URL }}" >> server.env
+          echo "COMPOSE_FILE=${{ env.COMPOSE_FILE }}" >> server.env
+          echo "DOCKER_PRODUCTION_TAG=${{ github.head_ref }}" >> server.env
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      - name: Add the private SSH key to the ssh-agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-add - <<< "${{ secrets.DEPLOY_KEY }}"
+      
+      - name: Deploy images on Server
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          scp  -o StrictHostKeyChecking=no -r ./server.env  ./${{ env.COMPOSE_FILE }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:~/swan-prod-front
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'ENDSSH'
+            cd ~/swan-prod-front
+            source server.env
+            docker login $PRODEUCTION_REGISTRY_URL --username $PRODEUCTION_REGISTRY_USERNAME --password $PRODEUCTION_REGISTRY_PASSWORD
+            docker pull $SWAN_IMAGE_WITH_URL:$DOCKER_PRODUCTION_TAG
+            export SWAN_IMAGE=$SWAN_IMAGE_WITH_URL:$DOCKER_PRODUCTION_TAG
+            docker-compose -f $COMPOSE_FILE up -d
+            rm -rf server.env
+          ENDSSH
+
+

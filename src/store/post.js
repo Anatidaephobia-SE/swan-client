@@ -137,6 +137,9 @@ const postModule = {
         state.canEdit = false
       }
     },
+    ADD_IMAGE: function (state, file) {
+      state.post.multimedia.push(file)
+    },
     RESET: function (state) {
       state.author = {}
       state.post = {

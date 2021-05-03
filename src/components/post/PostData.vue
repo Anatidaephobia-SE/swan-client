@@ -91,6 +91,8 @@
         </v-menu>
       </div>
 
+      <PhotoPicker :dialog="photoGalleryDialog" @close-dialog="photoGalleryDialog = false"/>
+
       <v-file-input
           v-show="false"
           ref="imageInput"
@@ -120,15 +122,18 @@
 <script>
 import axios from "axios";
 import {mapState} from "vuex";
+import PhotoPicker from "@/components/post/PhotoPicker";
 
 export default {
   name: "PostData",
+  components: {PhotoPicker},
   data() {
     return {
       loading: false,
       valid: false,
       image: '',
       addImage: true,
+      photoGalleryDialog: false,
       rule: [
         v => !!v || 'This field is required',
         v => (v || '').length <= 250 || 'Maximum length is over !'
@@ -187,8 +192,7 @@ export default {
       return [
         {label: 'Upload an image', func: () => this.$refs.imageInput.$refs.input.click()},
         {
-          label: 'Use library', func: () => {
-          }
+          label: 'Use library', func: () => this.photoGalleryDialog = true
         }
       ]
     }

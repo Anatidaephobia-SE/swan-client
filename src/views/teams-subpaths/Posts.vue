@@ -1,13 +1,67 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col v-for="p in posts" :key="p.id" cols="12" lg="3" md="4" sm="6" xl="3">
-        <Post @clickedOn="goToPost(p.id)" :post="p"/>
+    <v-expansion-panels flat>
+      <v-expansion-panel>
+        <v-expansion-panel-header>
+          <span>
+            <v-icon class="mr-2">mdi-magnify</v-icon>
+            Advanced Search
+          </span>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-text-field
+                  v-model="searchKey"
+                  filled
+                  label="Search"
+                  placeholder="e.g. My Favorite Post"
+                  rounded
+                  @input="searchPost">
+              </v-text-field>
+            </v-col>
+            <v-col class="justify-start" md="4">
+              <v-select
+                  v-model="searchTag"
+                  :items="tags"
+                  chips
+                  deletable-chips
+                  filled
+                  label="Tag"
+                  multiple
+                  rounded
+                  small-chips
+                  @input="searchPost">
 
+              </v-select>
+            </v-col>
+
+            <v-col class="justify-start" md="4">
+              <v-select
+                  v-model="searchStatus"
+                  :items="status"
+                  chips
+                  deletable-chips
+                  filled
+                  label="Status"
+                  multiple
+                  rounded
+                  small-chips
+                  @input="searchPost">
+
+              </v-select>
+            </v-col>
+          </v-row>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-row>
+      <v-col v-for="p in filteredPosts" :key="p.id" cols="12" lg="3" md="4" sm="6" xl="3">
+        <Post :post="p" @clickedOn="goToPost(p.id)"/>
       </v-col>
     </v-row>
 
-    <PostDialog @close="closeDialog" :dialog="dialog" :edit-mode="true" :key="key" :id="selectedPostId" />
+    <PostDialog :id="selectedPostId" :key="key" :dialog="dialog" :edit-mode="true" @close="closeDialog"/>
   </v-container>
 </template>
 
@@ -24,9 +78,13 @@ export default {
   data() {
     return {
       posts: [],
+      filteredPosts: [],
       selectedPostId: 0,
       dialog: false,
-      key: Math.random()
+      key: Math.random(),
+      searchKey: '',
+      searchTag: [],
+      searchStatus: []
     }
   },
   created() {
@@ -34,20 +92,46 @@ export default {
   },
   methods: {
     getAllPosts: function () {
-      const teamID = this.$store.getters.getTeamId
-      this.$store.dispatch('getAllPosts',teamID).then(resp => {
+      const teamID = this.$route.params.workspace
+      this.$store.dispatch('getAllPosts', teamID).then(resp => {
         this.posts = resp.data
+        this.filteredPosts = this.posts
       }).catch()
+
     },
     goToPost: function (id) {
       this.selectedPostId = id
       this.dialog = true
+      this.routeToSelectedPostId()
     },
     closeDialog: function () {
       this.$store.dispatch('reset')
       this.selectedPostId = ''
       this.dialog = false
       setTimeout(() => this.key = Math.random(), 300)
+    },
+    routeToSelectedPostId() {
+      this.$router.push(`${this.$route.path}/${this.selectedPostId}`)
+    },
+    searchPost: function () {
+      const keyword = this.searchKey.toLowerCase()
+      this.filteredPosts = this.posts.filter(p => p.name.toLowerCase().includes(keyword))
+      if (this.searchTag.length > 0) {
+        const tags = this.searchTag
+        this.filteredPosts = this.filteredPosts.filter(p => tags.includes(p.tag))
+      }
+      if (this.searchStatus.length > 0) {
+        const status = this.searchStatus
+        this.filteredPosts = this.filteredPosts.filter(p => status.includes(p.status))
+      }
+    }
+  },
+  computed: {
+    tags: function () {
+      return ['Sales', 'Ads', 'Branding', 'News', 'Quote', 'Celebration']
+    },
+    status: function () {
+      return ['Drafts', 'Published', 'Scheduled']
     }
   }
 }

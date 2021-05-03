@@ -34,11 +34,11 @@
         </v-stepper-content>
 
         <v-stepper-content step="2">
-          <AddMember @next="step++" :url="url"/>
+          <AddMember @next="step++" :id="id"/>
         </v-stepper-content>
 
         <v-stepper-content step="3">
-          <ConnectToSocialMedia @done="$emit('close-dialog')" :url="url"/>
+          <ConnectToSocialMedia @done="$emit('close-dialog')" :id="id"/>
         </v-stepper-content>
 
       </v-stepper-items>
@@ -48,9 +48,9 @@
 </template>
 
 <script>
-import BasicInfo from "@/components/workspaces/BasicInfo";
-import AddMember from "@/components/workspaces/AddMember";
-import ConnectToSocialMedia from "@/components/workspaces/ConnectToSocialMedia";
+import BasicInfo from "@/components/new-workspace/BasicInfo";
+import AddMember from "@/components/new-workspace/AddMember";
+import ConnectToSocialMedia from "@/components/new-workspace/ConnectToSocialMedia";
 export default {
   name: "NewWorkspace",
   props: {
@@ -65,20 +65,20 @@ export default {
   data() {
     return {
       step: 1,
-      url: '',
+      id: '',
       // dialog: true
     }
   },
   methods: {
-    nextStep: function (url) {
-      this.url = url;
+    nextStep: function (id) {
+      this.id = id;
       this.step++;
     },
   },
   mounted() {
-    if (this.$route.query.team_url) {
+    if (this.$route.query.team_id) {
       this.step = 3;
-      this.url = this.$route.query.team_url
+      this.id = this.$route.query.team_id
     }
   }
 }

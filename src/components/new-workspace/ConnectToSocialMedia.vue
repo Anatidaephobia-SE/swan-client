@@ -18,12 +18,12 @@
 export default {
   name: "ConnectToSocialMedia",
   props: {
-    url: String
+    id: Number
   },
   data() {
     return {
       twitter: false,
-      team_url: '',
+      team_id: '',
       loading: {
         twitter: false
       }
@@ -37,23 +37,24 @@ export default {
       }
       this.loading.twitter = true;
       const body = {
-        team_url: this.url
+        team_id: this.id
       };
       this.$store.dispatch('requestConnectionTwitter', body).then(resp => {
         const message = "Redirecting to twitter.com. Authorize this app";
         this.$store.dispatch('showMessage', {message , color: 'info'});
         setTimeout(() => window.location = resp.data.address, 1000);
       }).catch(err => {
-        const message = err.response.data.error;
+        this.loading = false
+        const message = err.response.data.error | 'Something\'s wrong, try again please';
         this.$store.dispatch('showMessage', {message , color: 'error'});
       });
     }
   },
   mounted() {
-    if (this.$route.query.team_url) {
-      this.team_url = this.$route.query.team_url
+    if (this.$route.query.team_id) {
+      this.team_id = this.$route.query.team_id
       const body = {
-        team_url: this.team_url,
+        team_id: this.team_id,
         oauth_token: this.$route.query.oauth_token,
         oauth_verifier: this.$route.query.oauth_verifier
       }

@@ -7,11 +7,11 @@
 
     <v-list rounded>
       <v-list-item two-line v-for="(m, i) in people" :key="i">
-        <v-list-item-avatar v-if="m.profile_picture">
-          <v-img :src="getImageUrl(m.profile_picture)"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-avatar v-else>
-          <v-icon>mdi-account</v-icon>
+        <v-list-item-avatar>
+          <UserAvatar :image="m.profile_picture"
+                      :alt="m.first_name"
+                      :size="30"
+                      />
         </v-list-item-avatar>
         <v-list-item-content>
         <v-list-item-title>{{m.first_name}} {{m.last_name}}
@@ -23,24 +23,22 @@
         </v-list-item-content>
         <v-list-item-action>
 
-          <v-btn icon @click="showRemoveDialog = true">
+          <v-btn icon @click="askRemoval(m.email)" v-if="!m.is_head && canEdit">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-list-item-action>
-
-        <Dialog text="Are you sure you want to remove this user?"
-                header="Remove a user" :show="showRemoveDialog" @close-dialog="removeUser(m.email, $event)"/>
       </v-list-item>
     </v-list>
 
+    <Dialog text="Are you sure you want to remove this user?"
+            header="Remove a user" :show="showRemoveDialog" @close-dialog="removeUser($event)"/>
 
-    <v-form @submit.prevent="addMember" class="add-form mt-4" ref="addForm">
+    <v-form @submit.prevent="addMember" class="add-form mt-4" ref="addForm" v-if="canEdit">
       <p>You can add new people to your team. Enter their email and click on ADD button.</p>
       <v-text-field filled
                     v-model="newEmail"
                     label="Email"
                     :rules="emailRule"
-                    @keyup.enter="addMember"
                     placeholder="john-doe@example.com"
                     append-icon="mdi-account-plus">
 
@@ -53,10 +51,11 @@
 <script>
 import axios from "axios";
 import Dialog from "@/components/shared/Dialog";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "SettingsMember",
-  components: {Dialog},
+  components: {UserAvatar, Dialog},
   data() {
     return {
       people: [],
@@ -68,27 +67,32 @@ export default {
           }
       ],
       newEmail: '',
-      showRemoveDialog: false
+      showRemoveDialog: false,
+      canEdit: false,
+      selectedUser: ''
     }
   },
   mounted() {
     this.getWorkspaceMembers();
   },
   computed: {
-    getWorkspaceUrl: function (){
+    getWorkspaceId: function (){
       return this.$route.params.workspace
     }
   },
   methods: {
-    removeUser: function (email, resp) {
+    askRemoval: function (email) {
+      this.selectedUser = email
+      this.showRemoveDialog = true
+    },
+    removeUser: function (resp) {
       this.showRemoveDialog = false
-      console.log(resp)
       if (!resp) {
         return;
       }
       const data = {
-        team_url: this.getWorkspaceUrl,
-        email
+        team_id: this.getWorkspaceId,
+        email: this.selectedUser
       }
       this.$store.dispatch('removeUser', data).then(() => {
         const message = "User removed";
@@ -102,7 +106,7 @@ export default {
     addMember: function () {
       const body = {
         username: this.newEmail,
-        team_url: this.getWorkspaceUrl
+        team_id: this.getWorkspaceId
       }
       this.$store.dispatch('addUserToWorkspace', body).then(() => {
         const message = "User invited";
@@ -114,8 +118,9 @@ export default {
       }).finally(() => this.$refs.addForm.reset());
     },
     getWorkspaceMembers: function () {
-      this.$store.dispatch('getWorkspaceMembers', this.getWorkspaceUrl).then(resp => {
+      this.$store.dispatch('getWorkspaceMembers', this.getWorkspaceId).then(resp => {
         this.people = resp.data.members
+        this.canEdit = resp.data.can_edit
       }).catch();
     },
     getImageUrl: function (img) {

@@ -38,7 +38,7 @@
 
 <script>
 import Workspace from "@/components/workspaces/Workspace";
-import NewWorkspace from "@/components/homepage/NewWorkspace";
+import NewWorkspace from "@/components/new-workspace/NewWorkspace";
 
 export default {
   name: "Workspaces",
@@ -79,7 +79,7 @@ export default {
   created() {
     this.getWorkspaces()
     window.addEventListener('scroll', this.hideAdd)
-    if (this.$route.query.team_url) {
+    if (this.$route.query.team_id) {
       this.newWorkspace = true
     }
   },

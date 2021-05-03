@@ -5,11 +5,14 @@
         dark enable-resize-watcher expand-on-hover mini-variant
         permanent
     >
-      <v-list>
-        <v-list-item class="px-2">
+      <v-list class="mt-8">
+        <v-list-item class="px-3">
           <v-list-item-avatar class="rounded">
-            <v-img
-                :src="workspaceLogo"></v-img>
+            <UserAvatar
+              :alt="team.name"
+              :image="team.logo"
+              other-cls="rounded mr-2"
+              :size="40"/>
           </v-list-item-avatar>
         </v-list-item>
 
@@ -19,7 +22,7 @@
               {{ team.name }}
             </v-list-item-title>
             <v-list-item-subtitle>Admin: {{ team.head_name }}</v-list-item-subtitle>
-            <v-list-item-subtitle>{{ team.members }} <v-icon>mdi-account-multiple</v-icon></v-list-item-subtitle>
+            <v-list-item-subtitle> <v-icon>mdi-account-multiple</v-icon>{{ team.members }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -48,7 +51,7 @@
         app
         class="toolbar rounded-0" dense flat>
 
-      <v-toolbar-title>{{ $route.params.workspace }} | {{ pathName }}</v-toolbar-title>
+      <v-toolbar-title>{{ team.name }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-tooltip bottom>
@@ -76,16 +79,20 @@
 <script>
 import axios from "axios";
 import Post from "@/components/post/Post";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "Teams",
-  components: {Post},
+  components: {
+    Post,
+    UserAvatar
+  },
   data() {
     return {
       dialog: false,
       baseUrl: axios.defaults.baseURL,
       team: {
-        name: "",
+        name: ""
       },
       pathName: '',
       dialogKey: Math.random()
@@ -101,8 +108,9 @@ export default {
       this.$store.dispatch('getWorkspaceInfo', this.workspaceUrl)
           .then(resp => {
             this.team = resp.data.team
+            console.log(this.team)
           }).catch(err => {
-
+            console.log(err)
       })
     }
   },

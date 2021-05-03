@@ -74,12 +74,15 @@ export default {
   methods: {
     leave: function () {
       this.$store
-          .dispatch("leaveWorkspace", this.workspace.url)
+          .dispatch("leaveWorkspace", this.workspace.id)
           .then(() => {
             const message = "You left the workspace";
             this.$store.dispatch("showMessage", {message, color: "info"});
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            const message = err.response.data.error;
+            this.$store.dispatch("showMessage", {message, color: "error"});
+          });
     },
     closeDialog: function (value) {
       this.dialog = false;
@@ -88,12 +91,12 @@ export default {
       }
     },
     goToWorkspace: function () {
-      this.$router.push(`/workspace/${this.workspace.url}/`)
+      this.$router.push(`/workspace/${this.workspace.id}/`)
     }
   },
   computed: {
     workspaceUrl: function () {
-      return '/workspace/' + this.workspace.url + '/';
+      return '/workspace/' + this.workspace.id + '/';
     },
   }
 }

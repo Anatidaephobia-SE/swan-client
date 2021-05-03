@@ -4,9 +4,8 @@
       color="primary"
       dark
       flat
-      app
-  >
-    <v-card-title @click="$router.push('/')">Swan</v-card-title>
+      app>
+    <v-card-title style="cursor: pointer" @click="$router.push('/')">Swan</v-card-title>
 
     <v-spacer></v-spacer>
 
@@ -37,10 +36,13 @@
     <v-menu bottom offset-y>
       <template v-slot:activator="{on, attrs}">
         <v-btn
+            :ripple="false"
             v-bind="attrs"
             v-on="on"
-            class="mx-2" icon>
+            class="mx-2"
+            icon>
           <UserAvatar
+              other-cls="rounded"
               :alt="user.first_name"
               :image="user.profile_picture"
               :size="35"></UserAvatar>
@@ -80,7 +82,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.user)
     this.getInvitees()
   },
   computed: {

@@ -23,9 +23,21 @@ export default {
   },
   created() {
     this.pathName = this.$route.name
-    this.$store.dispatch('getUserInfo').then(
-        () => this.user = this.$store.getters.userInfo
-    );
+    this.getUserInfo();
+  },
+  methods: {
+    getUserInfo: function () {
+      this.$store.dispatch('getUserInfo').then(
+          () => {
+            this.user = this.$store.getters.userInfo
+          }
+      );
+    }
+  },
+  watch: {
+    '$store.getters.userInfo': function (newVal) {
+      this.user = newVal
+    }
   }
 };
 </script>

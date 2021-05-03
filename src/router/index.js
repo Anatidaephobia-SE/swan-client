@@ -15,6 +15,7 @@ import Logout from "@/views/Logout";
 import store from '../store/index'
 import Profile from "@/views/Profile";
 import PostView from "@/views/PostView";
+import Compose from "@/views/Compose";
 
 Vue.use(VueRouter)
 
@@ -25,11 +26,11 @@ const routes = [
     component: Home,
     redirect: '/workspaces',
     beforeEnter: (to, from, next) => {
-      if (store.getters.isLoggedIn) {
-        next()
-      } else {
-        next('/login')
-      }
+      // if (store.getters.isLoggedIn) {
+      //   next()
+      // } else {
+      //   next('/login')
+      // }
     },
     children: [
       {path: 'workspaces', name: 'Workspaces', component: Workspaces},
@@ -43,8 +44,9 @@ const routes = [
     component: Teams,
     children: [
       {path: 'posts', name: 'Posts', component: Posts},
+      {path: 'posts/:postId', name: 'PostView', component: PostView},
       {path: 'settings', name: 'Settings', component: Settings},
-      {path: 'compose', name: 'Compose', component: Posts, meta: {compose: true}},
+      {path: 'compose', name: 'Compose', component: Compose},
     ]
   },
   {
@@ -53,12 +55,14 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {dontUpdate: false}
   },
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
+    meta: {dontUpdate: false}
   },
   {
     path: '/logout',

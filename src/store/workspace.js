@@ -137,8 +137,9 @@ const workspaceModule = {
         });
       })
     },
-    getTwitterAccount: function (payload, team_url) {
+    getTwitterAccount: function (payload, team_id) {
       return new Promise((resolve, reject) => {
+
         axios.get('api/v1.1.0/socialmedia/twitter/accounts?team_id='+team_url)
           .then(resp => resolve(resp)).catch(err => reject(err));
       });

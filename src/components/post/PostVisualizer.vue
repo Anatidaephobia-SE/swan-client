@@ -5,26 +5,28 @@
       How people will see
     </v-card-title>
     <v-card
+        outlined
         class="mx-auto ma-4 pa-4"
         max-width="700">
-          <v-row>
-            <v-col cols="2" md="1">
-            <v-avatar
-                class="profile"
-                color="grey"
-                size="50">
-              <v-img :src="twitter.profile_image"></v-img>
-            </v-avatar>
-            </v-col>
-            <v-col cols="10" md="11">
-              <v-card-title class="mt-0 pt-0">{{twitter.name}}</v-card-title>
-              <v-card-subtitle>@{{twitter.screen_name}}</v-card-subtitle>
-            </v-col>
-          </v-row>
-      <div class="pa-2">
-          <p>
-            {{this.post.caption}}
-          </p>
+      <v-row>
+        <v-col cols="2" md="1">
+          <v-avatar
+              class="profile"
+              color="grey"
+              size="50">
+            <v-img :src="twitter.profile_image"></v-img>
+          </v-avatar>
+        </v-col>
+        <v-col cols="10" md="11">
+          <v-card-title class="mt-0 pt-0">{{ twitter.name }}</v-card-title>
+          <v-card-subtitle>@{{ twitter.screen_name }}</v-card-subtitle>
+        </v-col>
+      </v-row>
+      <div class="pa-2 ml-16">
+        <p>
+          {{ this.post.caption }}
+        </p>
+        <MultiMediaVisualizer/>
       </div>
       <div class="d-flex justify-space-around pa-2">
         <v-icon>mdi-comment-outline</v-icon>
@@ -36,14 +38,15 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+import MultiMediaVisualizer from "@/components/post/MultiMediaVisualizer";
+
 export default {
   name: "PostVisualizer",
+  components: {MultiMediaVisualizer},
   data() {
     return {
-      post: {
-        caption: '',
-        media: '',
-      },
+      postSub: '',
       twitter: {
         name: '',
         profile_image: '',
@@ -52,20 +55,11 @@ export default {
     }
   },
   mounted() {
-    this.post.caption = this.$store.getters.getNewPost.caption
-    this.getPostCaption()
     this.getTwitter()
   },
   methods: {
-    getPostCaption: function () {
-      this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'SET_POST') {
-          this.post.caption = state.post.newPost.caption
-        }
-      })
-    },
     getTwitter: function () {
-      this.$store.dispatch('getTwitterAccount', this.teamUrl).then(resp => {
+      this.$store.dispatch('getTwitterAccount', 15).then(resp => {
         const data = resp.data
         this.twitter = {
           name: data.name,
@@ -78,12 +72,12 @@ export default {
     }
   },
   computed: {
-    teamUrl: function () {
+    ...mapState('post', ['post']),
+    workspaceId: function () {
       return this.$route.params.workspace
     }
   },
-  watch: {
-  }
+  watch: {}
 }
 </script>
 

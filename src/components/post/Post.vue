@@ -1,38 +1,38 @@
 <template>
-    <v-dialog
-        v-model="dialog"
-        fullscreen
-        persistent
-        transition="dialog-bottom-transition">
-      <v-card>
-        <v-toolbar
-            color="primary"
-            flat
-            dark>
+  <v-dialog
+      v-model="dialog"
+      fullscreen
+      persistent
+      transition="dialog-bottom-transition">
+    <v-card>
+      <v-toolbar
+          color="primary"
+          dark
+          flat>
 
-          <v-toolbar-title>{{isEditMode? 'View Post': 'New Post'}}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn
-                dark
-                icon
-                @click="closeDialog()">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
+        <v-toolbar-title>{{ isEditMode ? 'View Post' : 'New Post' }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn
+              dark
+              icon
+              @click="closeDialog()">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
 
-        <PostData/>
-        <v-divider></v-divider>
-        <PostVisualizer/>
-        <v-divider></v-divider>
-        <PostActions :editMode="isEditMode"/>
-        <v-divider></v-divider>
-        <PostComments v-if="isEditMode"/>
-        <br>
-        <br>
-      </v-card>
-    </v-dialog>
+      <PostData/>
+      <v-divider></v-divider>
+      <PostVisualizer/>
+      <v-divider></v-divider>
+      <PostActions :editMode="isEditMode"/>
+      <v-divider></v-divider>
+      <PostComments v-if="isEditMode"/>
+      <br>
+      <br>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -40,13 +40,14 @@ import PostData from "@/components/post/PostData";
 import PostVisualizer from "@/components/post/PostVisualizer";
 import PostActions from "@/components/post/PostActions";
 import PostComments from "@/components/post/PostComments";
+
 export default {
   name: "Post",
   components: {PostComments, PostActions, PostVisualizer, PostData},
   props: {
     dialog: Boolean,
     editMode: Boolean,
-    id: Number||String
+    id: Number || String
   },
   data() {
     return {
@@ -55,7 +56,7 @@ export default {
   },
   mounted() {
 
-    this.$store.subscribe((mutation, state) =>  {
+    this.$store.subscribe((mutation, state) => {
       if (mutation.type === 'SET_ID') {
         if (state.post.id) {
           if (this.editMode) {

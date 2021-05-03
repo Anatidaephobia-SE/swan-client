@@ -21,14 +21,18 @@ export default {
     // This checks if token expired, and
     axios.interceptors.response.use(undefined, (err) => {
       if (err.response.status === 403 && err.config && !err.config.__isRetryRequest) {
-        this.$store.dispatch('logout');
+        if (this.$route.name !== 'Login') {
+          this.$store.dispatch('logout');
+        }
       }
       return Promise.reject(err)
     });
 
-    this.$store.dispatch('getUserInfo').then(
-        () => this.user = this.$store.getters.userInfo
-    );
+    if (!this.$route.meta.hasOwnProperty('dontUpdate')) {
+      this.$store.dispatch('getUserInfo').then(
+          () => this.user = this.$store.getters.userInfo
+      );
+    }
   },
   computed: {
   }

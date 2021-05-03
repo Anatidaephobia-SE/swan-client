@@ -15,6 +15,10 @@ import SignUpForm from "../components/auth/SignUp-Form";
 export default {
   name: "SignUp",
   components: { Intro, SignUpForm },
+  mounted() {
+    localStorage.removeItem('token')
+    this.$store.commit('logout')
+  }
 };
 </script>
 

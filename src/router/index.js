@@ -34,14 +34,13 @@ const routes = [
     },
     children: [
       {path: 'workspaces', name: 'Workspaces', component: Workspaces},
-      {path: 'invites', name: 'Invites', component: Invites},
       {path: 'profile', name: 'Profile', component: Profile}
     ]
   },
   {
-    path: '/workspaces/:workspace/',
+    path: '/workspace/:workspace/',
     name: 'Workspace',
-    redirect: '/workspaces/:workspace/posts',
+    redirect: '/workspace/:workspace/posts',
     component: Teams,
     children: [
       {path: 'posts', name: 'Posts', component: Posts},
@@ -56,12 +55,14 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {dontUpdate: false}
   },
   {
     path: '/sign-up',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
+    meta: {dontUpdate: false}
   },
   {
     path: '/logout',

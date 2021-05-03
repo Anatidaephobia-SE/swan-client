@@ -1,0 +1,15 @@
+version: "3"
+   
+services:
+  swan-front-prod:
+    image: "${SWAN_IMAGE}"
+    build: .
+    hostname: swan
+    restart: on-failure
+    ports:
+      - "10000:80"
+    networks: 
+      - swan-prod-front
+
+networks: 
+  swan-prod-front:

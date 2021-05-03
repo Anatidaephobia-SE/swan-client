@@ -52,7 +52,6 @@ export default {
       loading: false,
       valid: false,
       name: '',
-      caption: '',
       created_at: '',
       author: {},
       rule: [

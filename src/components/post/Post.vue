@@ -24,6 +24,8 @@
 
         <PostData/>
         <v-divider></v-divider>
+        <RetrieveHashtags/>
+        <v-divider></v-divider>
         <PostVisualizer/>
         <v-divider></v-divider>
         <PostActions :editMode="isEditMode"/>
@@ -40,9 +42,10 @@ import PostData from "@/components/post/PostData";
 import PostVisualizer from "@/components/post/PostVisualizer";
 import PostActions from "@/components/post/PostActions";
 import PostComments from "@/components/post/PostComments";
+import RetrieveHashtags from "@/components/retrieve-hashtags/RetrieveHashtags"
 export default {
   name: "Post",
-  components: {PostComments, PostActions, PostVisualizer, PostData},
+  components: {PostComments, PostActions, PostVisualizer, PostData, RetrieveHashtags},
   props: {
     dialog: Boolean,
     editMode: Boolean,

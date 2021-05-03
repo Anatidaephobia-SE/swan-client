@@ -26,6 +26,9 @@ const postModule = {
     setPrimaryKey: function ({commit}, id) {
       commit('SET_ID', id);
     },
+    setCaption: function ({commit}, caption) {
+      commit('SET_CAPTION', caption);
+    },
     createNewPost: function ({commit, state}) {
       return new Promise((resolve, reject) => {
         axios.post('api/v1.0.0/post/create_post/', state.newPost).then(resp => {
@@ -113,6 +116,9 @@ const postModule = {
         status: '',
         created_at: ''
       }
+    },
+    SET_CAPTION: function (state, caption) {
+      state.newPost.caption = caption;
     }
   },
   getters: {

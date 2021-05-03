@@ -6,7 +6,7 @@ import vuetify from './plugins/vuetify';
 import axios from 'axios'
 
 // axios.defaults.baseURL = 'http://anatidaephobia.pythonanywhere.com/'
-axios.defaults.baseURL = 'http://stage.swan-app.ir'
+axios.defaults.baseURL = 'http://127.0.0.1:8000'
 
 const token = localStorage.getItem('token')
 if (token) {

@@ -127,13 +127,16 @@ const postModule = {
         created_at: payload.created_at
       }
       const author = payload.owner
-      state.author = {
-        email: author.email,
-        first_name: author.first_name,
-        last_name: author.last_name,
-        profile_picture: author.profile_picture
+      if (author) {
+        state.author = {
+          email: author.email,
+          first_name: author.first_name,
+          last_name: author.last_name,
+          profile_picture: author.profile_picture
+        }
       }
       state.update = true
+      console.log(state.post.status)
       if (state.post.status === 'Published') {
         state.canEdit = false
       }

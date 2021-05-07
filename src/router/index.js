@@ -12,8 +12,8 @@ import Posts from "@/views/teams-subpaths/Posts"
 import Logout from "@/views/Logout";
 import store from '../store/index'
 import Profile from "@/views/Profile";
-import PostView from "@/views/PostView";
-import Compose from "@/views/Compose";
+import PostView from "@/views/teams-subpaths/PostView";
+import Compose from "@/views/teams-subpaths/Compose";
 
 Vue.use(VueRouter)
 

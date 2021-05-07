@@ -37,6 +37,7 @@ const routes = [
   {
     path: '/workspace/:workspace/',
     name: 'Workspace',
+    redirect: {name: 'Posts'},
     component: Teams,
     children: [
       {path: 'posts', name: 'Posts', component: Posts},

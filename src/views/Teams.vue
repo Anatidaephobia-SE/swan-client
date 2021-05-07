@@ -47,7 +47,6 @@
           </v-list-item-icon>
           <v-list-item-title>{{ item.label }}</v-list-item-title>
         </v-list-item>
-
       </v-list>
     </v-navigation-drawer>
 

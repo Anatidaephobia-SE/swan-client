@@ -6,45 +6,60 @@
     </v-card-title>
 
     <v-list rounded>
-      <v-list-item two-line v-for="(m, i) in people" :key="i">
+      <v-list-item v-for="(m, i) in people" :key="i" two-line>
         <v-list-item-avatar>
-          <UserAvatar :image="m.profile_picture"
-                      :alt="m.first_name"
+          <UserAvatar :alt="m.first_name"
+                      :image="m.profile_picture"
                       :size="30"
-                      />
+          />
         </v-list-item-avatar>
         <v-list-item-content>
-        <v-list-item-title>{{m.first_name}} {{m.last_name}}
-          <v-chip v-if="m.is_head" color="accent" class="ml-1" x-small>
-          <v-icon x-small>mdi-star</v-icon>
-          </v-chip>
-        </v-list-item-title>
-        <v-list-item-subtitle>{{m.email}}</v-list-item-subtitle>
+          <v-list-item-title>{{ m.first_name }} {{ m.last_name }}
+            <v-chip v-if="m.is_head" class="ml-1" color="accent" x-small>
+              <v-icon x-small>mdi-star</v-icon>
+            </v-chip>
+          </v-list-item-title>
+          <v-list-item-subtitle>{{ m.email }}</v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
 
-          <v-btn icon @click="askRemoval(m.email)" v-if="!m.is_head && canEdit">
+          <v-btn v-if="!m.is_head && canEdit" icon @click="askRemoval(m.email)">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-list-item-action>
       </v-list-item>
     </v-list>
 
-    <Dialog text="Are you sure you want to remove this user?"
-            header="Remove a user" :show="showRemoveDialog" @close-dialog="removeUser($event)"/>
+    <Dialog :show="showRemoveDialog"
+            header="Remove a user" text="Are you sure you want to remove this user?" @close-dialog="removeUser($event)"/>
 
-    <v-form @submit.prevent="addMember" class="add-form mt-4" ref="addForm" v-if="canEdit">
-      <p>You can add new people to your team. Enter their email and click on ADD button.</p>
-      <v-text-field filled
-                    v-model="newEmail"
-                    label="Email"
-                    :rules="emailRule"
-                    placeholder="john-doe@example.com"
-                    append-icon="mdi-account-plus">
+    <v-expansion-panels flat>
+      <v-expansion-panel>
+        <v-expansion-panel-header>
+          <span>
+            <v-icon class="mr-2">mdi-account-plus</v-icon>
+            Invite teammates
+          </span>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-row>
+            <v-col cols="12">
+              <v-form v-if="canEdit" ref="addForm" class="add-form mt-4" @submit.prevent="addMember">
+                <v-text-field v-model="newEmail"
+                              :rules="emailRule"
+                              append-icon="mdi-account-plus"
+                              filled
+                              label="Email"
+                              placeholder="john-doe@example.com">
 
-      </v-text-field>
-      <v-btn depressed color="primary" type="submit">ADD</v-btn>
-    </v-form>
+                </v-text-field>
+                <v-btn color="primary" depressed type="submit">ADD</v-btn>
+              </v-form>
+            </v-col>
+          </v-row>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-container>
 </template>
 
@@ -60,11 +75,11 @@ export default {
     return {
       people: [],
       emailRule: [
-          v => !!v || 'Email is required',
-          v => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return pattern.test(v) || "Invalid email";
-          }
+        v => !!v || 'Email is required',
+        v => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(v) || "Invalid email";
+        }
       ],
       newEmail: '',
       showRemoveDialog: false,
@@ -76,7 +91,7 @@ export default {
     this.getWorkspaceMembers();
   },
   computed: {
-    getWorkspaceId: function (){
+    getWorkspaceId: function () {
       return this.$route.params.workspace
     }
   },
@@ -124,7 +139,7 @@ export default {
       }).catch();
     },
     getImageUrl: function (img) {
-      return img ? axios.defaults.baseURL + img: '';
+      return img ? axios.defaults.baseURL + img : '';
     }
   },
 }
@@ -132,6 +147,7 @@ export default {
 
 <style lang="scss" scoped>
 .add-form {
-  width: max-content;
+  //width: min-content;
+  max-width: 400px;
 }
 </style>

@@ -5,7 +5,7 @@ import Login from '../views/Login'
 import SignUp from '../views/SignUp'
 import Workspaces from "@/views/Workspaces";
 import Teams from "@/views/Teams"
-import Settings from "@/views/Settings";
+import Settings from "@/views/teams-subpaths/Settings";
 import Dispatch from "@/views/Dispatch";
 import Posts from "@/views/teams-subpaths/Posts"
 

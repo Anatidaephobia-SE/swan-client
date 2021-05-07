@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     getTwitter: function () {
-      this.$store.dispatch('getTwitterAccount', 15).then(resp => {
+      this.$store.dispatch('getTwitterAccount', this.workspaceId).then(resp => {
         const data = resp.data
         this.twitter = {
           name: data.name,

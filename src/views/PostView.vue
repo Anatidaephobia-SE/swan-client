@@ -26,28 +26,10 @@ export default {
     }
   },
   mounted() {
-    const id = this.$route.params.postId
+    const id = this.$route.query.pID
     this.getPostData(id)
   },
   computed: {
-    post: function () {
-      const post = {
-        name: 'My Post',
-        caption: 'Yooooo, SUP!',
-        tag: 'Sales',
-        team: 1,
-        multimedia: '',
-        status: 'Published',
-        created_at: '2020-04-10 20:31:12',
-        owner: {
-          email: 'amir-esmaeili@outlook.com',
-          first_name: 'Amir',
-          last_name: 'Esmaeili',
-          profile_picture: 'https://i.pravatar.cc/30'
-        },
-      }
-      return post
-    }
   }
 }
 </script>

@@ -42,7 +42,7 @@ const postModule = {
       name: '',
       caption: '',
       tag: '',
-      team: 15,
+      team: '',
       multimedia: [],
       status: '',
       created_at: ''
@@ -109,6 +109,7 @@ const postModule = {
       state.post.caption = payload.caption
       state.post.tag = payload.tag
       state.post.multimedia = payload.multimedia
+      state.post.team = payload.team
     },
     SET_STATUS: function (state, status) {
       state.post.status = status
@@ -146,7 +147,7 @@ const postModule = {
         name: '',
         caption: '',
         team: '',
-        multimedia: '',
+        multimedia: [],
         status: '',
         created_at: ''
       }

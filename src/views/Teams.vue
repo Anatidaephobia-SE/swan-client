@@ -9,10 +9,10 @@
         <v-list-item class="px-3">
           <v-list-item-avatar class="rounded">
             <UserAvatar
-              :alt="team.name"
-              :image="team.logo"
-              other-cls="rounded mr-2"
-              :size="40"/>
+                :alt="team.name"
+                :image="team.logo"
+                :size="40"
+                other-cls="rounded mr-2"/>
           </v-list-item-avatar>
         </v-list-item>
 
@@ -22,7 +22,10 @@
               {{ team.name }}
             </v-list-item-title>
             <v-list-item-subtitle>Admin: {{ team.head_name }}</v-list-item-subtitle>
-            <v-list-item-subtitle> <v-icon>mdi-account-multiple</v-icon>{{ team.members }}</v-list-item-subtitle>
+            <v-list-item-subtitle>
+              <v-icon>mdi-account-multiple</v-icon>
+              {{ team.members }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -41,7 +44,7 @@
           <v-list-item-title>{{ item.label }}</v-list-item-title>
         </v-list-item>
 
-        <Post :dialog="dialog" :edit-mode="false" @close="closeDialog" :key="dialogKey"/>
+        <Post :key="dialogKey" :dialog="dialog" :edit-mode="false" @close="closeDialog"/>
       </v-list>
     </v-navigation-drawer>
 
@@ -110,14 +113,14 @@ export default {
             this.team = resp.data.team
             console.log(this.team)
           }).catch(err => {
-            console.log(err)
+        console.log(err)
       })
     }
   },
   computed: {
     drawer() {
       return [
-        {label: 'Posts', link: `posts`, icon: 'mdi-note'},
+        {label: 'Posts', link: 'posts', icon: 'mdi-note'},
         {label: 'Create new post', link: `compose`, icon: 'mdi-note-plus'},
         {label: 'Settings', link: `settings`, icon: 'mdi-cog'},
       ]

@@ -7,7 +7,8 @@ import axios from 'axios'
 
 // axios.defaults.baseURL = 'http://anatidaephobia.pythonanywhere.com/'
 
-axios.defaults.baseURL = 'http://api.stage.swan-app.ir'
+axios.defaults.baseURL = 'https://api.stage.swan-app.ir'
+// axios.defaults.baseURL = "http://localhost:9090"
 const token = localStorage.getItem('token')
 if (token) {
   // Set the token for auth header

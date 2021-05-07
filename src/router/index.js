@@ -4,8 +4,6 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login'
 import SignUp from '../views/SignUp'
 import Workspaces from "@/views/Workspaces";
-import Invites from "@/views/Invites";
-import Calendar from "@/views/Calendar";
 import Teams from "@/views/Teams"
 import Settings from "@/views/Settings";
 import Dispatch from "@/views/Dispatch";
@@ -24,27 +22,25 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    redirect: '/workspaces',
     beforeEnter: (to, from, next) => {
-      // if (store.getters.isLoggedIn) {
-      //   next()
-      // } else {
-      //   next('/login')
-      // }
+      if (store.getters.isLoggedIn) {
+        next()
+      } else {
+        next('/login')
+      }
     },
     children: [
-      {path: 'workspaces', name: 'Workspaces', component: Workspaces},
+      {path: '', name: 'Workspaces', component: Workspaces},
       {path: 'profile', name: 'Profile', component: Profile}
     ]
   },
   {
     path: '/workspace/:workspace/',
     name: 'Workspace',
-    redirect: '/workspace/:workspace/posts',
     component: Teams,
     children: [
       {path: 'posts', name: 'Posts', component: Posts},
-      {path: 'posts/:postId', name: 'PostView', component: PostView},
+      {path: 'post', name: 'PostView', component: PostView},
       {path: 'settings', name: 'Settings', component: Settings},
       {path: 'compose', name: 'Compose', component: Compose},
     ]
@@ -69,11 +65,6 @@ const routes = [
     name: 'Logout',
     component: Logout
   },
-  {
-    path: '/post',
-    name: 'Post',
-    component: PostView
-  }
 ]
 
 const router = new VueRouter({

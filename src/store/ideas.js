@@ -40,12 +40,19 @@ const ideaModule = {
     ],
     done: []
   },
-  actions: {},
+  actions: {
+    createCard: function ({commit}, payload) {
+      // return new Promise((resolve, reject) => {
+      //
+      // })
+      commit('ADD_CARD', payload)
+    }
+  },
   mutations: {
     ADD_CARD: function (state, payload) {
+      console.log(payload)
       const board = payload.board
-      const card = payload.card
-      state[board].push(card)
+      state[board].push(payload)
     }
   },
   getters: {}

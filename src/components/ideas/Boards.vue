@@ -8,16 +8,16 @@
           elevation="1">
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <v-spacer/>
-        <v-btn icon small>
+        <v-btn icon small @click="addCardDialog = true">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
       <draggable
           v-bind="dragOptions"
-          class="list-group pa-2"
+          :emptyInsertThreshold="100"
+          class="list-group pa-2 card-gp"
           tag="ul"
           @end="drag = false"
-          :emptyInsertThreshold="100"
           @start="drag = true">
         <transition-group :name="!drag ? 'flip-list' : null"
                           style="height: 100px;background-color: pink"
@@ -31,6 +31,8 @@
         </transition-group>
       </draggable>
     </v-card>
+
+    <AddCard :board="boardName" :dialog="addCardDialog" @close-dialog="addCardDialog = false" />
   </v-container>
 </template>
 
@@ -38,17 +40,19 @@
 import {mapMutations, mapState} from 'vuex'
 import Card from "@/components/ideas/Card";
 import draggable from "vuedraggable"
+import AddCard from "@/components/ideas/AddCard";
 
 export default {
   name: "Boards",
-  components: {Card, draggable},
+  components: {AddCard, Card, draggable},
   props: {
     title: String,
     boardName: String,
   },
   data() {
     return {
-      drag: false
+      drag: false,
+      addCardDialog: false
     }
   },
   mounted() {
@@ -76,7 +80,7 @@ export default {
 
 <style lang="scss" scoped>
 .card-gp {
-  max-height: calc(100vh - 300px);
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
   min-height: 200px;
 }

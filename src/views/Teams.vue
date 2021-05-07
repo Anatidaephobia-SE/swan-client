@@ -124,6 +124,7 @@ export default {
       return [
         {label: 'Posts', link: 'posts', icon: 'mdi-note'},
         {label: 'Create new post', link: `compose`, icon: 'mdi-note-plus'},
+        {label: 'Ideas', link: 'ideas', icon: 'mdi-clipboard-list-outline'},
         {label: 'Settings', link: `settings`, icon: 'mdi-cog'},
       ]
     },

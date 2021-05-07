@@ -3,35 +3,40 @@ const ideaModule = {
   state: {
     todo: [
       {
-        title: 'Card1',
-        context: 'Description1',
-        writer: {
-          email: 'writer1@example.com'
+        title: 'Up-coming event',
+        context: 'We should create a post for an up-coming event. It is very important and boss is looking forward to it',
+        tag: 'High Priority',
+        assignee: {
+          email: 'amiresm17@gmail.com',
+          profile_picture: '/media/userprofile/1/download_GkybDRE.png',
+          first_name: 'Amir',
+          last_name: 'Esmaeili'
         }
       },
       {
-        title: 'Card2',
-        context: 'Description2',
-        writer: {
-          email: 'writer2@example.com'
+        title: 'Change the header of twitter',
+        context: 'Tell the design dept. to create a new header image',
+        tag: 'Low Priority',
+        assignee: {
+          email: 'amiresm17@gmail.com',
+          profile_picture: '',
+          first_name: 'Ali',
+          last_name: 'Esmaeili'
         }
       }
     ],
     inProgress: [
       {
-        title: 'Card3',
-        context: 'Description3',
-        writer: {
-          email: 'writer3@example.com'
+        title: 'Create a post for off season',
+        context: 'Twit an announcement for off',
+        tag: 'Medium Priority',
+        assignee: {
+          email: 'amiresm17@gmail.com',
+          profile_picture: '',
+          first_name: 'Bob',
+          last_name: 'Esmaeili'
         }
       },
-      {
-        title: 'Card4',
-        context: 'Description4',
-        writer: {
-          email: 'writer4@example.com'
-        }
-      }
     ],
     done: []
   },

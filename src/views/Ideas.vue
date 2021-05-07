@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col md="4">
-      <Boards title="ToDo" board-name="todo"/>
+      <Boards title="To Do" board-name="todo"/>
     </v-col>
     <v-col md="4">
       <Boards title="In Progress" board-name="inProgress"/>

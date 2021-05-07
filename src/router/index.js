@@ -14,6 +14,7 @@ import store from '../store/index'
 import Profile from "@/views/Profile";
 import PostView from "@/views/teams-subpaths/PostView";
 import Compose from "@/views/teams-subpaths/Compose";
+import Ideas from "@/views/Ideas";
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,7 @@ const routes = [
       {path: 'post', name: 'PostView', component: PostView},
       {path: 'settings', name: 'Settings', component: Settings},
       {path: 'compose', name: 'Compose', component: Compose},
+      {path: 'ideas', name: 'Ideas', component: Ideas}
     ]
   },
   {

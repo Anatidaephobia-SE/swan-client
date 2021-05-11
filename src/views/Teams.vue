@@ -1,18 +1,22 @@
 <template>
   <v-card class="home">
     <v-navigation-drawer
-        app class="rounded-0"
-        dark enable-resize-watcher expand-on-hover mini-variant
-        permanent
+        v-model="navDrawer"
+        :expand-on-hover="$vuetify.breakpoint.mdAndUp"
+        :permanent="$vuetify.breakpoint.mdAndUp"
+        app
+        class="rounded-0"
+        dark
+        enable-resize-watcher
     >
       <v-list class="mt-8">
         <v-list-item class="px-3">
           <v-list-item-avatar class="rounded">
             <UserAvatar
-              :alt="team.name"
-              :image="team.logo"
-              other-cls="rounded mr-2"
-              :size="40"/>
+                :alt="team.name"
+                :image="team.logo"
+                :size="40"
+                other-cls="rounded mr-2"/>
           </v-list-item-avatar>
         </v-list-item>
 
@@ -22,7 +26,10 @@
               {{ team.name }}
             </v-list-item-title>
             <v-list-item-subtitle>Admin: {{ team.head_name }}</v-list-item-subtitle>
-            <v-list-item-subtitle> <v-icon>mdi-account-multiple</v-icon>{{ team.members }}</v-list-item-subtitle>
+            <v-list-item-subtitle>
+              <v-icon>mdi-account-multiple</v-icon>
+              {{ team.members }}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -41,7 +48,6 @@
           <v-list-item-title>{{ item.label }}</v-list-item-title>
         </v-list-item>
 
-        <Post :dialog="dialog" :edit-mode="false" @close="closeDialog" :key="dialogKey"/>
       </v-list>
     </v-navigation-drawer>
 
@@ -50,9 +56,10 @@
         :clipped-left="false"
         app
         class="toolbar rounded-0" dense flat>
-
+      <v-app-bar-nav-icon
+          v-if="$vuetify.breakpoint.smAndDown"
+          @click.stop="navDrawer = !navDrawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ team.name }}</v-toolbar-title>
-
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{on, attr}">
@@ -94,13 +101,11 @@ export default {
       team: {
         name: ""
       },
-      pathName: '',
-      dialogKey: Math.random()
+      navDrawer: false
     }
   },
   methods: {
     closeDialog: function () {
-      this.dialog = false;
       this.$router.push('posts')
       setTimeout(() => this.dialogKey = Math.random(), 300)
     },
@@ -110,14 +115,14 @@ export default {
             this.team = resp.data.team
             console.log(this.team)
           }).catch(err => {
-            console.log(err)
+        console.log(err)
       })
     }
   },
   computed: {
     drawer() {
       return [
-        {label: 'Posts', link: `posts`, icon: 'mdi-note'},
+        {label: 'Posts', link: 'posts', icon: 'mdi-note'},
         {label: 'Create new post', link: `compose`, icon: 'mdi-note-plus'},
         {label: 'Settings', link: `settings`, icon: 'mdi-cog'},
       ]
@@ -131,15 +136,8 @@ export default {
   },
   created() {
     this.getWorkspaceInfo()
-    this.pathName = this.$route.name
   },
-  watch: {
-    $route() {
-      if (this.$route.meta.compose === true) {
-        this.dialog = true
-      }
-    }
-  }
+  watch: {}
 };
 </script>
 

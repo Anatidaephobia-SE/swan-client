@@ -59,9 +59,27 @@
       <v-col v-for="p in filteredPosts" :key="p.id" cols="12" lg="3" md="4" sm="6" xl="3">
         <Post :post="p" @clickedOn="goToPost(p.id)"/>
       </v-col>
+      <v-col
+          class="text-center"
+          cols="12"
+          v-if="posts.length === 0" >
+        <v-img
+            max-height="400"
+            contain
+            :src="require('@/assets/graphics/blank.svg')" />
+        <span>It's empty here, add a post now!</span>
+      </v-col>
+      <v-col
+          class="text-center"
+          cols="12"
+          v-else-if="filteredPosts.length === 0" >
+        <v-img
+            max-height="400"
+            contain
+            :src="require('@/assets/graphics/empty.svg')" />
+        <span>Not a single one!</span>
+      </v-col>
     </v-row>
-
-    <PostDialog :id="selectedPostId" :key="key" :dialog="dialog" :edit-mode="true" @close="closeDialog"/>
   </v-container>
 </template>
 
@@ -87,13 +105,13 @@ export default {
       searchStatus: []
     }
   },
-  created() {
+  mounted() {
     this.getAllPosts()
   },
   methods: {
     getAllPosts: function () {
       const teamID = this.$route.params.workspace
-      this.$store.dispatch('getAllPosts', teamID).then(resp => {
+      this.$store.dispatch('post/getAllPosts', teamID).then(resp => {
         this.posts = resp.data
         this.filteredPosts = this.posts
       }).catch()
@@ -111,7 +129,7 @@ export default {
       setTimeout(() => this.key = Math.random(), 300)
     },
     routeToSelectedPostId() {
-      this.$router.push(`${this.$route.path}/${this.selectedPostId}`)
+      this.$router.push({path: 'post', query: {pID: this.selectedPostId}})
     },
     searchPost: function () {
       const keyword = this.searchKey.toLowerCase()

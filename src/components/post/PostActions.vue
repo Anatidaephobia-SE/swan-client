@@ -17,7 +17,7 @@
              :key="i"
              :color="b.color"
              :disabled="!canEdit"
-             :small="$vuetify.breakpoint.mobile"
+             :x-small="$vuetify.breakpoint.mobile"
              depressed
              @click="action(b.type)">{{ b.label }}
       </v-btn>

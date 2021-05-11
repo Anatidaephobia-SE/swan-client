@@ -158,6 +158,7 @@ export default {
       this.$store.commit('post/SET_POST_DATA', post);
     },
     multimediaAdded: function () {
+      console.log(this.image)
       this.post.multimedia.push(this.image)
       this.image = ''
       this.setPostData()

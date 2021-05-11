@@ -27,7 +27,7 @@ const authModule = {
   actions: {
     login({commit}, user) {
       return new Promise((resolve, reject) => {
-        axios.post('/api/v1.1.0/users/login/', user)
+        axios.post('/api/v1/users/login/', user)
           .then(resp => {
             const payload = resp.data;
             localStorage.setItem('token', payload.token);
@@ -43,7 +43,7 @@ const authModule = {
     },
     register(_, user) {
       return new Promise((resolve, reject) => {
-        axios({url: '/api/v1.1.0/users/signup/', data: user, method: 'POST'})
+        axios({url: '/api/v1/users/signup/', data: user, method: 'POST'})
           .then(resp => {
             resolve(resp)
           })
@@ -62,7 +62,7 @@ const authModule = {
         body.append('profile_picture', user.profileImg)
       }
       return new Promise((resolve, reject) => {
-        axios.put('/api/v1.1.0/users/profile/update/', body)
+        axios.put('/api/v1/users/profile/update/', body)
           .then(resp => {
             const user = resp.data.user
             commit('updateUser', user)
@@ -75,7 +75,7 @@ const authModule = {
     },
     getUserInfo({commit}) {
       return new Promise((resolve, reject) => {
-        axios.get('/api/v1.1.0/users/profile')
+        axios.get('/api/v1/users/profile')
           .then(resp => {
             commit('updateUser', resp.data);
             resolve(resp);

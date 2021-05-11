@@ -34,10 +34,11 @@
             color="primary"
             depressed
             type="submit"
+            ref="login"
         >Login
         </v-btn
         >
-        <v-btn class="ma-1" color="primary" outlined to="/sign-up"
+        <v-btn ref="test" to="/sign-up" class="ma-1" color="primary" outlined
         >Sign Up
         </v-btn
         >

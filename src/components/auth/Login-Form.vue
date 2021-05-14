@@ -1,6 +1,6 @@
 <template>
   <div class="login-form">
-    <v-form v-model="valid" @submit.prevent="login">
+    <v-form v-model="valid" @submit.prevent="login" ref="loginForm">
       <v-container>
         <p style="font-size: 14px">
           Welcome back! Please login to your account.
@@ -38,10 +38,10 @@
         >Login
         </v-btn
         >
-        <v-btn ref="test" to="/sign-up" class="ma-1" color="primary" outlined
+        <v-btn to="/sign-up" ref="signup" class="ma-1" color="primary" outlined
         >Sign Up
-        </v-btn
-        >
+        </v-btn>
+        <v-btn ref="test" @click="login">df</v-btn>
       </v-container>
     </v-form>
   </div>

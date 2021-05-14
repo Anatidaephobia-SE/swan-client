@@ -8,6 +8,8 @@ localVue.use(Vuetify);
 localVue.use(Vuex)
 localVue.use(VueRouter)
 
+
+
 describe("Testing Login-Form.vue", () => {
   let store, actions;
   actions = {
@@ -36,7 +38,7 @@ describe("Testing Login-Form.vue", () => {
   it('should form submit trigger login function', async function () {
     const form = wrapper.findComponent({ref: 'loginForm'})
     form.trigger('submit.prevent')
-    await  wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
     expect(actions.login).toHaveBeenCalled()
   });
   it('should trigger submit event', async function () {
@@ -53,5 +55,5 @@ describe("Testing Login-Form.vue", () => {
     const btn = wrapper.findComponent({ref: "signup"})
     expect(btn.exists()).toBeTruthy()
     expect(btn.props('to')).toBe("/sign-up")
-  });
+  })
 })

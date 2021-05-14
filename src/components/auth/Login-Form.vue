@@ -38,10 +38,8 @@
         >Login
         </v-btn
         >
-        <v-btn to="/sign-up" ref="signup" class="ma-1" color="primary" outlined
-        >Sign Up
+        <v-btn to="/sign-up" ref="signup" class="ma-1" color="primary" outlined>
         </v-btn>
-        <v-btn ref="test" @click="login">df</v-btn>
       </v-container>
     </v-form>
   </div>

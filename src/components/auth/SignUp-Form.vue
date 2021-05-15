@@ -7,7 +7,7 @@
       </v-stepper-step>
 
       <v-stepper-content step="1">
-        <v-form v-model="valid" @submit.prevent="signUp">
+        <v-form ref="register" v-model="valid" @submit.prevent="signUp">
           <v-container>
             <p>Create a new account now! and gather your team around.</p>
             <v-text-field
@@ -37,11 +37,19 @@
             </v-text-field>
 
             <v-btn
+                ref="signupBtn"
                 :disabled="loading || !valid"
                 :loading="loading"
                 color="primary"
                 depressed
                 type="submit"
+            >Sign Up
+            </v-btn
+            >
+
+            <v-btn
+                ref="test"
+                @click="$emit('hello')"
             >Sign Up
             </v-btn
             >
@@ -54,7 +62,7 @@
       </v-stepper-step>
 
       <v-stepper-content step="2">
-        <v-form v-model="valid" @submit.prevent="updateAddInfo">
+        <v-form v-model="valid" ref="updateProfile" @submit.prevent="updateAddInfo">
           <v-container>
             <v-file-input v-model="profileImg" filled label="profile picture">
             </v-file-input>
@@ -150,7 +158,7 @@ export default {
           })
           .finally(() => this.loading = false);
     },
-    updateAddInfo: async function () {
+    updateAddInfo: function () {
       this.loading = true;
       const data = {
         firstname: this.firstname,

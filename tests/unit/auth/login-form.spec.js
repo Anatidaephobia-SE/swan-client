@@ -1,19 +1,21 @@
-import {mount, shallowMount, createLocalVue} from "@vue/test-utils";
+import {createLocalVue, mount} from "@vue/test-utils";
 import LoginForm from "@/components/auth/Login-Form"
 import Vuetify from 'vuetify';
 import Vuex from "vuex"
 import VueRouter from 'vue-router'
+import Vue from "vue"
+Vue.use(Vuetify)
 const localVue = createLocalVue()
 localVue.use(Vuetify);
 localVue.use(Vuex)
 localVue.use(VueRouter)
 
 
-
 describe("Testing Login-Form.vue", () => {
   let store, actions;
   actions = {
-    login: jest.fn()
+    login: jest.fn(),
+    register: jest.fn()
   }
   store = new Vuex.Store({
     modules: {
@@ -22,10 +24,7 @@ describe("Testing Login-Form.vue", () => {
       }
     }
   })
-  const routes = [
-    {path: '/sign-up', name: 'signup'}
-  ]
-  const router = new VueRouter({routes})
+  const router = new VueRouter()
   const wrapper = mount(LoginForm, {
     router,
     localVue,

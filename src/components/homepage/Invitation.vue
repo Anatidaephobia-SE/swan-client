@@ -16,8 +16,8 @@
     </v-row>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" @click="reject" x-small outlined>Reject</v-btn>
-      <v-btn color="primary" @click="accept" x-small depressed>Accept</v-btn>
+      <v-btn color="primary" ref="reject" @click="reject" x-small outlined>Reject</v-btn>
+      <v-btn color="primary" ref="accept" @click="accept" x-small depressed>Accept</v-btn>
     </v-card-actions>
   </v-card>
 </template>

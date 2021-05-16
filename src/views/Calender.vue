@@ -22,7 +22,7 @@
               :class="attr.customData.class"
             >
               {{ attr.customData.title }}
-              <v-icon size="18" style="float:right">mdi-timelapse</v-icon>
+              <v-icon size="18" style="float:right">{{ attr.customData.icon }}</v-icon>
             </p>
           </div>
         </div>
@@ -37,6 +37,7 @@ export default {
     const month = new Date().getMonth();
     const year = new Date().getFullYear();
     return {
+      posts: [],
       masks: {
         weekdays: 'WWW',
       },
@@ -44,87 +45,140 @@ export default {
         {
           key: 1,
           customData: {
-            title: 'Lunch with mom.',
-            class: 'bg-red-600 text-white',
+            title: 'Lolo1',
+            class: this.getColor(new Date(year, month, 1), "Published"),
+            icon: this.getIcon(new Date(year, month, 1)),
           },
           dates: new Date(year, month, 1),
-          icon: 'mdi-timelapse',
         },
         {
           key: 2,
           customData: {
-            title: 'Take Noah to basketball practice',
-            class: 'bg-blue-500 text-white',
+            title: 'Lolo2',
+            class: this.getColor(new Date(year, month, 2), "Published"),
+            icon: this.getIcon(new Date(year, month, 2)),
           },
           dates: new Date(year, month, 2),
-          icon: 'mdi-timelapse',
         },
         {
           key: 3,
           customData: {
-            title: "Noah's basketball game.",
-            class: 'bg-blue-500 text-white',
+            title: "lili1",
+            class: this.getColor(new Date(year, month, 5), "Published"),
+            icon: this.getIcon(new Date(year, month, 5)),
           },
           dates: new Date(year, month, 5),
-          icon: 'mdi-timelapse',
         },
         {
           key: 4,
           customData: {
-            title: 'Take car to the shop',
-            class: 'bg-indigo-500 text-white',
+            title: 'Post 2',
+            class: this.getColor(new Date(year, month, 5), "Published"),
+            icon: this.getIcon(new Date(year, month, 5)),
           },
           dates: new Date(year, month, 5),
-          icon: 'mdi-timelapse',
         },
         {
           key: 4,
           customData: {
-            title: 'Meeting with new client.',
-            class: 'bg-teal-500 text-white',
+            title: 'Doraraaaaaa!',
+            class: this.getColor(new Date(year, month, 7), "Published"),
+            icon: this.getIcon(new Date(year, month, 7)),
           },
           dates: new Date(year, month, 7),
-          icon: 'mdi-timelapse',
         },
         {
           key: 5,
           customData: {
-            title: "Mia's gymnastics practice.",
-            class: 'bg-pink-500 text-white',
+            title: "horaaaaa :)",
+            class: this.getColor(new Date(year, month, 11), "Published"),
+            icon: this.getIcon(new Date(year, month, 11)),
           },
           dates: new Date(year, month, 11),
-          icon: 'mdi-timelapse',
         },
         {
           key: 6,
           customData: {
-            title: 'Cookout with friends.',
-            class: 'bg-orange-500 text-white',
+            title: 'riders on storm',
+            class: this.getColor(new Date(year, month, 11), "Published"),
+            icon: this.getIcon(new Date(year, month, 11)),
           },
           dates: { months: 5, ordinalWeekdays: { 2: 1 } },
-          icon: 'mdi-timelapse',
         },
         {
           key: 7,
           customData: {
-            title: "Mia's gymnastics recital.",
-            class: 'bg-pink-500 text-white',
+            title: "resiidiii",
+            class: this.getColor(new Date(year, month, 22), "Published"),
+            icon: this.getIcon(new Date(year, month, 22)),
           },
           dates: new Date(year, month, 22),
-          icon: 'mdi-timelapse',
         },
         {
           key: 8,
           customData: {
-            title: 'Visit great grandma.',
-            class: 'bg-red-600 text-white',
+            title: 'Nope',
+            class: this.getColor(new Date(year, month, 25), "Published"),
+            icon: this.getIcon(new Date(year, month, 25)),
           },
           dates: new Date(year, month, 25),
-          icon: 'mdi-timelapse',
         },
       ],
     };
   },
+  mounted() {
+    this.getAllPosts()
+  },
+  methods: {
+    getAllPosts: function () {
+      const teamID = this.$route.params.workspace
+      this.$store.dispatch('post/getAllPosts', teamID).then(resp => {
+        this.posts = resp.data
+        this.fillCalender()
+        console.log(resp.data)
+      }).catch()
+    },
+    fillCalender() {
+      console.log(this.posts)
+      var postIndex
+      for (postIndex in this.posts) {
+        this.attributes.push({
+          key: postIndex,
+          customData: {
+            title: this.posts[postIndex].name,
+            class: this.getColor(new Date(this.posts[postIndex].created_at), this.posts[postIndex].status),
+            icon: this.getIcon(new Date(this.posts[postIndex].created_at)),
+          },
+          dates: new Date(this.posts[postIndex].created_at),
+        })
+      }
+    },
+    getIcon(date) {
+      var now = new Date()
+      console.log(now)
+      console.log(date)
+      console.log(now > date)
+
+      if (now > date) {
+        return 'mdi-checkbox-marked-circle-outline'
+      } else {
+        return 'mdi-timelapse'
+      }
+    },
+    getColor(date, postStatus) {
+      var nowMinus1 = new Date();
+      var now = new Date();
+      nowMinus1.setHours(now.getHours() - 1);
+
+      if (((date > nowMinus1) || (date < now)) && postStatus != 'Published') {
+        return 'bg-blue-500 text-white'
+      } else if (date > now) {
+        return 'bg-indigo-500 text-white'
+      } else {
+        return 'bg-green-600 text-white'
+      }
+    }
+  }
 };
 </script>
 
@@ -176,6 +230,17 @@ export default {
     &:not(.on-right) {
       border-right: var(--day-border);
     }
+  }
+  & .is-today {
+      border: hotpink;
+      &.vc-day {
+          background-color: white;
+          &.weekday-1,
+          &.weekday-7 {
+          background-color: #eff8ff;
+          border: 2px dashed #f56565!important;
+        }
+      }
   }
   & .vc-day-dots {
     margin-bottom: 5px;

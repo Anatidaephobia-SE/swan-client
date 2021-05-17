@@ -17,6 +17,7 @@
           label="Workspace Name"
           placeholder="My New Workspace"
           :rules="nameRule"
+          ref="name"
           filled>
       </v-text-field>
 
@@ -26,6 +27,7 @@
           label="Workspace Url"
           placeholder="my_workspace"
           :rules="urlRule"
+          ref="url"
           filled>
       </v-text-field>
       <v-file-input

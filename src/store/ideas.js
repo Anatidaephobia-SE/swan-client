@@ -22,6 +22,14 @@ const ideaModule = {
     deleteCard: async function({commit}, cardId) {
       const response = await axios.delete(`api/v1/postideas/Delete_Card/${cardId}/`)
       return response.data
+    },
+    moveCard: async function({commit}, card) {
+      const body = {
+        status: card.status
+      }
+      const response = await axios.put(`api/v1/postideas/Move_Card/${card.id}/`, body)
+      const data = response.data
+      // commit('ADD_CARD', card)
     }
   },
   mutations: {
@@ -34,6 +42,10 @@ const ideaModule = {
       state.todo = payload.todo
       state.inProgress = payload.inProgress
       state.done = payload.done
+    },
+    REMOVE_CARD: function (state, payload) {
+      const list = payload.status
+      state[list] = state[list].filter((c) => c.id !== payload.id)
     }
   },
   getters: {}

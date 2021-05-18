@@ -13,10 +13,13 @@
         </v-btn>
       </v-toolbar>
       <draggable
+          @change="cardMoved"
           v-bind="dragOptions"
           :emptyInsertThreshold="100"
           class="list-group pa-2 card-gp"
           tag="ul"
+          :list="boards[boardName]"
+          group="cards"
           @end="drag = false"
           @start="drag = true">
         <transition-group :name="!drag ? 'flip-list' : null"
@@ -37,7 +40,7 @@
 </template>
 
 <script>
-import {mapMutations, mapState} from 'vuex'
+import {mapActions, mapMutations, mapState} from 'vuex'
 import Card from "@/components/ideas/Card";
 import draggable from "vuedraggable"
 import AddCard from "@/components/ideas/AddCard";
@@ -72,8 +75,21 @@ export default {
   },
   methods: {
     ...mapMutations({
-      addCard: 'ideas/ADD_CARD'
-    })
+      addCard: 'ideas/ADD_CARD',
+      removeCard: 'ideas/REMOVE_CARD'
+    }),
+    ...mapActions('ideas', ['moveCard']),
+    cardMoved: function (event) {
+      console.log(event)
+      if (event.removed) {
+        const card = event.removed.element
+        // this.removeCard(card)
+      } else if (event.added) {
+        const card = event.added.element
+        card.status = this.boardName
+        this.moveCard(card)
+      }
+    }
   }
 }
 </script>

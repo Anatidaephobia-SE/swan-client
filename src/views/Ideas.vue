@@ -16,10 +16,17 @@
 
 <script>
 import Boards from "@/components/ideas/Boards";
-
+import {mapActions} from "vuex"
 export default {
   name: "Ideas",
-  components: {Boards}
+  components: {Boards},
+  methods: {
+    ...mapActions('ideas', ['getCards'])
+  },
+  created() {
+    const teamId = this.$route.params.workspace
+    this.getCards(teamId)
+  }
 }
 </script>
 

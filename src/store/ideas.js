@@ -1,61 +1,41 @@
+import axios from "axios";
+
 const ideaModule = {
   namespaced: true,
   state: {
-    todo: [
-      {
-        title: 'Up-coming event',
-        context: 'We should create a post for an up-coming event. It is very important and boss is looking forward to it',
-        tag: 'High Priority',
-        assignee: {
-          email: 'amiresm17@gmail.com',
-          profile_picture: '/media/userprofile/1/download_GkybDRE.png',
-          first_name: 'Amir',
-          last_name: 'Esmaeili'
-        }
-      },
-      {
-        title: 'Change the header of twitter',
-        context: 'Tell the design dept. to create a new header image',
-        tag: 'Low Priority',
-        assignee: {
-          email: 'amiresm17@gmail.com',
-          profile_picture: '',
-          first_name: 'Ali',
-          last_name: 'Esmaeili'
-        }
-      }
-    ],
-    inProgress: [
-      {
-        title: 'Create a post for off season',
-        context: 'Twit an announcement for off',
-        tag: 'Medium Priority',
-        assignee: {
-          email: 'amiresm17@gmail.com',
-          profile_picture: '',
-          first_name: 'Bob',
-          last_name: 'Esmaeili'
-        }
-      },
-    ],
+    todo: [],
+    inProgress: [],
     done: []
   },
   actions: {
-    createCard: function ({commit}, payload) {
-      // return new Promise((resolve, reject) => {
-      //
-      // })
-      commit('ADD_CARD', payload)
+    createCard: async function ({commit}, payload) {
+      const response = await axios.post("api/v1/postideas/create_card/", payload)
+      const data = response.data
+      console.log(data)
+      commit('ADD_CARD', data)
+    },
+    getCards: async function ({commit}, team_id) {
+      const response = await axios.get(`api/v1/postideas/all_card/${team_id}`)
+      const data = response.data
+      commit('INIT_BOARD', data)
+    },
+    deleteCard: async function({commit}, cardId) {
+      const response = await axios.delete(`api/v1/postideas/Delete_Card/${cardId}/`)
+      return response.data
     }
   },
   mutations: {
     ADD_CARD: function (state, payload) {
-      console.log(payload)
-      const board = payload.board
+      const board = payload.status
+      console.log(payload.assignee)
       state[board].push(payload)
+    },
+    INIT_BOARD: function (state, payload) {
+      state.todo = payload.todo
+      state.inProgress = payload.inProgress
+      state.done = payload.done
     }
   },
   getters: {}
 }
-
 export default ideaModule;

@@ -27,7 +27,7 @@
           <v-select
               v-model="card.assignee"
               :item-text="item => item.first_name + ' ' + item.last_name"
-              :item-value="item => item"
+              :item-value="item => item.id"
               :items="members"
               append-icon="mdi-account"
               clearable
@@ -36,7 +36,7 @@
 
           </v-select>
           <v-textarea
-              v-model="card.context"
+              v-model="card.description"
               :rules="descRule"
               auto-grow
               clearable
@@ -72,17 +72,17 @@ export default {
     return {
       card: {
         title: '',
-        context: '',
+        description: '',
         tag: '',
         assignee: ''
       },
       members: [],
       titleRules: [
         v => !!v || 'Please enter a title',
-        v => v.length <= 50 || 'The title must not exceed 50 character'
+        v => (v || '').length <= 50 || 'The title must not exceed 50 character'
       ],
       descRule: [
-        v => v.length <= 250 || 'The description must not exceed 50 character'
+        v => (v || '').length <= 250 || 'The description must not exceed 50 character'
       ]
     }
   },
@@ -97,14 +97,15 @@ export default {
     },
     createCard: function () {
       const body = this.card
-      body.board = this.board
+      body.status = this.board
+      body.team = this.$route.params.workspace
       this.$store.dispatch('ideas/createCard', body)
       this.closeDialog()
     },
     closeDialog: function () {
       this.card = {
         title: '',
-        context: '',
+        description: '',
         tag: '',
         assignee: ''
       }
@@ -113,7 +114,7 @@ export default {
   },
   computed: {
     tags: function () {
-      return ['High Priority', 'Medium Priority', 'Low Priority']
+      return ['High priority', 'Medium priority', 'Low priority']
     }
   },
   mounted() {

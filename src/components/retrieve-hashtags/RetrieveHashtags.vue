@@ -16,7 +16,7 @@
                 
                 >
             </v-select>
-            <v-btn
+            <!-- <v-btn
                 class="button"
                 color="primary"
                 :loading="loading"
@@ -25,26 +25,28 @@
                 @click="getHashtags"
                 >
             Get Hashtags
-            </v-btn>
+            </v-btn> -->
             <div class="lists">
                 <v-list nav dense class="hashtag-list" v-if="this.hashtags.length != 0">
                     <v-subheader style="font-size: 20px">Trends On {{this.selected}}</v-subheader>
                     
-                    <v-list-item-group color="primary">
+                    <vue-custom-scrollbar class="scroll-area">
+                        <v-list-item-group color="primary">
 
-                        <v-list-item color="#68b3e8" v-for="hashtag in this.hashtags1" :key="hashtag">                        
-                            <a :href="`https://twitter.com/search?q=%23${hashtag.replace('#', '')}&src=typed_query`" target="_blank">{{hashtag}}</a>
-                            <v-icon @click="addToPost(hashtag)" style="margin-left: auto">mdi-plus</v-icon>
-                        </v-list-item>
+                            <v-list-item color="#68b3e8" v-for="hashtag in this.hashtags1" :key="hashtag">                        
+                                <a :href="`https://twitter.com/search?q=%23${hashtag.replace('#', '')}&src=typed_query`" target="_blank">{{hashtag}}</a>
+                                <v-icon @click="addToPost(hashtag)" style="margin-left: auto; margin-right: 5px;">mdi-plus</v-icon>
+                            </v-list-item>
 
 
-                    </v-list-item-group>
+                        </v-list-item-group>
+                    </vue-custom-scrollbar>
 
                 </v-list>
 
-                <v-list nav dense class="hashtags-list-preview" v-if="this.hashtags.length == 0 && this.selected != null">
+                <v-list nav dense class="hashtags-list-preview" v-if="this.hashtags.length == 0">
                     
-                    <v-subheader style="font-size: 20px">Press To Get Trends On {{this.selected}}</v-subheader>
+                    <v-subheader style="font-size: 20px">Select A Country To Get Trend Hashtags On It</v-subheader>
                     <v-list-item-group color="primary">
 
                         <v-list-item color="#68b3e8" >                        
@@ -69,10 +71,15 @@
 <script>
 import { mdiTrendingUp } from "@mdi/js";
 import axios from "axios";
-import PostDataVue from '../post/PostData.vue';
+import vueCustomScrollbar from 'vue-custom-scrollbar'
+import "vue-custom-scrollbar/dist/vueScrollbar.css"
+
 
 export default {
     name: "RetrieveHashtags",
+    components: {
+        vueCustomScrollbar
+    },
     data() {
         return {
             available_countries: ['Winnipeg', 'Ottawa', 'Quebec', 'Montreal', 'Toronto', 'Edmonton', 'Calgary', 'Vancouver', 'Birmingham',
@@ -132,6 +139,11 @@ export default {
             loading: false
         };
     },
+    watch: {
+        selected: function(val) {
+            this.getHashtags();
+        }
+    },
 
     methods: {
         getHashtags: function () {
@@ -182,6 +194,13 @@ export default {
     border-radius: 10px;
     margin-top: 20px;
 }
+.scroll-area {
+    position: relative;
+    margin: auto;
+    max-width: 720px;
+    height: 400px;
+}
+
 
 
 

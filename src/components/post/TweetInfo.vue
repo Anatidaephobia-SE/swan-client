@@ -1,6 +1,7 @@
 <template>
     <v-container class="pd-md-4">
-        <v-card 
+        <v-card
+            v-if="!row"
             class="mx-auto ma-4"
             :max-width="width">
             <v-toolbar :max-width="width"
@@ -41,6 +42,55 @@
 
         </v-card>
 
+        <v-card
+            v-if="row"
+            class="mx-auto ma-4"
+            :max-width="width">
+            <v-toolbar :max-width="width"
+                color="primary"
+                dark
+                dense
+                flat
+                >
+                <v-toolbar-title class="body-3" style="color: white;">
+                    Post Analytics
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-spacer></v-spacer>
+            <br>
+            <div class="d-flex justify-space-around pa-2">
+                <v-col>
+                    <v-icon>mdi-comment-outline</v-icon>
+                    <span v-if="width >= 220" style="margin-left: 7px;">Replies:</span>
+                    <br>
+                    <span class="number">{{this.tweet_info.reply_count}}</span>
+                </v-col>
+
+                <v-col>
+                    <v-icon color="blue">mdi-repeat</v-icon>
+                    <span v-if="width >= 220" style="margin-left: 7px;">Retweets:</span>
+                    <br>
+                    <span class="number">{{this.tweet_info.retweet_count}}</span>
+                </v-col>
+
+                <v-col>
+                    <v-icon color="red">mdi-heart-outline</v-icon>
+                    <span v-if="width >= 220" style="margin-left: 7px;">Likes:</span>
+                    <br>
+                    <span class="number">{{this.tweet_info.like_count}}</span>
+                </v-col>
+
+                <v-col>
+                    <v-icon color="green">mdi-pencil</v-icon>
+                    <span v-if="width >= 220" style="margin-left: 7px;">Quotes:</span>
+                    <br>
+                    <span class="number">{{this.tweet_info.qoute_count}}</span>
+                </v-col>
+            </div>
+
+        </v-card>
+
+
     </v-container>
 </template>
 
@@ -49,7 +99,7 @@
 import axios from "axios";
 export default {
     name: "TweetInfo",
-    props: ['width', 'post_id'],
+    props: ['width', 'post_id', 'row'],
     data() {
         return {
             tweet_info: {},
@@ -57,7 +107,6 @@ export default {
             show_like: false,
             show_retweet: false,
             show_qoute: false
-
         }
     },
 
@@ -100,6 +149,11 @@ export default {
     border-radius: 5px;
     font-size: 5px;
     padding: 5px;
+}
+
+.number {
+     margin-left: 30px;
+     font-size: 22px;
 }
 
 </style>

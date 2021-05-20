@@ -1,0 +1,128 @@
+<template>
+  <v-container>
+    <v-card outlined>
+      <v-toolbar
+          color="accent"
+          dark
+          dense
+          elevation="1">
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+        <v-spacer/>
+        <v-btn icon small @click="addCardDialog = true">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <draggable
+          @change="cardMoved"
+          v-bind="dragOptions"
+          :emptyInsertThreshold="100"
+          class="list-group pa-2 card-gp"
+          tag="ul"
+          :list="boards[boardName]"
+          group="cards"
+          @end="drag = false"
+          @start="drag = true">
+        <transition-group :name="!drag ? 'flip-list' : null"
+                          style="height: 100px;background-color: pink"
+                          type="transition">
+          <Card
+              v-for="(c, i) in boards[boardName]"
+              :key="i"
+              :card="c"
+              class="list-group-item">
+          </Card>
+        </transition-group>
+      </draggable>
+    </v-card>
+
+    <AddCard :board="boardName" :dialog="addCardDialog" @close-dialog="addCardDialog = false" />
+  </v-container>
+</template>
+
+<script>
+import {mapActions, mapMutations, mapState} from 'vuex'
+import Card from "@/components/ideas/Card";
+import draggable from "vuedraggable"
+import AddCard from "@/components/ideas/AddCard";
+
+export default {
+  name: "Boards",
+  components: {AddCard, Card, draggable},
+  props: {
+    title: String,
+    boardName: String,
+  },
+  data() {
+    return {
+      drag: false,
+      addCardDialog: false
+    }
+  },
+  mounted() {
+  },
+  computed: {
+    ...mapState({
+      boards: state => state.ideas
+    }),
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
+  },
+  methods: {
+    ...mapMutations({
+      addCard: 'ideas/ADD_CARD',
+      removeCard: 'ideas/REMOVE_CARD'
+    }),
+    ...mapActions('ideas', ['moveCard']),
+    cardMoved: function (event) {
+      console.log(event)
+      if (event.removed) {
+        const card = event.removed.element
+        // this.removeCard(card)
+      } else if (event.added) {
+        const card = event.added.element
+        card.status = this.boardName
+        this.moveCard(card)
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.card-gp {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.no-move {
+  transition: transform 0s;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
+.list-group {
+  min-height: 20px;
+}
+
+.list-group-item {
+  cursor: move;
+}
+
+.list-group-item i {
+  cursor: pointer;
+}
+</style>

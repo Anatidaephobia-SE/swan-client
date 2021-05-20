@@ -4,6 +4,7 @@ import authModule from './authentication'
 import snackbarModule from "@/store/snackbar";
 import postModule from "@/store/post";
 import workspaceModule from '@/store/workspace';
+import ideaModule from "@/store/ideas";
 
 Vue.use(Vuex)
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     auth: authModule,
     snackbar: snackbarModule,
     post: postModule,
-    workspace: workspaceModule
+    workspace: workspaceModule,
+    ideas: ideaModule
   }
 })

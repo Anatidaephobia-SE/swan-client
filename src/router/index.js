@@ -46,7 +46,7 @@ const routes = [
       {path: 'post', name: 'PostView', component: PostView},
       {path: 'settings', name: 'Settings', component: Settings},
       {path: 'compose', name: 'Compose', component: Compose},
-      {path: 'ideas', name: 'Ideas', component: Ideas}
+      {path: 'ideas', name: 'Ideas', component: Ideas},
       {path: 'calender', name: 'Calender', component: Calendar},
       {path: 'calender', name: 'Calender', component: Calender},
     ]

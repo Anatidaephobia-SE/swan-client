@@ -20,16 +20,19 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/develop' #for pull request only
-
     steps:
     - uses: actions/checkout@v1
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+    
+    - name: Run Tests
+      run: |
+        npm run test:unit
     - name: Build image
       run: |
         docker-compose -f ${{ env.COMPOSE_FILE }} build
     - name: Push image
+      if: github.ref == 'refs/heads/develop' #for push only
       run: |
         export DOCKER_DEV_TAG=${{ github.event.pull_request.head.sha }}
         docker login ${{ secrets.REGISTRY_URL }} --username "${{ secrets.REGISTRY_USERNAME }}" --password "${{ secrets.REGISTRY_PASSWORD }}"
@@ -40,6 +43,7 @@ jobs:
         
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop' #for push only
 

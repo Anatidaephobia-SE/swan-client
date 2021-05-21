@@ -7,6 +7,7 @@ module.exports = {
       stage: 2,
       features: {
         'nesting-rules': true,
+        'focus-within-pseudo-class': false
       },
     }),
     require('autoprefixer'),

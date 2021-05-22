@@ -2,6 +2,8 @@
   <v-container v-if="loading">
     <PostData/>
     <v-divider></v-divider>
+    <RetrieveHashtags v-if="post.status === 'Drafts'" />
+    <v-divider></v-divider>
     <TweetInfo v-if="post.status !== 'Drafts'"/>
     <v-divider></v-divider>
     <PostVisualizer/>
@@ -20,10 +22,11 @@ import Post from "@/components/post/Post";
 import PostComments from "@/components/post/PostComments";
 import TweetInfo from "@/components/post/TweetInfo";
 import {mapMutations, mapState} from "vuex";
+import RetrieveHashtags from "@/components/retrieve-hashtags/RetrieveHashtags";
 
 export default {
   name: "PostView",
-  components: {TweetInfo, PostComments, PostActions, PostVisualizer, PostData, Post},
+  components: {RetrieveHashtags, TweetInfo, PostComments, PostActions, PostVisualizer, PostData, Post},
   data() {
     return {
       loading: false

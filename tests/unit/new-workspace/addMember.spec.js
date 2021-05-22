@@ -23,7 +23,7 @@ describe("Testing adding members to workspace", () => {
         })
         const vuetify = new Vuetify({})
         const router = new VueRouter({})
-        wrapper = shallowMount(AddMember, {
+        wrapper = mount(AddMember, {
             localVue,
             store,
             router,

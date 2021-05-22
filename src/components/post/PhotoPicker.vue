@@ -13,11 +13,12 @@
         <v-row>
           <v-col v-for="(photo, i) in photos" :key="i" class="photo" md="4">
             <v-img
-                :src="photo"
-                @click="convertToFile(photo)">
+                class="rounded"
+                :src="photo.media"
+                @click="convertToFile(photo.media)">
             </v-img>
           </v-col>
-          <v-col cols="12" class="text-center">
+          <v-col cols="12" class="text-center" v-if="photos.length === 0">
             <v-img contain max-height="200" :src="require('@/assets/graphics/empty.svg')" />
             <span>There is no image yet!</span>
           </v-col>
@@ -52,7 +53,7 @@ export default {
     }
   },
   mounted() {
-    // this.getPhotos()
+    this.getPhotos()
   },
   methods: {
     getPhotos: function () {

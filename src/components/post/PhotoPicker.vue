@@ -38,6 +38,8 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "PhotoPicker",
   props: {
@@ -50,13 +52,14 @@ export default {
     }
   },
   mounted() {
-    // this.getPhotos()
+    this.getPhotos()
   },
   methods: {
     getPhotos: function () {
-      for (let i = 0; i < 20; i++) {
-        this.photos.push('https://picsum.photos/200')
-      }
+      const id = this.$route.params.workspace
+      axios.get(`/api/v1/filestorage/all_media/?team_id=${id}`).then((res) => {
+        this.photos = res.data
+      })
     },
     convertToFile: async function (img) {
       this.loading = true

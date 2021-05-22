@@ -3,7 +3,7 @@
 
     <v-card-title>
       <v-icon aria-hidden="false" class="mr-2" role="img">{{ icons.mdiTrendingUp }}</v-icon>
-      Select A Country To Get Trend Hashtags
+      Trending Hashtags
     </v-card-title>
 
     <v-card-text class="text">

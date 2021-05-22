@@ -19,7 +19,7 @@ import PostData from "@/components/post/PostData";
 import Post from "@/components/post/Post";
 import PostComments from "@/components/post/PostComments";
 import TweetInfo from "@/components/post/TweetInfo";
-import {mapState} from "vuex";
+import {mapMutations, mapState} from "vuex";
 
 export default {
   name: "PostView",
@@ -30,6 +30,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('post', ['RESET']),
     getPostData: function (id) {
       this.$store.dispatch('post/getPostById', id).then(() => this.loading = true)
     }
@@ -40,6 +41,9 @@ export default {
   },
   computed: {
     ...mapState('post', ['post'])
+  },
+  beforeDestroy() {
+    this.RESET()
   }
 }
 </script>

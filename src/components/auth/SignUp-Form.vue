@@ -44,15 +44,7 @@
                 depressed
                 type="submit"
             >Sign Up
-            </v-btn
-            >
-
-            <v-btn
-                ref="test"
-                @click="$emit('hello')"
-            >Sign Up
-            </v-btn
-            >
+            </v-btn>
           </v-container>
         </v-form>
       </v-stepper-content>
@@ -62,7 +54,7 @@
       </v-stepper-step>
 
       <v-stepper-content step="2">
-        <v-form v-model="valid" ref="updateProfile" @submit.prevent="updateAddInfo">
+        <v-form ref="updateProfile" v-model="valid" @submit.prevent="updateAddInfo">
           <v-container>
             <v-file-input v-model="profileImg" filled label="profile picture">
             </v-file-input>
@@ -150,11 +142,11 @@ export default {
       this.$store.dispatch('register', data)
           .then(() => {
             const message = "Verification email is sent";
-            this.$store.dispatch('showMessage', {message , color: 'success'})
+            this.$store.dispatch('showMessage', {message, color: 'success'})
           })
           .catch(err => {
             const message = err.response.data.message
-            this.$store.dispatch('showMessage', {message , color: 'error'})
+            this.$store.dispatch('showMessage', {message, color: 'error'})
           })
           .finally(() => this.loading = false);
     },
@@ -169,14 +161,14 @@ export default {
       this.$store.dispatch('updateUserInfo', data)
           .then(() => {
             const message = `You have registered successfully`;
-            this.$store.dispatch('showMessage', {message , color: 'success'});
+            this.$store.dispatch('showMessage', {message, color: 'success'});
             this.$router.push('/login').then();
           })
           .catch(err => {
             const message = err.response.data.error;
-            this.$store.dispatch('showMessage', {message , color: 'error'});
+            this.$store.dispatch('showMessage', {message, color: 'error'});
           })
-      .finally(() => this.loading = false)
+          .finally(() => this.loading = false)
 
     },
   },

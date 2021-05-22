@@ -2,12 +2,11 @@
   <v-card class="pa-4 my-2 ma-auto" max-width="750px" outlined>
     <v-row>
       <v-col cols="2" md="1">
-        <v-avatar
-            class="profile"
-            color="grey"
-            size="50">
-          <v-img :src="imageUrl"></v-img>
-        </v-avatar>
+        <UserAvatar
+            :image="comment.author.profile_picture"
+            :size="40"
+            :alt="comment.author.first_name">
+        </UserAvatar>
       </v-col>
       <v-col cols="9" md="10">
         <v-card-title class="mt-0 pt-0">{{ comment.author.first_name }} {{ comment.author.last_name }}</v-card-title>
@@ -43,9 +42,11 @@
 
 <script>
 import axios from "axios";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "PostComment",
+  components: {UserAvatar},
   props: {
     comment: Object
   },

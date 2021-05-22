@@ -37,7 +37,7 @@ export default {
         {label: 'publish', color: 'primary', type: 'Published'},
         {label: 'schedule', color: 'accent'},
         {label: 'draft', color: 'info', type: 'Drafts'},
-        {label: 'remove', color: 'error'}
+        // {label: 'remove', color: 'error'}
       ]
     }
   },

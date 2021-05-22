@@ -1,8 +1,11 @@
 <template>
   <v-container>
     <PostData />
+    <v-divider/>
+    <RetrieveHashtags />
     <v-divider></v-divider>
     <PostVisualizer />
+    <v-divider/>
     <PostActions />
   </v-container>
 </template>
@@ -12,9 +15,10 @@ import Post from "@/components/post/Post";
 import PostData from "@/components/post/PostData";
 import PostVisualizer from "@/components/post/PostVisualizer";
 import PostActions from "@/components/post/PostActions";
+import RetrieveHashtags from "@/components/retrieve-hashtags/RetrieveHashtags";
 export default {
   name: "Compose",
-  components: {PostActions, PostVisualizer, PostData, Post},
+  components: {RetrieveHashtags, PostActions, PostVisualizer, PostData, Post},
   data() {
     return {
       dialog: false,

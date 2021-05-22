@@ -39,6 +39,7 @@
         </v-btn
         >
         <v-btn to="/sign-up" ref="signup" class="ma-1" color="primary" outlined>
+          Sign up
         </v-btn>
       </v-container>
     </v-form>

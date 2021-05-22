@@ -13,10 +13,12 @@
           style="max-width: 750px; margin: auto"
           @submit.prevent="addComment">
         <div class="ma-2">
-          <v-avatar class="mr-2" size="40">
-            <v-img v-if="user.profile_picture" :src="imageUrl"></v-img>
-            <v-icon v-else>mdi-account</v-icon>
-          </v-avatar>
+          <UserAvatar
+            :image="user.profile_picture"
+            :alt="user.first_name"
+            :size="40"
+            class="mr-2"
+            ></UserAvatar>
           <span>{{ user.first_name }} {{ user.last_name }}:</span>
         </div>
         <v-textarea v-model="context"
@@ -43,10 +45,11 @@
 import PostComment from "@/components/post/PostComment";
 import axios from "axios";
 import {mapState} from "vuex";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "PostComments",
-  components: {PostComment},
+  components: {UserAvatar, PostComment},
   data() {
     return {
       valid: false,
@@ -76,7 +79,7 @@ export default {
       });
     },
     getAllComments: function () {
-      const id = this.$route.params.postId
+      const id = this.$route.query.pID
       this.$store.dispatch('post/getComments', id).then(resp => {
         this.comments = resp.data.reverse()
       }).catch(err => {

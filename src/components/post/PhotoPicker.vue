@@ -13,11 +13,12 @@
         <v-row>
           <v-col v-for="(photo, i) in photos" :key="i" class="photo" md="4">
             <v-img
-                :src="photo"
-                @click="convertToFile(photo)">
+                class="rounded"
+                :src="photo.media"
+                @click="convertToFile(photo.media)">
             </v-img>
           </v-col>
-          <v-col cols="12" class="text-center">
+          <v-col cols="12" class="text-center" v-if="photos.length === 0">
             <v-img contain max-height="200" :src="require('@/assets/graphics/empty.svg')" />
             <span>There is no image yet!</span>
           </v-col>
@@ -38,6 +39,8 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "PhotoPicker",
   props: {
@@ -50,13 +53,14 @@ export default {
     }
   },
   mounted() {
-    // this.getPhotos()
+    this.getPhotos()
   },
   methods: {
     getPhotos: function () {
-      for (let i = 0; i < 20; i++) {
-        this.photos.push('https://picsum.photos/200')
-      }
+      const id = this.$route.params.workspace
+      axios.get(`/api/v1/filestorage/all_media/?team_id=${id}`).then((res) => {
+        this.photos = res.data
+      })
     },
     convertToFile: async function (img) {
       this.loading = true

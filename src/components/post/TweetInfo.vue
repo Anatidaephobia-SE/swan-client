@@ -99,7 +99,7 @@
 import axios from "axios";
 export default {
     name: "TweetInfo",
-    props: ['width', 'post_id', 'row'],
+    props: {width: Number, post_id: Number, row: Boolean},
     data() {
         return {
             tweet_info: {},

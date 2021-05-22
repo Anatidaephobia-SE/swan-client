@@ -154,6 +154,9 @@ const postModule = {
         status: '',
         created_at: ''
       }
+    },
+    SET_CAPTION: function (state, caption) {
+      state.newPost.caption = caption;
     }
   },
   getters: {

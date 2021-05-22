@@ -66,11 +66,11 @@ export default {
           key: postIndex,
           customData: {
             title: this.posts[postIndex].name,
-            class: this.getColor(new Date(this.posts[postIndex].created_at), this.posts[postIndex].status),
-            icon: this.getIcon(new Date(this.posts[postIndex].created_at)),
+            class: this.getColor(new Date(this.posts[postIndex].schedule_time), this.posts[postIndex].status),
+            icon: this.getIcon(new Date(this.posts[postIndex].schedule_time)),
             postID: this.posts[postIndex].id,
           },
-          dates: new Date(this.posts[postIndex].created_at),
+          dates: new Date(this.posts[postIndex].schedule_time),
         })
       }
     },

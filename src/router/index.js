@@ -47,7 +47,6 @@ const routes = [
       {path: 'settings', name: 'Settings', component: Settings},
       {path: 'compose', name: 'Compose', component: Compose},
       {path: 'ideas', name: 'Ideas', component: Ideas},
-      {path: 'calender', name: 'Calender', component: Calendar},
       {path: 'calender', name: 'Calender', component: Calender},
     ]
   },

@@ -1,7 +1,5 @@
 <template>
   <v-container class="pa-md-4">
-    
-    <Scheduling :showScheduling="this.showScheduling"/>
     <v-card-title>
       <v-icon class="mr-2">mdi-checkbox-marked-outline</v-icon>
       Actions
@@ -30,16 +28,14 @@
 
 <script>
 import {mapState} from "vuex";
-import Scheduling from "@/components/post/Scheduling"
 
 export default {
   name: "PostActions",
-  components: {Scheduling},
   data() {
     return {
       buttons: [
         {label: 'publish', color: 'primary', type: 'Published'},
-        {label: 'schedule', color: 'accent', type: 'Schedule'},
+        {label: 'schedule', color: 'accent'},
         {label: 'draft', color: 'info', type: 'Drafts'},
         // {label: 'remove', color: 'error'}
       ]
@@ -80,7 +76,7 @@ export default {
     statusType: function () {
       return this.buttons.filter(b => b.type === this.post.status)[0]
     },
-    ...mapState('post', ['post', 'update', 'canEdit', 'showScheduling', 'schedule_time'])
+    ...mapState('post', ['post', 'update', 'canEdit'])
   }
 }
 </script>

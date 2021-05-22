@@ -52,7 +52,7 @@ export default {
     }
   },
   mounted() {
-    this.getPhotos()
+    // this.getPhotos()
   },
   methods: {
     getPhotos: function () {

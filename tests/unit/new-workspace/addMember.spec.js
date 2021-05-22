@@ -1,4 +1,4 @@
-import {createLocalVue, mount} from "@vue/test-utils";
+import {createLocalVue, mount, shallowMount} from "@vue/test-utils";
 import Vuetify from 'vuetify';
 import Vuex from "vuex"
 import VueRouter from 'vue-router'
@@ -23,7 +23,7 @@ describe("Testing adding members to workspace", () => {
         })
         const vuetify = new Vuetify({})
         const router = new VueRouter({})
-        wrapper = mount(AddMember, {
+        wrapper = shallowMount(AddMember, {
             localVue,
             store,
             router,

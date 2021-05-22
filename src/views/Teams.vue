@@ -66,7 +66,7 @@
               v-bind="attr"
               v-on="on"
               icon
-              to="/workspaces"
+              to="/"
           >
             <v-icon>mdi-logout</v-icon>
           </v-btn>

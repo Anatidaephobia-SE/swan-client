@@ -6,7 +6,7 @@
     <v-card>
       <v-card-title>Add a new card</v-card-title>
       <v-divider/>
-      <v-form @submit.prevent="createCard">
+      <v-form @submit.prevent="createCard" ref="createCardForm">
         <v-card-text class="mt-4">
           <v-text-field
               v-model="card.title"
@@ -120,7 +120,6 @@ export default {
   },
   mounted() {
     this.getWorkspaceMembers()
-    console.log(this.board)
   }
 }
 </script>

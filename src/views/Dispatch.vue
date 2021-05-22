@@ -13,7 +13,7 @@ export default {
       const url = `/workspace/${query.team_id}/settings?oauth_token=${query.oauth_token}&oauth_verifier=${query.oauth_verifier}`
       this.$router.push(url)
     } else {
-      const url = `/workspaces?team_id=${query.team_id}&oauth_token=${query.oauth_token}&oauth_verifier=${query.oauth_verifier}`
+      const url = `/?team_id=${query.team_id}&oauth_token=${query.oauth_token}&oauth_verifier=${query.oauth_verifier}`
       this.$router.push(url)
     }
   }

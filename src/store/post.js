@@ -48,7 +48,8 @@ const postModule = {
       created_at: ''
     },
     update: false,
-    canEdit: true
+    canEdit: true,
+    showScheduling: false
   },
   actions: {
     createNewPost: function ({commit, state}) {
@@ -113,6 +114,9 @@ const postModule = {
     },
     SET_STATUS: function (state, status) {
       state.post.status = status
+      if (status == 'Scheduled') {
+        state.showScheduling = true;
+      }
     },
     SET_POST_ALL: async function (state, payload) {
       const multimedia = await imageToFile(payload.multimedia)

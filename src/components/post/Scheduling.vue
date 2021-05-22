@@ -1,7 +1,7 @@
 <template>
     <v-dialog
         transition="dialog-bottom-transition"
-        v-model="show"
+        v-model="showScheduling"
         max-width="1000"
         
     >
@@ -43,7 +43,7 @@
 
             </v-row>
 
-            <v-card-text v-if="this.selected_date != null && this.selected_time != null">
+            <v-card-text v-if="this.selected_time.length < 7">
                 <span style="font-size: 20px">Post will publish on {{this.selected_date.toString()}} {{this.selected_time.toString()}}</span>
             </v-card-text>
 
@@ -63,21 +63,27 @@
 </template>
 
 <script>
+// import {mapState} from "vuex";
 
 export default {
     name: "Scheduling",
+    props: {
+        showScheduling: Boolean
+    },
     data() {
         return {
-            selected_time: Date,
+            selected_time: new Date(),
             selected_date: new Date().toISOString().substr(0, 10),
-            show: true,
-            now: Date.now()
+            now: Date.now(),
         }
     },
 
     mounted() {
-        this.selected_time = null;
-        this.selected_date = null;
+
+    },
+
+    computed: {
+        // ...mapState('post', ['showScheduling'])
     },
 
     methods: {

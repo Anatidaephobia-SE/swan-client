@@ -39,7 +39,7 @@ export default {
     return {
       buttons: [
         {label: 'publish', color: 'primary', type: 'Published'},
-        {label: 'schedule', color: 'accent', type: 'Scheduled'},
+        {label: 'schedule', color: 'accent', type: 'Schedule'},
         {label: 'draft', color: 'info', type: 'Drafts'},
         {label: 'remove', color: 'error'}
       ]
@@ -80,7 +80,7 @@ export default {
     statusType: function () {
       return this.buttons.filter(b => b.type === this.post.status)[0]
     },
-    ...mapState('post', ['post', 'update', 'canEdit', 'showScheduling'])
+    ...mapState('post', ['post', 'update', 'canEdit', 'showScheduling', 'schedule_time'])
   }
 }
 </script>

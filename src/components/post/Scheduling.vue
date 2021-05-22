@@ -52,6 +52,7 @@
                 <v-btn
                     depressed
                     color="accent"
+                    @click="updatePost"
                 >
                     Schedule
                 </v-btn>
@@ -76,7 +77,8 @@ export default {
             selected_time: new Date(),
             selected_date: new Date().toISOString().substr(0, 10),
             now: Date.now(),
-            displayDialpg: false
+            displayDialpg: false,
+            schedule_time: ''
         }
     },
 
@@ -85,16 +87,48 @@ export default {
     },
 
     computed: {
-        // ...mapState('post', ['showScheduling'])
+        ...mapState('post', ['post', 'to_schedule_id'])
     },
 
     methods: {
+        schedulePost: function() {
+            this.post.status = 'Drafts'
+            this.createPost()
+            this.updatePost()
+        },
+        updatePost: function () {
+            this.displayDialpg = false
+            this.post.status = 'Schedule';
+            this.post.schedule_time = this.selected_date.toString() + " " + this.selected_time.toString() + ":00";
+            console.log(this.post.schedule_time)
+            this.$store.dispatch('post/updatePost').then(() => {
+                const message = "Post scheduled successfully";
+                this.$store.dispatch('showMessage', {message, color: 'success'});
+            }).catch(err => {
+                const message = err.response.data.error;
+                console.log(err.response.data)
+                this.$store.dispatch('showMessage', {message, color: 'error'});
+            })
+        },
+        createPost: function () {
+            this.$store.dispatch('post/createNewPost').then(() => {
+                const message = "new post created successfully";
+                this.$store.dispatch('showMessage', {message, color: 'success'});
+            }).catch(err => {
+                const message = err.response.data.error;
+                this.$store.dispatch('showMessage', {message, color: 'error'});
+            }).finally(() => {
+            })
+        }
 
     },
 
     watch: {
         showScheduling(val) {
             this.displayDialpg = val;
+        },
+        schedule_time(val) {
+            post.schedule_time = val;
         }
     }
 }

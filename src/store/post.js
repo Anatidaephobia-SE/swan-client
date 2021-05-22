@@ -8,6 +8,7 @@ function generateFormData(post) {
   body.append('tag', post.tag)
   body.append('team', post.team)
   body.append('status', post.status)
+  body.append('schedule_time', post.schedule_time)
   for (const img of post.multimedia) {
     if (!img.hasOwnProperty('media')) {
       body.append('multimedia[]', img)
@@ -45,17 +46,20 @@ const postModule = {
       team: '',
       multimedia: [],
       status: '',
-      created_at: ''
+      created_at: '',
+      schedule_time: ''
     },
     update: false,
     canEdit: true,
-    showScheduling: false
+    showScheduling: false,
+    to_schedule_id: Number
   },
   actions: {
     createNewPost: function ({commit, state}) {
       return new Promise((resolve, reject) => {
         const body = generateFormData(state.post)
         axios.post('api/v1/post/create_post/', body).then(resp => {
+          state.to_schedule_id = resp.data.id
           commit('RESET')
           resolve(resp)
         }).catch(err => reject(err))
@@ -72,8 +76,14 @@ const postModule = {
     },
     updatePost: function ({commit, state}) {
       const body = generateFormData(state.post)
+      console.log(state.post.status)
       return new Promise((resolve, reject) => {
-        axios.put(`api/v1/post/update_post/${state.post.id}/`, body).then(resp => {
+        var post_id = state.post.id
+        if (state.post.status == 'Schedule') {
+          post_id = state.to_schedule_id
+        }
+        console.log(post_id)
+        axios.put(`api/v1/post/update_post/${post_id}/`, body).then(resp => {
           const data = resp.data;
           commit('SET_POST_ALL', data);
           resolve(resp)
@@ -113,10 +123,11 @@ const postModule = {
       state.post.team = payload.team
     },
     SET_STATUS: function (state, status) {
-      state.post.status = status
-      if (status == 'Scheduled') {
+      if (status == 'Schedule') {
         state.showScheduling = true;
+        status = 'Drafts'
       }
+      state.post.status = status
     },
     SET_POST_ALL: async function (state, payload) {
       const multimedia = await imageToFile(payload.multimedia)

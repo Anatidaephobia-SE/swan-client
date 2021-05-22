@@ -115,7 +115,6 @@ export default {
         this.posts = resp.data
         this.filteredPosts = this.posts
       }).catch()
-
     },
     goToPost: function (id) {
       this.selectedPostId = id

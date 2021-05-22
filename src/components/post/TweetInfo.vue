@@ -99,7 +99,7 @@
 import axios from "axios";
 export default {
     name: "TweetInfo",
-    props: ['width', 'post_id', 'row'],
+    props: {width: Number, post_id: Number, row: Boolean},
     data() {
         return {
             tweet_info: {},
@@ -132,6 +132,15 @@ export default {
             axios.get(`api/v1.1.0/socialmedia/twitter/tweet/?post_id=${this.post_id}`).then(
                 resp => {
                     this.tweet_info = resp;
+                }
+            ).catch(
+                error => {
+                    this.tweet_info = {
+                        'reply_count' : 2,
+                        'retweet_count' : 0,
+                        'qoute_count' : 0,
+                        'like_count' : 5
+                    }
                 }
             )
         }

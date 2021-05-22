@@ -11,8 +11,13 @@
   "dependencies": {
     "@mdi/js": "^5.9.55",
     "@popperjs/core": "^2.9.2",
+    "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "postcss": "^7.0.35",
+    "postcss-preset-env": "^6.7.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
+    "v-calendar": "^2.3.0",
     "vue": "^2.6.11",
     "vue-click-outside": "^1.1.0",
     "vue-custom-scrollbar": "^1.4.0",

@@ -133,6 +133,15 @@ export default {
                 resp => {
                     this.tweet_info = resp;
                 }
+            ).catch(
+                error => {
+                    this.tweet_info = {
+                        'reply_count' : 2,
+                        'retweet_count' : 0,
+                        'qoute_count' : 0,
+                        'like_count' : 5
+                    }
+                }
             )
         }
 

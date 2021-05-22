@@ -1,14 +1,13 @@
 <template>
     <v-dialog
         transition="dialog-bottom-transition"
-        v-model="showScheduling"
+        v-model="displayDialpg"
         max-width="1000"
         
     >
 
         <v-card>
             <v-card-title>
-                <v-icon class="mr-2">mdi-clock</v-icon>
                 Select A Time To Schedule
             </v-card-title>
 
@@ -19,6 +18,7 @@
             <v-row>
                 <v-col>
                     <v-card-title>
+                        <v-icon style="margin-right: 8px">mdi-calendar</v-icon>
                         Select Date:
                     </v-card-title>
                     <v-date-picker
@@ -30,6 +30,7 @@
 
                 <v-col>
                     <v-card-title>
+                        <v-icon style="margin-right: 8px">mdi-clock</v-icon>
                         Select Time:
                     </v-card-title>
                     <v-time-picker
@@ -44,13 +45,13 @@
             </v-row>
 
             <v-card-text v-if="this.selected_time.length < 7">
-                <span style="font-size: 20px">Post will publish on {{this.selected_date.toString()}} {{this.selected_time.toString()}}</span>
+                <span style="font-size: 20px">Post will publish on {{this.selected_date.toString()}} - {{this.selected_time.toString()}}</span>
             </v-card-text>
 
             <v-card-actions>
                 <v-btn
                     depressed
-                    color="primary"
+                    color="accent"
                 >
                     Schedule
                 </v-btn>
@@ -63,7 +64,7 @@
 </template>
 
 <script>
-// import {mapState} from "vuex";
+import {mapState} from "vuex";
 
 export default {
     name: "Scheduling",
@@ -75,6 +76,7 @@ export default {
             selected_time: new Date(),
             selected_date: new Date().toISOString().substr(0, 10),
             now: Date.now(),
+            displayDialpg: false
         }
     },
 
@@ -88,6 +90,12 @@ export default {
 
     methods: {
 
+    },
+
+    watch: {
+        showScheduling(val) {
+            this.displayDialpg = val;
+        }
     }
 }
 </script>

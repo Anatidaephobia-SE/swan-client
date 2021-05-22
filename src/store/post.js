@@ -20,7 +20,7 @@ async function imageToFile(images) {
   const res = []
   for (const img of images) {
     const url = img.media.replace('http://localhost:9090', '')
-    const response = await fetch(axios.defaults.baseURL + url)
+    const response = await fetch(url)
     const contentType = response.headers.get('content-type')
     const blob = await response.blob()
     const file = new File([blob], `${Math.random()}.png`, {contentType})
@@ -157,6 +157,9 @@ const postModule = {
     },
     SET_CAPTION: function (state, caption) {
       state.newPost.caption = caption;
+    },
+    ADD_HASHTAG: function (state, hashtag) {
+      state.post.caption += ` ${hashtag}`
     }
   },
   getters: {

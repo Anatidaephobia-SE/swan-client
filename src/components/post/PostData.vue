@@ -105,10 +105,13 @@
     <v-container v-if="author.email">
       <span>Created By:</span>
       <div class="ma-4 d-flex align-center">
-        <v-avatar class="ma-2" size="40px">
-          <v-img v-if="author.profile_picture" :src="imageUrl"></v-img>
-          <v-icon v-else>mdi-account</v-icon>
-        </v-avatar>
+        <UserAvatar
+            :alt="author.first_name"
+            :image="author.profile_picture"
+            :size="40"
+            class="mr-2">
+        </UserAvatar>
+
         <div>
           <span>{{ author.first_name }} {{ author.last_name }}</span>
           <br>
@@ -123,10 +126,11 @@
 import axios from "axios";
 import {mapState} from "vuex";
 import PhotoPicker from "@/components/post/PhotoPicker";
+import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
   name: "PostData",
-  components: {PhotoPicker},
+  components: {UserAvatar, PhotoPicker},
   data() {
     return {
       loading: false,

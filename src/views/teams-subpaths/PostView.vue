@@ -1,6 +1,8 @@
 <template>
-  <v-container>
+  <v-container v-if="loading">
     <PostData/>
+    <v-divider></v-divider>
+    <TweetInfo v-if="post.status !== 'Drafts'"/>
     <v-divider></v-divider>
     <PostVisualizer/>
     <v-divider></v-divider>
@@ -16,13 +18,20 @@ import PostVisualizer from "@/components/post/PostVisualizer";
 import PostData from "@/components/post/PostData";
 import Post from "@/components/post/Post";
 import PostComments from "@/components/post/PostComments";
+import TweetInfo from "@/components/post/TweetInfo";
+import {mapState} from "vuex";
 
 export default {
   name: "PostView",
-  components: {PostComments, PostActions, PostVisualizer, PostData, Post},
+  components: {TweetInfo, PostComments, PostActions, PostVisualizer, PostData, Post},
+  data() {
+    return {
+      loading: false
+    }
+  },
   methods: {
     getPostData: function (id) {
-      this.$store.dispatch('post/getPostById', id)
+      this.$store.dispatch('post/getPostById', id).then(() => this.loading = true)
     }
   },
   mounted() {
@@ -30,6 +39,7 @@ export default {
     this.getPostData(id)
   },
   computed: {
+    ...mapState('post', ['post'])
   }
 }
 </script>

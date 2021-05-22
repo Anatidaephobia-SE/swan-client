@@ -1,159 +1,115 @@
 <template>
-    <v-container class="pd-md-4">
-        <v-card
-            v-if="!row"
-            class="mx-auto ma-4"
-            :max-width="width">
-            <v-toolbar :max-width="width"
-                color="primary"
-                dark
-                dense
-                flat
-                >
-                <v-toolbar-title class="body-3" style="color: white;">
-                    Post Analytics
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-spacer></v-spacer>
-            <br>
-            <v-row class="pa-2" style="margin-left: 10px;">
-                <v-icon>mdi-comment-outline</v-icon>
-                <span v-if="width >= 220" style="margin-left: 7px;">Replies Number: </span>
-                <span style="margin-left: 7px;">{{this.tweet_info.reply_count}}</span>
-            </v-row>
+  <v-container class="pd-md-4">
 
-            <v-row class="pa-2" style="margin-left: 10px;">
-                <v-icon color="blue">mdi-repeat</v-icon>
-                <span v-if="width >= 220" style="margin-left: 7px;">Retweets Number: </span>
-                <span style="margin-left: 7px;">{{this.tweet_info.retweet_count}}</span>
-            </v-row>
+    <v-card-title>
+      <v-icon class="mr-2">
+        mdi-information-outline
+      </v-icon>
+      Post Analytics
+    </v-card-title>
+    <v-card-text>
+      <!--    <v-container>-->
+      <!--      <div cols="3">-->
+      <!--        <v-icon>mdi-heart</v-icon>-->
+      <!--        <span>{{tweet_info.like_count}}</span>-->
+      <!--      </div>-->
+      <!--    </v-container>-->
 
-            <v-row class="pa-2" style="margin-left: 10px;">
-                <v-icon color="red">mdi-heart-outline</v-icon>
-                <span v-if="width >= 220" style="margin-left: 7px;">Likes Number: </span>
-                <span style="margin-left: 7px;">{{this.tweet_info.like_count}}</span>
-            </v-row>
-
-            <v-row class="pa-2" style="margin-left: 10px;">
-                <v-icon color="green">mdi-pencil</v-icon>
-                <span v-if="width >= 220" style="margin-left: 7px;">Quotes Number: </span>
-                <span style="margin-left: 7px;">{{this.tweet_info.qoute_count}}</span>
-            </v-row>
-
-        </v-card>
-
-        <v-card
-            v-if="row"
-            class="mx-auto ma-4"
-            :max-width="width">
-            <v-toolbar :max-width="width"
-                color="primary"
-                dark
-                dense
-                flat
-                >
-                <v-toolbar-title class="body-3" style="color: white;">
-                    Post Analytics
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-spacer></v-spacer>
-            <br>
-            <div class="d-flex justify-space-around pa-2">
-                <v-col>
-                    <v-icon>mdi-comment-outline</v-icon>
-                    <span v-if="width >= 220" style="margin-left: 7px;">Replies:</span>
-                    <br>
-                    <span class="number">{{this.tweet_info.reply_count}}</span>
-                </v-col>
-
-                <v-col>
-                    <v-icon color="blue">mdi-repeat</v-icon>
-                    <span v-if="width >= 220" style="margin-left: 7px;">Retweets:</span>
-                    <br>
-                    <span class="number">{{this.tweet_info.retweet_count}}</span>
-                </v-col>
-
-                <v-col>
-                    <v-icon color="red">mdi-heart-outline</v-icon>
-                    <span v-if="width >= 220" style="margin-left: 7px;">Likes:</span>
-                    <br>
-                    <span class="number">{{this.tweet_info.like_count}}</span>
-                </v-col>
-
-                <v-col>
-                    <v-icon color="green">mdi-pencil</v-icon>
-                    <span v-if="width >= 220" style="margin-left: 7px;">Quotes:</span>
-                    <br>
-                    <span class="number">{{this.tweet_info.qoute_count}}</span>
-                </v-col>
+      <v-expansion-panels flat>
+        <v-expansion-panel
+            v-for="(item,i) in socialMedia"
+            :key="i">
+          <v-expansion-panel-header>
+            <div>
+              <v-icon :color="item.color">{{ item.icon }}</v-icon>
+              {{ item.label }}
             </div>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-container class="justify-center d-flex">
+              <div class="text-center mx-2">
+                <v-icon
+                    class="mx-2">mdi-heart
+                </v-icon>
+                <span>{{ tweet_info.like_count }}</span>
+              </div>
+              <div class="text-center mx-2">
+                <v-icon
+                    class="mx-2">mdi-comment
+                </v-icon>
+                <span>{{ tweet_info.reply_count }}</span>
+              </div>
+              <div class="text-center mx-2">
+                <v-icon
+                    class="mx-2"
+                >mdi-format-quote-open
+                </v-icon>
+                <span>{{ tweet_info.quote_count }}</span>
+              </div>
+              <div class="text-center mx-2">
+                <v-icon
+                    class="mx-2"
+                >mdi-repeat
+                </v-icon>
+                <span>{{ tweet_info.retweet_count }}</span>
+              </div>
+            </v-container>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
 
-        </v-card>
-
-
-    </v-container>
+    </v-card-text>
+  </v-container>
 </template>
 
 
 <script>
 import axios from "axios";
+
 export default {
-    name: "TweetInfo",
-    props: ['width', 'post_id', 'row'],
-    data() {
-        return {
-            tweet_info: {},
-            show_reply: false,
-            show_like: false,
-            show_retweet: false,
-            show_qoute: false
-        }
-    },
-
-    mounted() {
-        // this.tweet_info = {
-        //                 'reply_count' : 25,
-        //                 'retweet_count' : 14,
-        //                 'qoute_count' : 7,
-        //                 'like_count' : 21
-        //                 }
-        // this.width = 700;
-        this.getTweetInfo();
-    },
-
-    methods: {
-        showReply: function() {
-            this.show_reply = true;
-        },
-        disapearReply: function() {
-            this.show_reply = false;
-        },
-        getTweetInfo: function() {
-            axios.get(`api/v1.1.0/socialmedia/twitter/tweet/?post_id=${this.post_id}`).then(
-                resp => {
-                    this.tweet_info = resp;
-                }
-            )
-        }
-
+  name: "TweetInfo",
+  data() {
+    return {
+      tweet_info: {}
     }
+  },
+
+  mounted() {
+    this.getTweetInfo();
+  },
+
+  methods: {
+    getTweetInfo: function () {
+      const postId = this.$route.query.pID;
+      axios.get(`api/v1/socialmedia/twitter/tweet/?post_id=${postId}`).then(
+          resp => {
+            this.tweet_info = resp.data;
+          }
+      )
+    }
+  },
+  computed: {
+    socialMedia: () => [
+      {label: 'Twitter', icon: 'mdi-twitter', color: 'blue'}
+    ]
+  }
 }
 </script>
 
 <style scoped>
 
 .dialog {
-    background-color: #e1e8e4;
-    width: 25px;
-    height: 5px;
-    border-radius: 5px;
-    font-size: 5px;
-    padding: 5px;
+  background-color: #e1e8e4;
+  width: 25px;
+  height: 5px;
+  border-radius: 5px;
+  font-size: 5px;
+  padding: 5px;
 }
 
 .number {
-     margin-left: 30px;
-     font-size: 22px;
+  margin-left: 30px;
+  font-size: 22px;
 }
 
 </style>

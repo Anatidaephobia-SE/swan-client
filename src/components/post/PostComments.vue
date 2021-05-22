@@ -76,7 +76,7 @@ export default {
       });
     },
     getAllComments: function () {
-      const id = this.$route.params.postId
+      const id = this.$route.query.pID
       this.$store.dispatch('post/getComments', id).then(resp => {
         this.comments = resp.data.reverse()
       }).catch(err => {

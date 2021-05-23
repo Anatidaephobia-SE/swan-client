@@ -1,5 +1,7 @@
 <template>
   <v-container class="pa-md-4">
+
+    <Scheduling :dialog="dialog" @close-dialog="addScheduling"/>
     <v-card-title>
       <v-icon class="mr-2">mdi-checkbox-marked-outline</v-icon>
       Actions
@@ -17,9 +19,10 @@
              :key="i"
              :color="b.color"
              :disabled="!canEdit"
+             :loading="loading[b.type]"
              :x-small="$vuetify.breakpoint.mobile"
              depressed
-             @click="action(b.type)">{{ b.label }}
+             @click="b.action(b.type)">{{ b.label }}
       </v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
@@ -34,43 +37,79 @@ export default {
   data() {
     return {
       buttons: [
-        {label: 'publish', color: 'primary', type: 'Published'},
-        {label: 'schedule', color: 'accent'},
-        {label: 'draft', color: 'info', type: 'Drafts'},
+        {label: 'publish', color: 'primary', type: 'Published', action: this.action},
+        {
+          label: 'schedule', color: 'accent', type: 'Schedule', action: () => {
+            this.dialog = true
+          }
+        },
+        {label: 'draft', color: 'info', type: 'Drafts', action: this.action},
         // {label: 'remove', color: 'error'}
-      ]
+      ],
+      dialog: false,
+      loading: {
+        Published: false,
+        Schedule: false,
+        Drafts: false
+      }
     }
   },
   mounted() {
   },
   methods: {
-    action: function (status) {
+    action: async function (status) {
+      this.loading[status] = true
       this.$store.commit('post/SET_STATUS', status)
       if (this.update) {
-        this.updatePost()
+        await this.updatePost()
       } else {
-        this.createPost()
+        await this.createPost()
       }
     },
-    createPost: function () {
+    createPost: async function () {
+      const status = this.post.status
       this.$store.dispatch('post/createNewPost').then(() => {
         const message = "new post created successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
-        const message = err.response.data.error;
+        let message = err.response.data.error;
+        if (!message) {
+          const errCode = err.response.status
+          if (errCode === 400) {
+            message = "Please check your post again, it has some problems"
+          }
+        }
         this.$store.dispatch('showMessage', {message, color: 'error'});
+        this.$store.commit('post/SET_STATUS', '')
       }).finally(() => {
+        this.loading[status] = false
       })
     },
     updatePost: function () {
+      const status = this.post.status
       this.$store.dispatch('post/updatePost').then(() => {
         const message = "Post updated successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
-        const message = err.response.data.error;
+        let message = err.response.data.error;
+        if (!message) {
+          const errCode = err.response.status
+          if (errCode === 400) {
+            message = "Please check your post again, it has some problems"
+          }
+        }
         this.$store.dispatch('showMessage', {message, color: 'error'});
-      })
+        this.$store.commit('post/SET_STATUS', '')
+      }).finally(() => this.loading[status] = false)
     },
+    addScheduling: function (result) {
+      this.dialog = false
+      console.log(result)
+      if (result) {
+        this.post.schedule_time = result
+        this.action('Schedule')
+      }
+    }
   },
   computed: {
     statusType: function () {

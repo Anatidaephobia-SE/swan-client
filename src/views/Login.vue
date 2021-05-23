@@ -2,8 +2,8 @@
   <div class="login-page">
     <div class="left pa-4 ml-4">
       <div>
-        <h1 style="font-size: unset" class="primary--text mb-4">Swan</h1>
-        <h2 style="font-size: unset" class="primary--text">
+        <h1 style="font-size: xxx-large" class="primary--text mb-4">Swan</h1>
+        <h2 style="font-size: x-large" class="primary--text">
           Automated flow for your digital marketing strategy
         </h2>
       </div>

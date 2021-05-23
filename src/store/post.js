@@ -8,6 +8,9 @@ function generateFormData(post) {
   body.append('tag', post.tag)
   body.append('team', post.team)
   body.append('status', post.status)
+  if (post.hasOwnProperty('schedule_time')) {
+    body.append('schedule_time', post.schedule_time)
+  }
   for (const img of post.multimedia) {
     if (!img.hasOwnProperty('media')) {
       body.append('multimedia[]', img)
@@ -26,7 +29,8 @@ async function imageToFile(images) {
       const blob = await response.blob()
       const file = new File([blob], `${Math.random()}.png`, {contentType})
       res.push(file)
-    } catch (e) {}
+    } catch (e) {
+    }
   }
   return res
 }
@@ -50,7 +54,7 @@ const postModule = {
       created_at: ''
     },
     update: false,
-    canEdit: true
+    canEdit: true,
   },
   actions: {
     createNewPost: function ({commit, state}) {
@@ -158,9 +162,6 @@ const postModule = {
       }
       state.update = false
       state.canEdit = true
-    },
-    SET_CAPTION: function (state, caption) {
-      state.newPost.caption = caption;
     },
     ADD_HASHTAG: function (state, hashtag) {
       state.post.caption += ` ${hashtag}`

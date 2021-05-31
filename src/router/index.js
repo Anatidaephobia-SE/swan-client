@@ -16,6 +16,7 @@ import Profile from "@/views/Profile";
 import PostView from "@/views/teams-subpaths/PostView";
 import Compose from "@/views/teams-subpaths/Compose";
 import Ideas from "@/views/Ideas";
+import Landing from "@/views/Landing"
 
 Vue.use(VueRouter)
 
@@ -70,6 +71,11 @@ const routes = [
     name: 'Logout',
     component: Logout
   },
+  {
+    path: '/about',
+    name: 'About',
+    component: Landing
+  }
 ]
 
 const router = new VueRouter({

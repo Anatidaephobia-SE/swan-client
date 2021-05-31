@@ -3,7 +3,7 @@
     <v-row class="content">
       <v-col md="5" cols="12" class="rounded">
         <v-card elevation="5" class="text-center">
-          <v-card-title class="primary--text justify-center"> Integrate your social medias </v-card-title>
+          <v-card-title class="primary--text justify-center"> Integrate your social networks </v-card-title>
           <v-card-text>
             In the swan dashboard, connect your social networks. You can
             simply create posts, publish them or even schedule them, we will

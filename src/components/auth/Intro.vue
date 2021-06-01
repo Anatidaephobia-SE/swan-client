@@ -4,7 +4,7 @@
       <nav>
         <router-link class="link" to="/login">Login</router-link>
         <router-link class="link" to="/sign-up">Sign Up</router-link>
-        <router-link class="link" to="/">About Us</router-link>
+        <router-link class="link" to="/about">About Us</router-link>
       </nav>
     </div>
     <div class="image d-flex justify-center align-center">

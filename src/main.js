@@ -6,6 +6,8 @@ import vuetify from './plugins/vuetify';
 import axios from 'axios'
 import VCalendar from 'v-calendar'
 import "tailwindcss/dist/tailwind.css";
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 // axios.defaults.baseURL = 'http://anatidaephobia.pythonanywhere.com/'
 
@@ -20,9 +22,12 @@ Vue.use(VCalendar, {
   componentPrefix: 'vc'
 })
 
-new Vue({
+const vue = new Vue({
   router,
   store,
   vuetify,
+  created() {
+    AOS.init()
+  },
   render: h => h(App)
 }).$mount('#app');

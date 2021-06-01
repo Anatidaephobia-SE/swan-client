@@ -1,8 +1,8 @@
 <template>
   <div class="text-center main-layout">
-    <v-row class="content">
+    <v-row class="content pa-md-16 pa-6">
       <v-col md="5" cols="12">
-        <v-card elevation="5">
+        <v-card elevation="5" data-aos="fade-down">
           <v-card-title class="info--text justify-center">
             Get your personalized calendar
           </v-card-title>
@@ -34,7 +34,6 @@ export default {};
   padding-top: 2rem;
   background-color: #eeeeee;
   .content {
-    padding: 4rem;
     align-items: center;
     height: 100%;
   }

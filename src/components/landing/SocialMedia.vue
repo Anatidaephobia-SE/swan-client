@@ -1,8 +1,8 @@
 <template>
   <div class="text-center main-layout">
-    <v-row class="content">
+    <v-row class="content pa-md-16 pa-6">
       <v-col md="5" cols="12" class="rounded">
-        <v-card elevation="5" class="text-center">
+        <v-card elevation="5" class="text-center" data-aos="fade-right">
           <v-card-title class="primary--text justify-center"> Integrate your social networks </v-card-title>
           <v-card-text>
             In the swan dashboard, connect your social networks. You can
@@ -35,7 +35,6 @@ export default {};
   .content {
     height: 100%;
     align-items: center;
-    padding: 4rem;
   }
 }
 </style>

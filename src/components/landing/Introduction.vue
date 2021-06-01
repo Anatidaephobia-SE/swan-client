@@ -2,17 +2,29 @@
   <div class="banner">
     <div class="overlay">
       <v-container class="content text-center" fluid>
-        <h1 class="primary--text my-4">Swan</h1>
-        <h2 class="white--text">
+        <h1 class="primary--text my-4" data-aos="zoom-in">Swan</h1>
+        <h2 class="white--text" data-aos="zoom-in-up" data-aos-delay="300">
           Automated flow for your digital marketing strategy
         </h2>
-        <div class="actions mt-10">
+        <div class="actions mt-10" data-aos="zoom-in-up" data-aos-delay="400">
           <v-btn depressed to="/signup" x-large class="mr-4" color="primary">
             Sign up Now!
           </v-btn>
           <v-btn outlined to="/login" x-large color="primary"> Login </v-btn>
         </div>
       </v-container>
+
+      <div 
+      v-if="$vuetify.breakpoint.mdAndUp"
+      class="d-flex justify-center links">
+        <a
+          class="mx-4"
+          v-for="(link, i) in links"
+          :key="i"
+          @click="scrollTo(link.id)"
+          >{{ link.label }}</a
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +33,23 @@
 <script>
 export default {
   name: "Introduction",
+  methods: {
+    scrollTo: function (id) {
+      document.getElementById(id).scrollIntoView({
+        behavior: "smooth",
+      });
+    },
+  },
+  computed: {
+    links: function () {
+      return [
+        { id: "network", label: "Social Networks" },
+        { id: "ideas", label: "Future Ideas" },
+        { id: "calendar", label: "Personalized Calendar" },
+        { id: "email", label: "Scheduled Emails" },
+      ];
+    },
+  },
 };
 </script>
 
@@ -31,9 +60,16 @@ export default {
   height: calc(100vh);
   width: 100%;
   .overlay {
+    position: relative;
     background-color: rgba(0, 0, 0, 0.8);
     width: 100%;
     height: 100%;
+    .links {
+      position: absolute;
+      top: 2rem;
+      width: 100%;
+      padding: 5px;
+    }
     .content {
       height: 100%;
       flex-direction: column;

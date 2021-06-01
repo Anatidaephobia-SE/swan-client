@@ -1,6 +1,6 @@
 <template>
   <div class="text-center main-layout">
-    <v-row class="content">
+    <v-row class="content pa-md-16 pa-6">
       <v-col md="7" cols="12">
         <v-img
           max-height="500"
@@ -9,7 +9,7 @@
         />
       </v-col>
       <v-col md="5" cols="12">
-        <v-card elevation="5">
+        <v-card elevation="5" data-aos="fade-left">
           <v-card-title class="accent--text justify-center">
             Track your tasks and projects
           </v-card-title>
@@ -39,7 +39,6 @@ export default {};
   padding-top: 2rem;
   background-color: #f5f5f5;
   .content {
-    padding: 4rem;
     align-items: center;
     height: 100%;
   }

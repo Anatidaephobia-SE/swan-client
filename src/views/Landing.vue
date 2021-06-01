@@ -1,10 +1,10 @@
 <template>
   <div>
       <Introduction />
-      <SocialMedia />
-      <Ideas />
-      <Calendar />
-      <Email />
+      <SocialMedia id="network" />
+      <Ideas id="ideas" />
+      <Calendar id="calendar" />
+      <Email id="email" />
       <Recommend />
   </div>
 </template>
@@ -28,5 +28,7 @@ export default {
 </script>
 
 <style>
-
+.row {
+    margin: 0!important;
+}
 </style>

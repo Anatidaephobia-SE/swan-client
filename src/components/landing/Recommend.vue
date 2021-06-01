@@ -1,24 +1,17 @@
 <template>
   <div class="text-center main-layout">
     <div class="overlay">
-      <h1 class="text-h3 primary--text">Hear from our customers</h1>
-      <v-row class="cards">
-        <v-col md="4" cols="12" v-for="(r, i) in recommedations" :key="i">
-          <v-card>
-            <div class="pa-4">
-              <v-avatar class="justify-center" size="100">
-                <v-img :src="r.profile" />
-              </v-avatar>
-            </div>
-            <v-card-subtitle class="primary--text">
-              {{ r.name }}
-            </v-card-subtitle>
-            <v-card-text>
-              {{ r.text }}
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+      <h3 class="text-h3 white--text">Want to hear more ?</h3>
+      <p class="white--text ma-2 pa-2">
+        In the swan there are many stunning features, that can grow your
+        bussiness and make your marketing more organized and scheduled. But
+        there is no way better than experiencing, so sign up now and add your
+        team here!
+      </p>
+
+      <v-btn class="mt-4" x-large color="primary" outlined to="/sign-up">
+        Sign UP
+      </v-btn>
     </div>
   </div>
 </template>
@@ -26,33 +19,6 @@
 <script>
 export default {
   name: "Recommend",
-  data() {
-    return {
-      recommedations: [
-        {
-          name: "John",
-          profile: "https://i.pravatar.cc/100?t=1",
-          text: `We had struggle through managing posts in
-                     different time zones. After gathering our team here, we are able to
-                      publish ads and notifications without any trouble`,
-        },
-        {
-          name: "Jane",
-          profile: "https://i.pravatar.cc/100?t=2",
-          text: `We had struggle through managing posts in
-                     different time zones. After gathering our team here, we are able to
-                      publish ads and notifications without any trouble`,
-        },
-        {
-          name: "Ross",
-          profile: "https://i.pravatar.cc/100?t=3",
-          text: `We had struggle through managing posts in
-                     different time zones. After gathering our team here, we are able to
-                      publish ads and notifications without any trouble`,
-        },
-      ],
-    };
-  },
 };
 </script>
 
@@ -63,6 +29,10 @@ export default {
   background-size: cover;
   position: relative;
   .overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     left: 0;
     top: 0;
@@ -74,6 +44,14 @@ export default {
   .cards {
     height: 100%;
     align-items: center;
+  }
+  p {
+    width: 60%;
+  }
+  @media screen and (max-width: 576px) {
+    p {
+      width: 100%;
+    }
   }
 }
 </style>

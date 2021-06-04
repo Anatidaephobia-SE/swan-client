@@ -2,23 +2,26 @@
   <div class="banner">
     <div class="overlay">
       <v-container class="content text-center" fluid>
-        <h1 class="primary--text my-4" data-aos="zoom-in">Swan</h1>
-        <h2 class="white--text" data-aos="zoom-in-up" data-aos-delay="300">
-          Automated flow for your digital marketing strategy
-        </h2>
+        <div>
+          <h1 class="primary--text my-4" data-aos="zoom-in">Swan</h1>
+          <h2 class="white--text subtitle" data-aos="zoom-in-up" data-aos-delay="300">
+            Automated flow for your digital marketing strategy
+          </h2>
+        </div>
         <div class="actions mt-10" data-aos="zoom-in-up" data-aos-delay="400">
-          <v-btn depressed to="/signup" x-large class="mr-4" color="primary">
-            Sign up Now!
+          <v-btn outlined to="/login" class="mr-4" x-large color="primary"> Login </v-btn>
+          <v-btn depressed to="/sign-up" x-large color="primary">
+            Sign up Now
           </v-btn>
-          <v-btn outlined to="/login" x-large color="primary"> Login </v-btn>
         </div>
       </v-container>
 
-      <div 
-      v-if="$vuetify.breakpoint.mdAndUp"
-      class="d-flex justify-center links">
+      <div
+        v-if="$vuetify.breakpoint.mdAndUp"
+        class="d-flex justify-center links"
+      >
         <a
-          class="mx-4"
+          class="mx-4 white--text hover-underline-animation"
           v-for="(link, i) in links"
           :key="i"
           @click="scrollTo(link.id)"
@@ -69,12 +72,35 @@ export default {
       top: 2rem;
       width: 100%;
       padding: 5px;
+      .hover-underline-animation {
+        display: inline-block;
+        position: relative;
+        color: #0087ca;
+      }
+
+      .hover-underline-animation:after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: #0087ca;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+      }
+
+      .hover-underline-animation:hover:after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
     }
     .content {
       height: 100%;
       flex-direction: column;
       display: flex;
-      justify-content: center;
+      justify-content: space-evenly;
       align-items: center;
       h1 {
         font-size: 60px;

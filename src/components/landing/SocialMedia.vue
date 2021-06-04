@@ -32,6 +32,7 @@ export default {};
 .main-layout {
   padding-top: 2rem;
   height: calc(100vh);
+  background-color: #fafafa;
   .content {
     height: 100%;
     align-items: center;

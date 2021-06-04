@@ -16,12 +16,8 @@
           <v-card-text>
             Create new tasks and ideas, assign it to the people around. By
             different lists in your board, track how things are going. It will
-            give you an organized view of process. For example: You want a to
-            compose a new posts for off season, go ahead and create a card in
-            the `todo` list. When you're ready to do it, just drag it and drop
-            it in the `in progress` list. And when you're done, just simply take
-            it to the `done` section. And your teammates will be informed about
-            the task.
+            give you an organized view of the process. This will help you 
+            manage your team better and more efficient. 
           </v-card-text>
         </v-card>
       </v-col>

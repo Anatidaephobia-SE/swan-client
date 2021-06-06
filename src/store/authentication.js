@@ -55,13 +55,18 @@ const authModule = {
       })
     },
     updateUserInfo({commit}, user) {
-      console.log(user)
       const body = new FormData();
-      body.append('first_name', user.firstname);
-      body.append('last_name', user.lastname);
-      if (user.hasOwnProperty('profileImg')) {
-        body.append('profile_picture', user.profileImg)
+      for (const key in user) {
+        if (user.hasOwnProperty(key)) {
+          body.append(key, user[key])
+        }
       }
+
+      // body.append('first_name', user.first_name);
+      // body.append('last_name', user.last_name);
+      // if (user.hasOwnProperty('profile_picture')) {
+      //   body.append('profile_picture', user.profile_picture)
+      // }
       return new Promise((resolve, reject) => {
         axios.put('/api/v1/users/profile/update/', body)
           .then(resp => {

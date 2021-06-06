@@ -8,7 +8,7 @@
 export default {
   name: "Logout",
   mounted() {
-    this.$store.dispatch('logout').then(() => {
+    this.$store.dispatch('auth/logout').then(() => {
       const message = `Logged out successfully, Bye!`;
       this.$store.dispatch('showMessage', {message , color: 'success'});
       this.$router.push('/login').then()

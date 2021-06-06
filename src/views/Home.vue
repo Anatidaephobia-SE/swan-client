@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar v-if="loaded"/>
+    <NavBar/>
     <router-view></router-view>
   </div>
 </template>
@@ -8,26 +8,20 @@
 <script>
 // @ is an alias to /src
 import NavBar from "@/components/homepage/NavBar";
+import {mapState} from "vuex";
 
 export default {
   name: "Home",
   components: {NavBar},
   data() {
     return {
-      loaded: false
     }
-  },
-  async created() {
-    this.pathName = this.$route.name
-    this.getUserInfo()
   },
   methods: {
-    getUserInfo: function () {
-      this.$store.dispatch('auth/getUserInfo').then(() => {
-        this.loaded = true
-      })
-    }
   },
+  computed: {
+    ...mapState('auth', ['user'])
+  }
 };
 </script>
 

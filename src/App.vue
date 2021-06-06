@@ -23,11 +23,12 @@ export default {
     //   return Promise.reject(err)
     // });
 
-    // if (!this.$route.meta.hasOwnProperty('dontUpdate')) {
-    //   console.log("User updated")
-    // }
+    if (!this.$route.meta.hasOwnProperty('dontUpdate')) {
+      this.$store.dispatch('auth/getUserInfo')
+    }
   },
-  computed: {}
+  computed: {
+  }
 };
 </script>
 

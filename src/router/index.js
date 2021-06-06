@@ -25,7 +25,7 @@ const routes = [
     name: 'Home',
     component: Home,
     beforeEnter: (to, from, next) => {
-      if (store.getters.isLoggedIn) {
+      if (store.getters["auth/isLoggedIn"]) {
         next()
       } else {
         next('/login')

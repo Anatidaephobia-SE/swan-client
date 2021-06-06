@@ -7,14 +7,11 @@
 
 <script>
 // @ is an alias to /src
-import NewWorkspace from "@/components/new-workspace/NewWorkspace";
-import UserAvatar from "@/components/shared/UserAvatar";
 import NavBar from "@/components/homepage/NavBar";
-import Workspaces from "@/views/Workspaces";
 
 export default {
   name: "Home",
-  components: {Workspaces, NavBar, UserAvatar, NewWorkspace},
+  components: {NavBar},
   data() {
     return {
       loaded: false
@@ -22,7 +19,6 @@ export default {
   },
   async created() {
     this.pathName = this.$route.name
-    // this.getUserInfo();
     this.getUserInfo()
   },
   methods: {

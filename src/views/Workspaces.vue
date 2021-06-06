@@ -4,15 +4,19 @@
       <v-icon class="mr-2">mdi-account-multiple</v-icon>
       Your Workspaces
     </v-card-title>
-    <v-card-text class="d-flex flex-wrap justify-center">
+    <v-card-text v-if="!loading" class="d-flex flex-wrap justify-center">
       <Workspace v-for="(w, i) in workspaces" :key="i" :workspace="w"/>
 
       <v-container v-if="workspaces.length === 0" class="d-flex flex-column align-center">
         <v-img
             max-width="600" min-width="300"
-            :src="require('@/assets/graphics/empty.svg')" ></v-img>
+            :src="require('@/assets/graphics/empty.svg')"></v-img>
         <span>No workspaces yet!</span>
       </v-container>
+    </v-card-text>
+
+    <v-card-text v-else class="d-flex flex-wrap justify-center">
+      <WorkspaceLoader v-for="i in 3" :key="i"></WorkspaceLoader>
     </v-card-text>
 
     <v-tooltip top>
@@ -32,23 +36,25 @@
       <span>New Workspace</span>
     </v-tooltip>
 
-    <NewWorkspace :dialog="newWorkspace" @close-dialog="closeDialog" :key="key" />
+    <NewWorkspace :dialog="newWorkspace" @close-dialog="closeDialog" :key="key"/>
   </v-container>
 </template>
 
 <script>
 import Workspace from "@/components/workspaces/Workspace";
 import NewWorkspace from "@/components/new-workspace/NewWorkspace";
+import WorkspaceLoader from "@/components/workspaces/WorkspaceLoader";
 
 export default {
   name: "Workspaces",
-  components: {NewWorkspace, Workspace},
+  components: {WorkspaceLoader, NewWorkspace, Workspace},
   data() {
     return {
       newWorkspace: false,
       workspaces: [],
       key: Math.random(),
-      pos: window.pageYOffset
+      pos: window.pageYOffset,
+      loading: false
     }
   },
   methods: {
@@ -56,6 +62,7 @@ export default {
       this.$store.dispatch('getWorkspaces')
           .then(res => {
             this.workspaces = res.data
+            this.loading = false
           })
           .catch(err => {
             const message = err.response.data.message
@@ -77,6 +84,7 @@ export default {
     }
   },
   created() {
+    this.loading = true
     this.getWorkspaces()
     window.addEventListener('scroll', this.hideAdd)
     if (this.$route.query.team_id) {
@@ -102,6 +110,7 @@ export default {
   visibility: visible;
   transition: 0.3s ease-in-out;
 }
+
 @media screen and (max-width: 576px) {
   .add-btn {
     bottom: 2rem;

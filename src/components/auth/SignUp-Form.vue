@@ -139,7 +139,7 @@ export default {
         password: this.password,
         confirm_password: this.confirmPassword
       };
-      this.$store.dispatch('register', data)
+      this.$store.dispatch('auth/register', data)
           .then(() => {
             const message = "Verification email is sent";
             this.$store.dispatch('showMessage', {message, color: 'success'})
@@ -158,7 +158,7 @@ export default {
         profileImg: this.profileImg
       };
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
-      this.$store.dispatch('updateUserInfo', data)
+      this.$store.dispatch('auth/updateUserInfo', data)
           .then(() => {
             const message = `You have registered successfully`;
             this.$store.dispatch('showMessage', {message, color: 'success'});

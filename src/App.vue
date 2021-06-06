@@ -8,16 +8,13 @@
 </template>
 
 <script>
-import axios from "axios";
 import SnackBar from "@/components/shared/SnackBar";
+
 export default {
   name: "App",
 
   components: {SnackBar},
-
-  data: () => ({
-  }),
-  created() {
+  beforeMount() {
     // This checks if token expired, and
     // axios.interceptors.response.use(undefined, (err) => {
     //   if (err.response.status === 403 && err.config && !err.config.__isRetryRequest) {
@@ -26,14 +23,11 @@ export default {
     //   return Promise.reject(err)
     // });
 
-    if (!this.$route.meta.hasOwnProperty('dontUpdate')) {
-      this.$store.dispatch('getUserInfo').then(
-          () => this.user = this.$store.getters.userInfo
-      );
-    }
+    // if (!this.$route.meta.hasOwnProperty('dontUpdate')) {
+    //   console.log("User updated")
+    // }
   },
-  computed: {
-  }
+  computed: {}
 };
 </script>
 

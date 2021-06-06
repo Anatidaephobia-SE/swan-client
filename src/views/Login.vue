@@ -23,7 +23,7 @@ export default {
   components: { LoginForm, Intro },
   mounted() {
     localStorage.removeItem('token')
-    this.$store.commit('logout')
+    this.$store.commit('auth/logout')
   }
 };
 </script>

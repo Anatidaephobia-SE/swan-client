@@ -11,20 +11,20 @@
                 bottom>
           <template v-slot:activator="{on, attrs}">
             <v-avatar rounded v-bind="attrs" v-on="on" class="user-avatar" size="200">
-              <v-icon v-show="editMode && !user.profileImg" size="50">mdi-camera-plus</v-icon>
-              <v-icon v-show="!editMode && !user.profileImg" size="50">mdi-account</v-icon>
-              <v-img v-if="user.profileImg" :src="getImgUrl"></v-img>
+              <v-icon v-show="editMode && !user.profile_picture" size="50">mdi-camera-plus</v-icon>
+              <v-icon v-show="!editMode && !user.profile_picture" size="50">mdi-account</v-icon>
+              <v-img v-if="user.profile_picture" :src="getImgUrl"></v-img>
             </v-avatar>
           </template>
 
           <v-file-input ref="imageInput"
                         v-show="false"
-                        v-model="user.profileImg"
+                        v-model="user.profile_picture"
                         accpet="image/*">
           </v-file-input>
 
           <v-list>
-            <v-list-item @click="user.profileImg = ''" v-if="user.profileImg">
+            <v-list-item @click="user.profile_picture = ''" v-if="user.profile_picture">
               <v-list-item-title>Remove image</v-list-item-title>
             </v-list-item>
             <v-list-item @click="$refs.imageInput.$refs.input.click()">
@@ -45,7 +45,7 @@
         </v-text-field>
         <v-text-field
             :disabled="!editMode"
-            v-model="user.firstname"
+            v-model="user.first_name"
             filled label="First Name"
             placeholder="John">
         </v-text-field>
@@ -53,7 +53,7 @@
       <v-col cols="12" md="4" class="pt-md-10 pt-0">
         <v-text-field
             :disabled="!editMode"
-            v-model="user.lastname"
+            v-model="user.last_name"
             filled label="Last Name"
             placeholder="Doe">
         </v-text-field>
@@ -71,12 +71,13 @@
 
 <script>
 import axios from "axios";
+import {mapState} from "vuex";
+import authentication from "@/store/authentication";
 
 export default {
   name: "UserInfo",
   data() {
     return {
-      user: '',
       editMode: false,
       imageMenu: false,
       loading: false
@@ -109,17 +110,20 @@ export default {
         this.$store.dispatch('showMessage', {message , color: 'error'});
       }).finally(() => this.loading = false);
     },
-    getUserInfo: function () {
-      const user = this.$store.getters.userInfo;
-      this.user = {
-        email: user.email,
-        firstname: user.first_name,
-        lastname: user.last_name,
-        profileImg: user.profile_picture
-      };
-    }
+    // getUserInfo: function () {
+    //   const user = this.$store.getters.userInfo;
+    //   this.user = {
+    //     email: user.email,
+    //     firstname: user.first_name,
+    //     lastname: user.last_name,
+    //     profileImg: user.profile_picture
+    //   };
+    // }
   },
   computed: {
+    ...mapState({
+      user: (state) => state.user
+    }),
     getImgUrl: function () {
       if (typeof(this.user.profileImg) === 'string') {
         return axios.defaults.baseURL + this.user.profileImg;
@@ -130,12 +134,12 @@ export default {
     }
   },
   mounted() {
-    this.getUserInfo();
+    // this.getUserInfo();
   },
   watch: {
-    '$store.getters.userInfo': function () {
-      this.getUserInfo();
-    }
+    // '$store.getters.userInfo': function () {
+    //   this.getUserInfo();
+    // }
   }
 }
 </script>

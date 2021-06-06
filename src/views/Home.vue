@@ -1,13 +1,12 @@
 <template>
   <div>
-    <NavBar :user="user"/>
+    <NavBar v-if="loaded"/>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import axios from "axios";
 import NewWorkspace from "@/components/new-workspace/NewWorkspace";
 import UserAvatar from "@/components/shared/UserAvatar";
 import NavBar from "@/components/homepage/NavBar";
@@ -18,27 +17,21 @@ export default {
   components: {Workspaces, NavBar, UserAvatar, NewWorkspace},
   data() {
     return {
-      user: {}
+      loaded: false
     }
   },
-  created() {
+  async created() {
     this.pathName = this.$route.name
-    this.getUserInfo();
+    // this.getUserInfo();
+    this.getUserInfo()
   },
   methods: {
     getUserInfo: function () {
-      this.$store.dispatch('getUserInfo').then(
-          () => {
-            this.user = this.$store.getters.userInfo
-          }
-      );
+      this.$store.dispatch('auth/getUserInfo').then(() => {
+        this.loaded = true
+      })
     }
   },
-  watch: {
-    '$store.getters.userInfo': function (newVal) {
-      this.user = newVal
-    }
-  }
 };
 </script>
 

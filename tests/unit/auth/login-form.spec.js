@@ -20,6 +20,7 @@ describe("Testing Login-Form.vue", () => {
   store = new Vuex.Store({
     modules: {
       auth: {
+        namespaced: true,
         actions
       }
     }

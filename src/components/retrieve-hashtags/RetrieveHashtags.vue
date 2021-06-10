@@ -16,24 +16,14 @@
 
       >
       </v-select>
-      <!-- <v-btn
-          class="button"
-          color="primary"
-          :loading="loading"
-          :disabled="selected == null"
-          depressed
-          @click="getHashtags"
-          >
-      Get Hashtags
-      </v-btn> -->
       <div class="lists">
-        <v-list v-if="this.hashtags.length != 0" class="hashtag-list" dense nav>
-          <v-subheader style="font-size: 20px">Trends On {{ this.selected }}</v-subheader>
+        <v-list v-if="hashtags.length !== 0" class="hashtag-list" dense nav>
+          <v-subheader style="font-size: 20px">Trends On {{ selected }}</v-subheader>
 
-          <vue-custom-scrollbar class="scroll-area">
+          <div class="scroll-area">
             <v-list-item-group color="primary">
 
-              <v-list-item v-for="hashtag in this.hashtags1" :key="hashtag" color="#68b3e8">
+              <v-list-item v-for="hashtag in hashtags1" :key="hashtag" color="#68b3e8">
                 <a :href="`https://twitter.com/search?q=%23${hashtag.replace('#', '')}&src=typed_query`"
                    target="_blank">{{ hashtag }}</a>
                 <v-icon style="margin-left: auto; margin-right: 5px;" @click="addToPost(hashtag)">mdi-plus</v-icon>
@@ -41,11 +31,11 @@
 
 
             </v-list-item-group>
-          </vue-custom-scrollbar>
+          </div>
 
         </v-list>
 
-        <v-list v-if="this.hashtags.length == 0" class="hashtags-list-preview" dense nav>
+        <v-list v-if="hashtags.length === 0" class="hashtags-list-preview" dense nav>
 
           <v-subheader style="font-size: 20px">Select A Country To Get Trend Hashtags On It</v-subheader>
           <v-list-item-group color="primary">
@@ -71,16 +61,11 @@
 <script>
 import {mdiTrendingUp} from "@mdi/js";
 import axios from "axios";
-import vueCustomScrollbar from 'vue-custom-scrollbar'
-import "vue-custom-scrollbar/dist/vueScrollbar.css"
 import {mapMutations, mapState} from "vuex";
 
 
 export default {
   name: "RetrieveHashtags",
-  components: {
-    vueCustomScrollbar
-  },
   data() {
     return {
       available_countries: ['Winnipeg', 'Ottawa', 'Quebec', 'Montreal', 'Toronto', 'Edmonton', 'Calgary', 'Vancouver', 'Birmingham',
@@ -167,16 +152,6 @@ export default {
 
     },
     addToPost: function (hashtag) {
-      // let currentPost = this.$store.getters.getNewPost;
-      // // this.$store.dispatch('setCaption', `${currentPost.caption}\n${hashtag}`);
-      // console.log(currentPost.caption);
-      // let newPost = {
-      //   name: currentPost.name,
-      //   caption: `${currentPost.caption}\n${hashtag}`,
-      //   team: currentPost.team
-      // }
-      // console.log(newPost.caption);
-      // this.$store.dispatch('setPost', newPost);
       this.ADD_HASHTAG(hashtag)
     }
   }
@@ -207,6 +182,7 @@ export default {
   margin: auto;
   max-width: 720px;
   height: 400px;
+  overflow-y: auto;
 }
 
 

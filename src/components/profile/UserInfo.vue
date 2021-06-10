@@ -64,9 +64,9 @@
       <v-card-actions>
         <v-spacer>
         </v-spacer>
-        <v-btn v-show="!editMode" @click="editMode = true" depressed color="primary">Edit</v-btn>
-        <v-btn outlined @click="discardChanges" v-show="editMode" color="error">Discard</v-btn>
-        <v-btn depressed @click="saveChanges" :loading="loading" v-show="editMode" color="primary">Save</v-btn>
+        <v-btn ref="editBtn" v-if="!editMode" @click="editMode = true" depressed color="primary">Edit</v-btn>
+        <v-btn ref="discardBtn" outlined @click="discardChanges" v-if="editMode" color="error">Discard</v-btn>
+        <v-btn ref="saveBtn" depressed @click="saveChanges" :loading="loading" v-if="editMode" color="primary">Save</v-btn>
       </v-card-actions>
     </div>
     <div v-else>
@@ -95,6 +95,7 @@ export default {
   methods: {
     discardChanges: function () {
       this.editMode = false;
+      this.$store.dispatch('auth/getUserInfo')
     },
     saveChanges: function () {
       this.loading = true;

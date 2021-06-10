@@ -22,6 +22,7 @@
     <v-tooltip top>
       <template v-slot:activator="{on, attrs}">
         <v-btn
+            ref="addWorkspace"
             id="btn"
             @click="newWorkspace = true"
             v-on="on"

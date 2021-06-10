@@ -68,9 +68,11 @@ export default {
     },
     createPost: async function () {
       const status = this.post.status
-      this.$store.dispatch('post/createNewPost').then(() => {
+      this.$store.dispatch('post/createNewPost').then((resp) => {
         const message = "new post created successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
+        const postID = resp.data.id
+        this.$router.push({name: 'PostView', query: {pID: postID}})
       }).catch(err => {
         let message = err.response.data.error;
         if (!message) {

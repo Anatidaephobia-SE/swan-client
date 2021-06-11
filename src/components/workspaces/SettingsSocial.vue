@@ -22,7 +22,7 @@
           <v-list-item-action>
             <v-tooltip bottom>
               <template v-slot:activator="{on, attrs}">
-                <v-btn v-on="on" v-bind="attrs" icon @click="connect(s.name)">
+                <v-btn ref="requestConnection" v-on="on" v-bind="attrs" icon @click="connect(s.name)">
                   <v-icon>mdi-repeat</v-icon>
                 </v-btn>
               </template>
@@ -75,16 +75,14 @@ export default {
     },
     getTwitter: function () {
       this.loading = true
-      this.$store.dispatch('getTwitterAccount', this.getWorkspaceId)
-          .then(resp => {
-            this.twitterInfo = resp.data
-          }).catch(err => {
+      this.$store.dispatch('getTwitterAccount', this.getWorkspaceId).then(resp => {
+        this.twitterInfo = resp.data
+      }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
       }).finally(() => this.loading = false)
     },
     getAccessTwitter: function () {
-      this.team_url = this.$route.query.team_url
       const body = {
         team_id: this.getWorkspaceId,
         oauth_token: this.$route.query.oauth_token,
@@ -94,11 +92,11 @@ export default {
         this.twitter = true;
         const message = "Twitter is connected!";
         this.$store.dispatch('showMessage', {message, color: 'success'});
-        this.$router.push(this.$route.path);
+        this.getTwitter()
       }).catch(err => {
         const message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
-      }).finally(() => this.getTwitter());
+      })
     }
   },
   computed: {
@@ -109,8 +107,9 @@ export default {
   mounted() {
     if (this.$route.query.oauth_token) {
       this.getAccessTwitter()
+    } else {
+      this.getTwitter()
     }
-    this.getTwitter()
   }
 }
 </script>

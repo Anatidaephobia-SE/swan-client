@@ -16,6 +16,8 @@ import Profile from "@/views/Profile";
 import PostView from "@/views/teams-subpaths/PostView";
 import Compose from "@/views/teams-subpaths/Compose";
 import Ideas from "@/views/Ideas";
+import Landing from "@/views/Landing"
+import NotFound from "@/views/404"
 
 Vue.use(VueRouter)
 
@@ -70,6 +72,16 @@ const routes = [
     name: 'Logout',
     component: Logout
   },
+  {
+    path: '/about',
+    name: 'About',
+    component: Landing
+  },
+  {
+    path: '*',
+    name: '404',
+    component: NotFound
+  }
 ]
 
 const router = new VueRouter({

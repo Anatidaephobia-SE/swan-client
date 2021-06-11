@@ -2,17 +2,18 @@
   <v-container>
     <v-card-title>
       <v-icon class="mr-2">mdi-connection</v-icon>
-      Social Media</v-card-title>
-    <v-container>
+      Social Media
+    </v-card-title>
+    <v-container v-if="!loading">
       <v-list>
         <v-list-item three-line v-for="(s, i) in socialMedia" :key="i">
           <v-list-item-avatar>
-            <v-icon :color="s.color" large>{{s.icon}}</v-icon>
+            <v-icon :color="s.color" large>{{ s.icon }}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>{{s.name}}</v-list-item-title>
+            <v-list-item-title>{{ s.name }}</v-list-item-title>
             <v-list-item-subtitle v-if="twitterInfo">
-              @{{twitterInfo.screen_name}} | {{twitterInfo.name}}
+              @{{ twitterInfo.screen_name }} | {{ twitterInfo.name }}
             </v-list-item-subtitle>
             <v-list-item-subtitle v-if="twitterInfo">
               <v-chip color="accent" x-small>Connected</v-chip>
@@ -31,18 +32,25 @@
         </v-list-item>
       </v-list>
     </v-container>
+    <v-container v-else>
+      <SettingsSocialLoader/>
+    </v-container>
   </v-container>
 </template>
 
 <script>
+import SettingsSocialLoader from "@/components/workspaces/SettingsSocialLoader";
+
 export default {
   name: "SettingsSocial",
+  components: {SettingsSocialLoader},
   data() {
     return {
       socialMedia: [
         {name: 'Twitter', icon: 'mdi-twitter', color: 'blue'}
       ],
-      twitterInfo: ''
+      twitterInfo: '',
+      loading: false
     }
   },
   methods: {
@@ -58,21 +66,22 @@ export default {
       };
       this.$store.dispatch('requestConnectionTwitter', body).then(resp => {
         const message = "Redirecting to twitter.com. Authorize this app";
-        this.$store.dispatch('showMessage', {message , color: 'info'});
+        this.$store.dispatch('showMessage', {message, color: 'info'});
         setTimeout(() => window.location = resp.data.address, 1000);
       }).catch(err => {
         const message = err.response.data.error | 'Something\'s wrong, try again please';
-        this.$store.dispatch('showMessage', {message , color: 'error'});
+        this.$store.dispatch('showMessage', {message, color: 'error'});
       });
     },
     getTwitter: function () {
+      this.loading = true
       this.$store.dispatch('getTwitterAccount', this.getWorkspaceId)
           .then(resp => {
             this.twitterInfo = resp.data
-            console.log(this.twitterInfo)
-          }).catch(() => {
-        console.log()
-      })
+          }).catch(err => {
+        const message = err.response.data.error;
+        this.$store.dispatch('showMessage', {message, color: 'error'});
+      }).finally(() => this.loading = false)
     },
     getAccessTwitter: function () {
       this.team_url = this.$route.query.team_url
@@ -84,11 +93,11 @@ export default {
       this.$store.dispatch('sendTokensTwitter', body).then(() => {
         this.twitter = true;
         const message = "Twitter is connected!";
-        this.$store.dispatch('showMessage', {message , color: 'success'});
+        this.$store.dispatch('showMessage', {message, color: 'success'});
         this.$router.push(this.$route.path);
       }).catch(err => {
         const message = err.response.data.error;
-        this.$store.dispatch('showMessage', {message , color: 'error'});
+        this.$store.dispatch('showMessage', {message, color: 'error'});
       }).finally(() => this.getTwitter());
     }
   },

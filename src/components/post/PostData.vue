@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="!loading" class="pa-md4">
+  <v-container class="pa-md4">
     <v-card-title>
       <v-icon class="mr-2">mdi-pencil</v-icon>
       Text And Multimedia
@@ -9,6 +9,7 @@
       <v-text-field v-model="post.name"
                     :disabled="!canEdit"
                     :rules="nameRule"
+                    ref="name"
                     filled
                     label="Name"
                     placeholder="My First Post"
@@ -30,6 +31,7 @@
           v-model="post.caption"
           :disabled="!canEdit"
           :rules="rule"
+          ref="caption"
           auto-grow counter
           filled
           label="Your tweet"
@@ -133,7 +135,6 @@ export default {
   components: {UserAvatar, PhotoPicker},
   data() {
     return {
-      loading: false,
       valid: false,
       image: '',
       addImage: true,

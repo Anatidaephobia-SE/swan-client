@@ -23,7 +23,7 @@
         </v-col>
       </v-row>
       <div class="pa-2 ml-16">
-        <p>
+        <p ref="caption">
           {{ this.post.caption }}
         </p>
         <MultiMediaVisualizer/>

@@ -22,6 +22,7 @@
              :loading="loading[b.type]"
              :x-small="$vuetify.breakpoint.mobile"
              depressed
+             ref="btn"
              @click="b.action(b.type)">{{ b.label }}
       </v-btn>
       <v-spacer></v-spacer>
@@ -31,9 +32,11 @@
 
 <script>
 import {mapState} from "vuex";
+import Scheduling from "@/components/post/Scheduling";
 
 export default {
   name: "PostActions",
+  components: {Scheduling},
   data() {
     return {
       buttons: [

@@ -1,15 +1,19 @@
-
 <template>
   <v-container class="pa-md-4">
 
-    <Scheduling :dialog="dialog" :time="post.schedule_time" @close-dialog="addScheduling"/>
+    <Scheduling :dialog="dialog" @close-dialog="addScheduling"/>
     <v-card-title>
       <v-icon class="mr-2">mdi-checkbox-marked-outline</v-icon>
       Actions
     </v-card-title>
     <v-card-subtitle v-if="post.status">
       Current State:
-      <v-chip :color="statusType.color" x-small>{{ statusType.label.toUpperCase() }}</v-chip>
+      <v-chip :color="statusType.color" x-small>
+        {{ statusType.label.toUpperCase() }}
+        <span v-if="post.status === 'Schedule'">
+          - {{ new Date(post.schedule_time).toLocaleString() }}
+        </span>
+      </v-chip>
     </v-card-subtitle>
     <v-card-text>
       <p>Now you're done with creating your content, select the action you want to do with it.</p>
@@ -19,25 +23,34 @@
       <v-btn v-for="(b, i) in buttons"
              :key="i"
              :color="b.color"
-             :disabled="!canEdit"
+             :disabled="b.type === 'Delete' ? false: !canEdit"
              :loading="loading[b.type]"
-             :x-small="$vuetify.breakpoint.mobile"
+             :x-small="$vuetify.breakpoint.smAndDown"
              depressed
              ref="btn"
              @click="b.action(b.type)">{{ b.label }}
       </v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
+
+    <Dialog
+        header="Delete post?"
+        :show="deleteConfirmation"
+        text="Are you sure you want to delete this post?"
+        @close-dialog="deletePost"
+    />
+
   </v-container>
 </template>
 
 <script>
 import {mapState} from "vuex";
 import Scheduling from "@/components/post/Scheduling";
+import Dialog from "@/components/shared/Dialog";
 
 export default {
   name: "PostActions",
-  components: {Scheduling},
+  components: {Dialog, Scheduling},
   data() {
     return {
       buttons: [
@@ -48,9 +61,10 @@ export default {
           }
         },
         {label: 'draft', color: 'info', type: 'Drafts', action: this.action},
-        {label: 'remove', color: 'error', type: 'Delete', action: this.deletePost}
+        {label: 'remove', color: 'error', type: 'Delete', action: () => this.deleteConfirmation = true}
       ],
       dialog: false,
+      deleteConfirmation: false,
       loading: {
         Published: false,
         Schedule: false,
@@ -80,12 +94,6 @@ export default {
         this.$router.push({name: 'PostView', query: {pID: postID}})
       }).catch(err => {
         let message = err.response.data.error;
-        if (!message) {
-          const errCode = err.response.status
-          if (errCode === 400) {
-            message = "Please check your post again, it has some problems"
-          }
-        }
         this.$store.dispatch('showMessage', {message, color: 'error'});
         this.$store.commit('post/SET_STATUS', '')
       }).finally(() => {
@@ -111,16 +119,19 @@ export default {
         this.action('Schedule')
       }
     },
-    deletePost: function () {
+    deletePost: function (response) {
+      this.deleteConfirmation = false
       this.loading.Delete = true
-      this.$store.dispatch('post/deletePost').then(() => {
-        const message = "Post deleted successfully";
-        this.$store.dispatch('showMessage', {message, color: 'success'});
-        this.$router.push({name: 'Posts'})
-      }).catch(err => {
-        const message = err.response.data.message
-        this.$store.dispatch('showMessage', {message, color: 'error'})
-      }).finally(() => this.loading.Delete = false)
+      if (response) {
+        this.$store.dispatch('post/deletePost').then(() => {
+          const message = "Post deleted successfully";
+          this.$store.dispatch('showMessage', {message, color: 'success'});
+          this.$router.push({name: 'Posts'})
+        }).catch(err => {
+          const message = err.response.data.message
+          this.$store.dispatch('showMessage', {message, color: 'error'})
+        }).finally(() => this.loading.Delete = false)
+      }
     }
   },
   computed: {

@@ -30,7 +30,7 @@
             color="primary"
             outlined
             @click="$emit('close-dialog')">
-          Cancel
+          Close
         </v-btn>
       </v-card-actions>
     </v-card>

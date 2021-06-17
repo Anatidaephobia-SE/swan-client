@@ -80,6 +80,7 @@ const postModule = {
       return new Promise((resolve, reject) => {
         axios.put(`api/v1/post/update_post/${state.post.id}/`, body).then(resp => {
           const data = resp.data;
+          data.owner = state.author
           commit('SET_POST_ALL', data);
           resolve(resp)
         }).catch(err => reject(err));
@@ -130,15 +131,16 @@ const postModule = {
         team: payload.team,
         multimedia: multimedia,
         status: payload.status || '',
-        created_at: payload.created_at
+        created_at: payload.created_at || state.post.created_at
       }
+      const preAuthor = state.author
       const author = payload.owner
       if (author) {
         state.author = {
-          email: author.email,
-          first_name: author.first_name,
-          last_name: author.last_name,
-          profile_picture: author.profile_picture
+          email: author.email || preAuthor.email,
+          first_name: author.first_name || preAuthor.first_name,
+          last_name: author.last_name || preAuthor.last_name,
+          profile_picture: author.profile_picture || preAuthor.profile_picture
         }
       }
       state.update = true

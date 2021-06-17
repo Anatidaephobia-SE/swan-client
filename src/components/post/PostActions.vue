@@ -1,7 +1,8 @@
+
 <template>
   <v-container class="pa-md-4">
 
-    <Scheduling :dialog="dialog" @close-dialog="addScheduling"/>
+    <Scheduling :dialog="dialog" :time="post.schedule_time" @close-dialog="addScheduling"/>
     <v-card-title>
       <v-icon class="mr-2">mdi-checkbox-marked-outline</v-icon>
       Actions
@@ -47,13 +48,14 @@ export default {
           }
         },
         {label: 'draft', color: 'info', type: 'Drafts', action: this.action},
-        // {label: 'remove', color: 'error'}
+        {label: 'remove', color: 'error', type: 'Delete', action: this.deletePost}
       ],
       dialog: false,
       loading: {
         Published: false,
         Schedule: false,
-        Drafts: false
+        Drafts: false,
+        Delete: false
       }
     }
   },
@@ -97,12 +99,6 @@ export default {
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
         let message = err.response.data.error;
-        if (!message) {
-          const errCode = err.response.status
-          if (errCode === 400) {
-            message = "Please check your post again, it has some problems"
-          }
-        }
         this.$store.dispatch('showMessage', {message, color: 'error'});
         this.$store.commit('post/SET_STATUS', '')
       }).finally(() => this.loading[status] = false)
@@ -114,6 +110,17 @@ export default {
         this.post.schedule_time = result
         this.action('Schedule')
       }
+    },
+    deletePost: function () {
+      this.loading.Delete = true
+      this.$store.dispatch('post/deletePost').then(() => {
+        const message = "Post deleted successfully";
+        this.$store.dispatch('showMessage', {message, color: 'success'});
+        this.$router.push({name: 'Posts'})
+      }).catch(err => {
+        const message = err.response.data.message
+        this.$store.dispatch('showMessage', {message, color: 'error'})
+      }).finally(() => this.loading.Delete = false)
     }
   },
   computed: {
@@ -126,5 +133,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

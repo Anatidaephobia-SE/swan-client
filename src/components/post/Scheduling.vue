@@ -2,7 +2,7 @@
   <v-dialog
       v-model="dialog"
       max-width="1000"
-      @click:outside="close(false)"
+      @click:outside="closeDialog(false)"
       transition="dialog-bottom-transition">
     <v-card>
       <v-card-title>
@@ -58,7 +58,8 @@
 export default {
   name: "Scheduling",
   props: {
-    dialog: Boolean
+    dialog: Boolean,
+    time: String
   },
   data() {
     return {

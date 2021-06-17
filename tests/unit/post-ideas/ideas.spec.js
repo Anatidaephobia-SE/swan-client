@@ -20,7 +20,13 @@ describe("Testing AddCard.vue", () => {
       getCards: jest.fn(),
     }
     actions2 = {
-      getWorkspaceMembers: jest.fn()
+      getWorkspaceMembers: jest.fn(() => new Promise(resolve => {
+        resolve({
+          data: {
+            members: []
+          }
+        })
+      }))
     }
     store = new Vuex.Store({
       modules: {

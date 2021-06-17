@@ -15,7 +15,11 @@ describe("Testing Invitations.vue", () => {
   let wrapper, store, actions;
   beforeEach(() => {
     actions = {
-      getInvites: jest.fn(),
+      getInvites: jest.fn(() => new Promise(resolve => {
+        resolve({
+          data: []
+        })
+      })),
     }
     store = new Vuex.Store({
       actions

@@ -92,6 +92,9 @@ export default {
       this.newWorkspace = true
     }
   },
+  destroyed() {
+    window.removeEventListener('scroll', this.hideAdd)
+  },
   watch: {
     '$store.getters.isTeamsUpdated': function () {
       const value = this.$store.getters.isTeamsUpdated

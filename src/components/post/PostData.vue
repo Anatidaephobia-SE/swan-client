@@ -136,7 +136,7 @@ export default {
   data() {
     return {
       valid: false,
-      image: '',
+      image: [],
       addImage: true,
       photoGalleryDialog: false,
       rule: [

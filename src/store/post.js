@@ -51,7 +51,8 @@ const postModule = {
       team: '',
       multimedia: [],
       status: '',
-      created_at: ''
+      created_at: '',
+      schedule_time: ''
     },
     update: false,
     canEdit: true,
@@ -80,6 +81,7 @@ const postModule = {
       return new Promise((resolve, reject) => {
         axios.put(`api/v1/post/update_post/${state.post.id}/`, body).then(resp => {
           const data = resp.data;
+          data.owner = state.author
           commit('SET_POST_ALL', data);
           resolve(resp)
         }).catch(err => reject(err));
@@ -107,6 +109,14 @@ const postModule = {
         axios.get(`api/v1/post/all_post/${team_id}/`)
           .then(resp => resolve(resp)).catch(err => reject(err))
       })
+    },
+    deletePost: function ({commit, state}) {
+      return new Promise((resolve, reject) => {
+        axios.delete(`api/v1/post/update_post/${state.post.id}`).then(resp => {
+          commit('RESET')
+          resolve(resp)
+        }).catch(err => reject(err))
+      })
     }
   },
   mutations: {
@@ -130,15 +140,17 @@ const postModule = {
         team: payload.team,
         multimedia: multimedia,
         status: payload.status || '',
-        created_at: payload.created_at
+        created_at: payload.created_at || state.post.created_at,
+        schedule_time: payload.schedule_time || '',
       }
+      const preAuthor = state.author
       const author = payload.owner
       if (author) {
         state.author = {
-          email: author.email,
-          first_name: author.first_name,
-          last_name: author.last_name,
-          profile_picture: author.profile_picture
+          email: author.email || preAuthor.email,
+          first_name: author.first_name || preAuthor.first_name,
+          last_name: author.last_name || preAuthor.last_name,
+          profile_picture: author.profile_picture || preAuthor.profile_picture
         }
       }
       state.update = true
@@ -158,7 +170,8 @@ const postModule = {
         team: '',
         multimedia: [],
         status: '',
-        created_at: ''
+        created_at: '',
+        schedule_time: ''
       }
       state.update = false
       state.canEdit = true

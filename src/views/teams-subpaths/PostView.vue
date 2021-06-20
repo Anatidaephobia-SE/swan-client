@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="loading">
+  <v-container v-if="!loading">
     <PostData/>
     <v-divider></v-divider>
     <RetrieveHashtags v-if="post.status === 'Drafts'" />
@@ -12,6 +12,9 @@
     <v-divider></v-divider>
     <PostComments/>
   </v-container>
+  <v-container v-else>
+    <PostViewLoader />
+  </v-container>
 </template>
 
 <script>
@@ -23,10 +26,11 @@ import PostComments from "@/components/post/PostComments";
 import TweetInfo from "@/components/post/TweetInfo";
 import {mapMutations, mapState} from "vuex";
 import RetrieveHashtags from "@/components/retrieve-hashtags/RetrieveHashtags";
+import PostViewLoader from "@/components/post/PostViewLoader";
 
 export default {
   name: "PostView",
-  components: {RetrieveHashtags, TweetInfo, PostComments, PostActions, PostVisualizer, PostData, Post},
+  components: {PostViewLoader, RetrieveHashtags, TweetInfo, PostComments, PostActions, PostVisualizer, PostData, Post},
   data() {
     return {
       loading: false
@@ -35,7 +39,8 @@ export default {
   methods: {
     ...mapMutations('post', ['RESET']),
     getPostData: function (id) {
-      this.$store.dispatch('post/getPostById', id).then(() => this.loading = true)
+      this.loading = true
+      this.$store.dispatch('post/getPostById', id).then(() => this.loading = false)
     }
   },
   mounted() {

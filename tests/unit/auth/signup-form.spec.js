@@ -15,11 +15,24 @@ describe("Testing signup form", () => {
 
   let store, actions;
   actions = {
-    register: jest.fn(),
-    updateUserInfo: jest.fn()
+    register: jest.fn(() => new Promise(resolve => {
+      resolve({
+        data: true
+      })
+    })),
+    updateUserInfo: jest.fn(() => new Promise(resolve => {
+      resolve({
+        data: true
+      })
+    }))
   }
   store = new Vuex.Store({
-    actions
+    modules: {
+      auth: {
+        namespaced: true,
+        actions
+      }
+    }
   })
   const vuetify = new Vuetify()
   const router = new VueRouter()

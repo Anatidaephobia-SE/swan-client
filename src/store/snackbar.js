@@ -10,7 +10,7 @@ const snackbarModule = {
   },
   mutations: {
     newMessage(state, payload) {
-      state.message = payload.message || 'There was a problem, please try again'
+      state.message = payload.message || 'Something wrong happened, please try again'
       state.color = payload.color
     }
   }

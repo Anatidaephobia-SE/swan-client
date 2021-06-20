@@ -2,6 +2,7 @@ import axios from "axios";
 import router from "@/router";
 
 const authModule = {
+  namespaced: true,
   state: {
     token: localStorage.getItem('token') || '',
     user: {
@@ -16,7 +17,7 @@ const authModule = {
       state.token = payload.token
       state.user = payload.user
     },
-    updateUser(state, user) {
+    UPDATE_USER(state, user) {
       state.user = user;
     },
     logout(state) {
@@ -54,18 +55,23 @@ const authModule = {
       })
     },
     updateUserInfo({commit}, user) {
-      console.log(user)
       const body = new FormData();
-      body.append('first_name', user.firstname);
-      body.append('last_name', user.lastname);
-      if (user.hasOwnProperty('profileImg')) {
-        body.append('profile_picture', user.profileImg)
+      for (const key in user) {
+        if (user.hasOwnProperty(key)) {
+          body.append(key, user[key])
+        }
       }
+
+      // body.append('first_name', user.first_name);
+      // body.append('last_name', user.last_name);
+      // if (user.hasOwnProperty('profile_picture')) {
+      //   body.append('profile_picture', user.profile_picture)
+      // }
       return new Promise((resolve, reject) => {
         axios.put('/api/v1/users/profile/update/', body)
           .then(resp => {
             const user = resp.data.user
-            commit('updateUser', user)
+            commit('UPDATE_USER', user)
             resolve(resp)
           }).catch(err => {
             console.log(err)
@@ -77,7 +83,7 @@ const authModule = {
       return new Promise((resolve, reject) => {
         axios.get('/api/v1/users/profile')
           .then(resp => {
-            commit('updateUser', resp.data);
+            commit('UPDATE_USER', resp.data);
             resolve(resp);
           })
           .catch(err => {
@@ -94,7 +100,6 @@ const authModule = {
   },
   getters: {
     isLoggedIn: (state) => !!state.token,
-    userInfo: (state) => state.user
   }
 }
 

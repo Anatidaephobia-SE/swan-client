@@ -69,13 +69,11 @@
 <script>
 import UserAvatar from "@/components/shared/UserAvatar";
 import Invitations from "@/components/homepage/Invitations";
+import {mapState} from "vuex";
 
 export default {
   name: "NavBar",
   components: {Invitations, UserAvatar},
-  props: {
-    user: Object
-  },
   data() {
     return {
       invitees: []
@@ -83,8 +81,10 @@ export default {
   },
   mounted() {
     this.getInvitees()
+    console.log(this.user)
   },
   computed: {
+    ...mapState('auth', ['user']),
     menuItems: function () {
       return [
         {label: 'Profile', link: '/profile', icon: 'mdi-account'},

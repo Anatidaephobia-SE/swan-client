@@ -8,7 +8,12 @@
     </v-card-title>
     <v-card-subtitle v-if="post.status">
       Current State:
-      <v-chip :color="statusType.color" x-small>{{ statusType.label.toUpperCase() }}</v-chip>
+      <v-chip :color="statusType.color" x-small>
+        {{ statusType.label.toUpperCase() }}
+        <span v-if="post.status === 'Schedule'">
+          - {{ new Date(post.schedule_time).toLocaleString() }}
+        </span>
+      </v-chip>
     </v-card-subtitle>
     <v-card-text>
       <p>Now you're done with creating your content, select the action you want to do with it.</p>
@@ -18,22 +23,34 @@
       <v-btn v-for="(b, i) in buttons"
              :key="i"
              :color="b.color"
-             :disabled="!canEdit"
+             :disabled="b.type === 'Delete' ? false: !canEdit"
              :loading="loading[b.type]"
-             :x-small="$vuetify.breakpoint.mobile"
+             :x-small="$vuetify.breakpoint.smAndDown"
              depressed
+             ref="btn"
              @click="b.action(b.type)">{{ b.label }}
       </v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
+
+    <Dialog
+        header="Delete post?"
+        :show="deleteConfirmation"
+        text="Are you sure you want to delete this post?"
+        @close-dialog="deletePost"
+    />
+
   </v-container>
 </template>
 
 <script>
 import {mapState} from "vuex";
+import Scheduling from "@/components/post/Scheduling";
+import Dialog from "@/components/shared/Dialog";
 
 export default {
   name: "PostActions",
+  components: {Dialog, Scheduling},
   data() {
     return {
       buttons: [
@@ -44,13 +61,15 @@ export default {
           }
         },
         {label: 'draft', color: 'info', type: 'Drafts', action: this.action},
-        // {label: 'remove', color: 'error'}
+        {label: 'remove', color: 'error', type: 'Delete', action: () => this.deleteConfirmation = true}
       ],
       dialog: false,
+      deleteConfirmation: false,
       loading: {
         Published: false,
         Schedule: false,
-        Drafts: false
+        Drafts: false,
+        Delete: false
       }
     }
   },
@@ -68,17 +87,13 @@ export default {
     },
     createPost: async function () {
       const status = this.post.status
-      this.$store.dispatch('post/createNewPost').then(() => {
+      this.$store.dispatch('post/createNewPost').then((resp) => {
         const message = "new post created successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
+        const postID = resp.data.id
+        this.$router.push({name: 'PostView', query: {pID: postID}})
       }).catch(err => {
         let message = err.response.data.error;
-        if (!message) {
-          const errCode = err.response.status
-          if (errCode === 400) {
-            message = "Please check your post again, it has some problems"
-          }
-        }
         this.$store.dispatch('showMessage', {message, color: 'error'});
         this.$store.commit('post/SET_STATUS', '')
       }).finally(() => {
@@ -92,12 +107,6 @@ export default {
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
         let message = err.response.data.error;
-        if (!message) {
-          const errCode = err.response.status
-          if (errCode === 400) {
-            message = "Please check your post again, it has some problems"
-          }
-        }
         this.$store.dispatch('showMessage', {message, color: 'error'});
         this.$store.commit('post/SET_STATUS', '')
       }).finally(() => this.loading[status] = false)
@@ -108,6 +117,20 @@ export default {
       if (result) {
         this.post.schedule_time = result
         this.action('Schedule')
+      }
+    },
+    deletePost: function (response) {
+      this.deleteConfirmation = false
+      this.loading.Delete = true
+      if (response) {
+        this.$store.dispatch('post/deletePost').then(() => {
+          const message = "Post deleted successfully";
+          this.$store.dispatch('showMessage', {message, color: 'success'});
+          this.$router.push({name: 'Posts'})
+        }).catch(err => {
+          const message = err.response.data.message
+          this.$store.dispatch('showMessage', {message, color: 'error'})
+        }).finally(() => this.loading.Delete = false)
       }
     }
   },
@@ -121,5 +144,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

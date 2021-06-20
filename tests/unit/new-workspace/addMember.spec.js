@@ -16,7 +16,12 @@ describe("Testing adding members to workspace", () => {
     let store, actions, wrapper
     beforeEach(() => {
         actions = {
-            addUserToWorkspace: jest.fn()
+            addUserToWorkspace: jest.fn(() => new Promise(resolve => {
+                const response = {
+                    data: []
+                }
+                resolve(response)
+            }))
         }
         store = new Vuex.Store({
             actions

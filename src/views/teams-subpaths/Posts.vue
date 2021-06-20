@@ -55,28 +55,33 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
-    <v-row>
+    <v-row v-if="loading">
+      <v-col v-for="p in 3" :key="p" cols="12" lg="3" md="4" sm="6" xl="3">
+        <PostLoader/>
+      </v-col>
+    </v-row>
+    <v-row v-else>
       <v-col v-for="p in filteredPosts" :key="p.id" cols="12" lg="3" md="4" sm="6" xl="3">
         <Post :post="p" @clickedOn="goToPost(p.id)"/>
       </v-col>
       <v-col
           class="text-center"
           cols="12"
-          v-if="posts.length === 0" >
+          v-if="posts.length === 0">
         <v-img
             max-height="400"
             contain
-            :src="require('@/assets/graphics/blank.svg')" />
+            :src="require('@/assets/graphics/blank.svg')"/>
         <span>It's empty here, add a post now!</span>
       </v-col>
       <v-col
           class="text-center"
           cols="12"
-          v-else-if="filteredPosts.length === 0" >
+          v-else-if="filteredPosts.length === 0">
         <v-img
             max-height="400"
             contain
-            :src="require('@/assets/graphics/empty.svg')" />
+            :src="require('@/assets/graphics/empty.svg')"/>
         <span>Not a single one!</span>
       </v-col>
     </v-row>
@@ -86,10 +91,12 @@
 <script>
 import Post from "@/components/workspaces/team/Post"
 import PostDialog from '@/components/post/Post'
+import PostLoader from "@/components/post/PostLoader";
 
 export default {
   name: "Posts",
   components: {
+    PostLoader,
     Post,
     PostDialog
   },
@@ -102,7 +109,8 @@ export default {
       key: Math.random(),
       searchKey: '',
       searchTag: [],
-      searchStatus: []
+      searchStatus: [],
+      loading: false
     }
   },
   mounted() {
@@ -110,10 +118,12 @@ export default {
   },
   methods: {
     getAllPosts: function () {
+      this.loading = true
       const teamID = this.$route.params.workspace
       this.$store.dispatch('post/getAllPosts', teamID).then(resp => {
         this.posts = resp.data
         this.filteredPosts = this.posts
+        this.loading = false
       }).catch()
     },
     goToPost: function (id) {

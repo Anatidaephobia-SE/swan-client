@@ -2,7 +2,7 @@
   <v-dialog
       v-model="dialog"
       max-width="1000"
-      @click:outside="close(false)"
+      @click:outside="closeDialog(false)"
       transition="dialog-bottom-transition">
     <v-card>
       <v-card-title>
@@ -38,7 +38,7 @@
         </v-row>
 
         <v-card-actions>
-          <v-spacer />
+          <v-spacer/>
           <v-btn
               color="accent"
               depressed
@@ -58,7 +58,7 @@
 export default {
   name: "Scheduling",
   props: {
-    dialog: Boolean
+    dialog: Boolean,
   },
   data() {
     return {
@@ -67,14 +67,8 @@ export default {
       now: Date.now(),
     }
   },
-
   methods: {
-    addSchedule: function () {
-      console.log(this.selected_time)
-      console.log(this.selected_date)
-    },
     closeDialog: function (job) {
-      console.log(job)
       if (job) {
         this.$emit('close-dialog', `${this.selected_date} ${this.selected_time}`)
       } else {

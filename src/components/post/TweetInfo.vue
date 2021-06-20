@@ -8,12 +8,6 @@
       Post Analytics
     </v-card-title>
     <v-card-text>
-      <!--    <v-container>-->
-      <!--      <div cols="3">-->
-      <!--        <v-icon>mdi-heart</v-icon>-->
-      <!--        <span>{{tweet_info.like_count}}</span>-->
-      <!--      </div>-->
-      <!--    </v-container>-->
 
       <v-expansion-panels flat>
         <v-expansion-panel
@@ -65,6 +59,7 @@
 
 <script>
 import axios from "axios";
+import {mapState} from "vuex";
 
 export default {
   name: "TweetInfo",
@@ -75,7 +70,9 @@ export default {
   },
 
   mounted() {
-    this.getTweetInfo();
+    if (this.post.status === 'Published') {
+      this.getTweetInfo();
+    }
   },
 
   methods: {
@@ -89,9 +86,10 @@ export default {
     }
   },
   computed: {
+    ...mapState('post', ['post']),
     socialMedia: () => [
       {label: 'Twitter', icon: 'mdi-twitter', color: 'blue'}
-    ]
+    ],
   }
 }
 </script>

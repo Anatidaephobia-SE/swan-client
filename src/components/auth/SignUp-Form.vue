@@ -28,7 +28,7 @@
             >
             </v-text-field>
             <v-text-field
-                v-model="confirmPassword"
+                v-model="confirm_password"
                 :rules="rules.confirmPassword"
                 filled
                 label="Confirm Password"
@@ -56,10 +56,10 @@
       <v-stepper-content step="2">
         <v-form ref="updateProfile" v-model="valid" @submit.prevent="updateAddInfo">
           <v-container>
-            <v-file-input v-model="profileImg" filled label="profile picture">
+            <v-file-input v-model="profile_picture" filled label="profile picture">
             </v-file-input>
             <v-text-field
-                v-model="firstname"
+                v-model="first_name"
                 :rules="rules.name"
                 filled
                 label="First Name"
@@ -68,7 +68,7 @@
             >
             </v-text-field>
             <v-text-field
-                v-model="lastname"
+                v-model="last_name"
                 :rules="rules.name"
                 filled
                 label="Last Name"
@@ -103,11 +103,11 @@ export default {
       token: "",
       valid: false,
       email: "",
-      firstname: "",
-      lastname: "",
+      first_name: "",
+      last_name: "",
       password: "",
-      confirmPassword: "",
-      profileImg: undefined,
+      confirm_password: "",
+      profile_picture: undefined,
       loading: false,
       rules: {
         email: [
@@ -137,9 +137,9 @@ export default {
       const data = {
         email: this.email,
         password: this.password,
-        confirm_password: this.confirmPassword
+        confirm_password: this.confirm_password
       };
-      this.$store.dispatch('register', data)
+      this.$store.dispatch('auth/register', data)
           .then(() => {
             const message = "Verification email is sent";
             this.$store.dispatch('showMessage', {message, color: 'success'})
@@ -153,12 +153,12 @@ export default {
     updateAddInfo: function () {
       this.loading = true;
       const data = {
-        firstname: this.firstname,
-        lastname: this.lastname,
-        profileImg: this.profileImg
+        first_name: this.first_name,
+        last_name: this.last_name,
+        profile_picture: this.profile_picture
       };
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token
-      this.$store.dispatch('updateUserInfo', data)
+      this.$store.dispatch('auth/updateUserInfo', data)
           .then(() => {
             const message = `You have registered successfully`;
             this.$store.dispatch('showMessage', {message, color: 'success'});

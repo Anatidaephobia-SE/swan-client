@@ -73,7 +73,7 @@ export default {
       this.loading = true;
       const email = this.email;
       const password = this.password;
-      this.$store.dispatch('login', {email, password})
+      this.$store.dispatch('auth/login', {email, password})
           .then(() => {
             const message = "Logged in successfully, redirecting ..."
             this.$store.dispatch('showMessage', {message, color: 'success'})

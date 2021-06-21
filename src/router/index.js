@@ -9,6 +9,7 @@ import Settings from "@/views/teams-subpaths/Settings";
 import Dispatch from "@/views/Dispatch";
 import Posts from "@/views/teams-subpaths/Posts";
 import Calender from "@/views/Calender";
+import Notification from "@/views/Notification";
 
 import Logout from "@/views/Logout";
 import store from '../store/index'
@@ -50,6 +51,7 @@ const routes = [
       {path: 'compose', name: 'Compose', component: Compose},
       {path: 'ideas', name: 'Ideas', component: Ideas},
       {path: 'calender', name: 'Calender', component: Calender},
+      {path: 'notification', name: 'Notification', component: Notification},
     ]
   },
   {

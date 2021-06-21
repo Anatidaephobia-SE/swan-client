@@ -125,6 +125,7 @@ export default {
         {label: 'Create new post', link: `compose`, icon: 'mdi-note-plus'},
         {label: 'Ideas', link: 'ideas', icon: 'mdi-clipboard-list-outline'},
         {label: 'Calender', link: `calender`, icon: 'mdi-calendar'},
+        {label: 'Create new notification', link: `notification`, icon: 'mdi-cellphone-message'},
         {label: 'Settings', link: `settings`, icon: 'mdi-cog'},
       ]
     },

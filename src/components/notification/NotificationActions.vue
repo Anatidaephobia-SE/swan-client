@@ -6,12 +6,12 @@
       <v-icon class="mr-2">mdi-checkbox-marked-outline</v-icon>
       Actions
     </v-card-title>
-    <v-card-subtitle v-if="post.status">
+    <v-card-subtitle v-if="notification.status">
       Current State:
       <v-chip :color="statusType.color" x-small>
         {{ statusType.label.toUpperCase() }}
-        <span v-if="post.status === 'Schedule'">
-          - {{ new Date(post.schedule_time).toLocaleString() }}
+        <span v-if="notification.status === 'Schedule'">
+          - {{ new Date(notification.schedule_time).toLocaleString() }}
         </span>
       </v-chip>
     </v-card-subtitle>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       buttons: [
-        {label: 'Send', color: 'primary', type: 'Published', action: this.action},
+        {label: 'Send', color: 'primary', type: 'Send', action: this.action},
         {
           label: 'Schedule', color: 'accent', type: 'Schedule', action: () => {
             this.dialog = true
@@ -68,7 +68,7 @@ export default {
   methods: {
     action: async function (status) {
       this.loading[status] = true
-      this.$store.commit('post/SET_STATUS', status)
+      this.$store.commit('notification/SET_STATUS', status)
       if (this.update) {
         await this.updatePost()
       } else {
@@ -76,36 +76,37 @@ export default {
       }
     },
     createPost: async function () {
-      const status = this.post.status
-      this.$store.dispatch('post/createNewPost').then((resp) => {
-        const message = "new post created successfully";
+      const status = this.notification.status
+      this.$store.dispatch('notification/createNewNotification').then((resp) => {
+        const message = "new notification created successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
         const postID = resp.data.id
         this.$router.push({name: 'PostView', query: {pID: postID}})
       }).catch(err => {
+        console.log(err.response)
         let message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
-        this.$store.commit('post/SET_STATUS', '')
+        this.$store.commit('notification/SET_STATUS', '')
       }).finally(() => {
         this.loading[status] = false
       })
     },
     updatePost: function () {
-      const status = this.post.status
-      this.$store.dispatch('post/updatePost').then(() => {
+      const status = this.notification.status
+      this.$store.dispatch('showMessage/updatePost').then(() => {
         const message = "Post updated successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
         let message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
-        this.$store.commit('post/SET_STATUS', '')
+        this.$store.commit('showMessage/SET_STATUS', '')
       }).finally(() => this.loading[status] = false)
     },
     addScheduling: function (result) {
       this.dialog = false
       console.log(result)
       if (result) {
-        this.post.schedule_time = result
+        this.notification.schedule_time = result
         this.action('Schedule')
       }
     },
@@ -113,7 +114,7 @@ export default {
       this.deleteConfirmation = false
       this.loading.Delete = true
       if (response) {
-        this.$store.dispatch('post/deletePost').then(() => {
+        this.$store.dispatch('showMessage/deletePost').then(() => {
           const message = "Post deleted successfully";
           this.$store.dispatch('showMessage', {message, color: 'success'});
           this.$router.push({name: 'Posts'})
@@ -126,9 +127,9 @@ export default {
   },
   computed: {
     statusType: function () {
-      return this.buttons.filter(b => b.type === this.post.status)[0]
+      return this.buttons.filter(b => b.type === this.notification.status)[0]
     },
-    ...mapState('post', ['post', 'update', 'canEdit'])
+    ...mapState('notification', ['notification', 'update', 'canEdit'])
   }
 }
 </script>

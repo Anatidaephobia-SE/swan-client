@@ -2,46 +2,57 @@
   <v-container class="pa-md4">
     <v-card-title>
       <v-icon class="mr-2">mdi-pencil</v-icon>
-      Text And Multimedia
+      Notification Data
     </v-card-title>
     <v-card-text style="max-width: 720px; margin: auto">
         
         
         
       <p>Name your notification</p>
-      <v-text-field v-model="post.name"
+      <v-text-field v-model="notification.name"
                     :disabled="!canEdit"
                     :rules="nameRule"
                     ref="notificationName"
                     filled
                     label="Name"
                     placeholder="Send discount notification"
-                    @input="setPostData">
+                    @input="setNotificationData">
       </v-text-field>
 
 
       <p>Fill with your RESTful APIs</p>
-      <v-text-field v-model="post.name"
+      <v-text-field v-model="notification.reciviers"
                     :disabled="!canEdit"
-                    :rules="nameRule"
+                    :rules="urlRule"
                     ref="name"
                     filled
                     label="URL"
                     placeholder="example: https://example.com/get-users"
-                    @input="setPostData">
+                    @input="setNotificationData">
+      </v-text-field>
+
+      <p>Fill with your desire email as sender</p>
+      <v-text-field v-model="notification.sender"
+                    :disabled="!canEdit"
+                    :rules="nameRule"
+                    ref="name"
+                    filled
+                    label="Sender"
+                    placeholder="example: fuck@example.com"
+                    @input="setNotificationData">
       </v-text-field>
 
       <p>Enter your notification text with desire variables for sending to your list of users.</p>
       <v-textarea
-          v-model="post.caption"
+          v-model="notification.body_text"
           :disabled="!canEdit"
           :rules="rule"
           ref="caption"
           auto-grow counter
           filled
-          label="Notification Test"
-          placeholder="Hi dear ${username} we recently set discount for our new T-shirts if you interset checkout our site at ${site_url}."
-          @input="setPostData">
+          label="Notification Text"
+          placeholder="Hi dear %^username^% we recently set discount for our new T-shirts if you interset checkout our site at %^site_url^%."
+          @input="setNotificationData">
       </v-textarea>
     </v-card-text>
   </v-container>
@@ -49,13 +60,12 @@
 
 <script>
 import axios from "axios";
+import isURL from "validator/lib/isURL";
 import {mapState} from "vuex";
-import PhotoPicker from "@/components/post/PhotoPicker";
-import UserAvatar from "@/components/shared/UserAvatar";
 
 export default {
-  name: "PostData",
-  components: {UserAvatar, PhotoPicker},
+  name: "NotificationParams",
+  components: {},
   data() {
     return {
       valid: false,
@@ -69,67 +79,36 @@ export default {
       nameRule: [
         v => !!v || 'This field is required',
         v => (v || '').length >= 4 || 'Name must be at least 4 character'
+      ],
+      urlRule: [
+        v => !!v || 'This field is required',
+        v => isURL(v) || 'Url is invalid'
       ]
     }
   },
   created() {
   },
   methods: {
-    setPostData: function () {
-      const post = {
-        name: this.post.name,
-        caption: this.post.caption,
-        tag: this.post.tag,
-        multimedia: this.post.multimedia,
-        team: this.$route.params.workspace
+    setNotificationData: function () {
+      const notification = {
+        name: this.notification.name,
+        body_text: this.notification.body_text,
+        subject: this.notification.subject,
+        template_team: this.$route.params.workspace,
+        reciviers: this.notification.reciviers,
+        sender: this.notification.sender
       }
-      this.$store.commit('post/SET_POST_DATA', post);
-    },
-    multimediaAdded: function () {
-      console.log(this.image)
-      this.post.multimedia.push(this.image)
-      this.image = ''
-      this.setPostData()
-    },
-    removeImage: function (index) {
-      this.post.multimedia.splice(index, 1)
+      this.$store.commit('notification/SET_NOTIFICATION_DATA', notification);
     },
   },
   computed: {
-    ...mapState('post', ['author', 'post', 'canEdit']),
-    imageUrl: function () {
-      return axios.defaults.baseURL + this.author.profile_picture;
-    },
-    multimedia: function () {
-      const media = []
-      for (const img of this.post.multimedia) {
-        if (img.hasOwnProperty('media')) {
-          media.push(axios.defaults.baseURL + img.media)
-        } else {
-          media.push(URL.createObjectURL(img))
-        }
-      }
-      return media
-    },
+    ...mapState('notification', ['owner', 'notification', 'canEdit']),
     date: function () {
-      return new Date(this.post.created_at).toLocaleString('en-En')
+      return new Date(this.notification.created_at).toLocaleString('en-En')
     },
     tags: function () {
       return ['-', 'Sales', 'Ads', 'Branding', 'News', 'Quote', 'Celebration']
     },
-    addImageMenu: function () {
-      return [
-        {label: 'Upload an image', func: () => this.$refs.imageInput.$refs.input.click()},
-        {
-          label: 'Use library', func: () => this.photoGalleryDialog = true
-        }
-      ]
-    }
-  },
-  watch: {
-    'post.multimedia': function () {
-      this.addImage = this.post.multimedia.length < 4;
-    }
   }
 }
 </script>

@@ -15,7 +15,7 @@ import NotificationActions from "@/components/notification/NotificationActions";
 import NotificationParams from "@/components/notification/NotificationParams";
 
 export default {
-  name: "Notification",
+  name: "CreateNotification",
   components: {NotificationActions, NotificationParams},
   data() {
     return {

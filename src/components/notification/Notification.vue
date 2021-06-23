@@ -4,11 +4,13 @@
     <v-card-title>
       {{ notification.name }}
     </v-card-title>
-    <v-card-subtitle v-if="notification.schedule_time">
-      {{ date }}
-    </v-card-subtitle>
     <v-card-subtitle>
-      <v-chip :color="statusColor" x-small>{{ notification.status }}</v-chip>
+      <v-chip :color="statusColor" x-small>{{ notification.status }}
+        <span v-if="notification.schedule_time">
+          -{{date}}
+        </span>
+      </v-chip>
+
     </v-card-subtitle>
     </div>
 
@@ -61,17 +63,19 @@ export default {
     }
   },
   computed: {
-    date: function () {
-      return new Date(this.notification.created_at).toLocaleString('en-En',
-          {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})
-    },
     statusColor: function () {
       const colors = {
         'Drafts': 'info',
         'Sent': 'primary'
       }
       return colors[this.notification.status]
-    }
+    },
+    date: function () {
+      return new Date(this.notification.schedule_time).
+      toLocaleString('en-En', {
+        year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false
+      })
+    },
   },
   methods: {
     goToNotification: function (id) {

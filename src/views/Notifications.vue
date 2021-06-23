@@ -46,7 +46,7 @@
       </v-col>
     </v-row>
     <v-row v-else>
-      <v-col v-for="n in filteredNotifications" :key="n.id" cols="12" lg="6" md="4" sm="6" xl="3">
+      <v-col v-for="n in filteredNotifications" :key="n.id" cols="12" md="3">
         <Notification :notification="n" @clickedOn="goToNotification(n.id)"/>
       </v-col>
       <v-col

@@ -19,7 +19,7 @@ function generateJson(notification) {
         sender: notification.sender,
         template_team: notification.template_team,
         status: notification.status,
-        schedule_time: timeSche
+        schedule_time: notification.schedule_time
     }
 }
 
@@ -103,7 +103,7 @@ const notificationModule = {
     },
     deleteNotification: function ({commit, state}) {
       return new Promise((resolve, reject) => {
-        axios.delete(`api/v1/notification/update_notification/${state.notification.id}`).then(resp => {
+        axios.delete(`api/v1/notification/update_template/${state.notification.id}`).then(resp => {
           commit('RESET')
           resolve(resp)
         }).catch(err => reject(err))

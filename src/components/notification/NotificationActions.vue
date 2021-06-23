@@ -67,7 +67,7 @@ export default {
       loading: {
         Send: false,
         Schedule: false,
-        Drafts: false,
+        Draft: false,
         Delete: false
       }
     }

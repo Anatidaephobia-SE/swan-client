@@ -1,10 +1,10 @@
 <template>
-  <v-card class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="700">
+  <v-card class="text-capitalize pa-2 ma-2 v-card--hover" outlined width="300">
     <div @click="$emit('clickedOn')">
     <v-card-title>
       {{ notification.name }}
     </v-card-title>
-    <v-card-subtitle>
+    <v-card-subtitle v-if="notification.schedule_time">
       {{ date }}
     </v-card-subtitle>
     <v-card-subtitle>
@@ -13,12 +13,6 @@
     </div>
 
     <v-card-actions>
-      <v-btn
-        color="orange lighten-2"
-        text
-      >
-        Expand
-      </v-btn>
 
       <v-spacer></v-spacer>
 

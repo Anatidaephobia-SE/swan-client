@@ -125,8 +125,8 @@ export default {
         {label: 'Create new post', link: `compose`, icon: 'mdi-note-plus'},
         {label: 'Ideas', link: 'ideas', icon: 'mdi-clipboard-list-outline'},
         {label: 'Calender', link: `calender`, icon: 'mdi-calendar'},
-        {label: 'Notification list', link: `notifications`, icon: 'mdi-cellphone-message'},
-        {label: 'Create new notification', link: `create-notification`, icon: 'mdi-cellphone-message'},
+        {label: 'Notification list', link: `notifications`, icon: 'mdi-email-multiple'},
+        {label: 'Create new notification', link: `create-notification`, icon: 'mdi-email-edit'},
         {label: 'Settings', link: `settings`, icon: 'mdi-cog'},
       ]
     },

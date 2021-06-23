@@ -19,8 +19,19 @@
                     @input="setNotificationData">
       </v-text-field>
 
+      <p>Fill with your email subject</p>
+      <v-text-field v-model="notification.subject"
+                    :disabled="!canEdit"
+                    :rules="nameRule"
+                    ref="notificationName"
+                    filled
+                    label="Subject"
+                    placeholder="New Feature"
+                    @input="setNotificationData">
+      </v-text-field>
 
-      <p>Fill with your RESTful APIs</p>
+
+      <p>Fill with your REST-full APIs</p>
       <v-text-field v-model="notification.reciviers"
                     :disabled="!canEdit"
                     :rules="urlRule"
@@ -38,11 +49,14 @@
                     ref="name"
                     filled
                     label="Sender"
-                    placeholder="example: fuck@example.com"
+                    placeholder="example: yourname@example.com"
                     @input="setNotificationData">
       </v-text-field>
 
-      <p>Enter your notification text with desire variables for sending to your list of users.</p>
+      <p>
+        Here you you should add the text you want to send to your customers and users.
+        You can specify the dynamic variables using %^variable^%.
+      </p>
       <v-textarea
           v-model="notification.body_text"
           :disabled="!canEdit"
@@ -51,7 +65,7 @@
           auto-grow counter
           filled
           label="Notification Text"
-          placeholder="Hi dear %^username^% we recently set discount for our new T-shirts if you interset checkout our site at %^site_url^%."
+          placeholder="Hi dear %^username^%, checkout our site at %^site_url^%."
           @input="setNotificationData">
       </v-textarea>
     </v-card-text>

@@ -1,6 +1,16 @@
 import axios from "axios";
 
+function isValidDate(date) {
+  var timestamp = Date.parse(date);
+  return !isNaN(timestamp)
+}
+
 function generateJson(notification) {
+    var timeSche = notification.schedule_time
+    if (!isValidDate(timeSche)) {
+      timeSche = new Date()
+    }
+
     return {
         name: notification.name,
         body_text: notification.body_text,
@@ -9,7 +19,7 @@ function generateJson(notification) {
         sender: notification.sender,
         template_team: notification.template_team,
         status: notification.status,
-        schedule_time: notification.schedule_time
+        schedule_time: timeSche
     }
 }
 
@@ -73,8 +83,9 @@ const notificationModule = {
         }).catch(err => reject(err));
       })
     },
-    updatenotification: function ({commit, state}) {
-      const body = generateFormData(state.notification)
+    updateNotification: function ({commit, state}) {
+      const body = generateJson(state.notification)
+      console.log(body)
       return new Promise((resolve, reject) => {
         axios.put(`api/v1/notification/update_template/${state.notification.id}/`, body).then(resp => {
           const data = resp.data;

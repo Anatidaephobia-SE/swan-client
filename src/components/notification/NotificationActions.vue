@@ -32,6 +32,13 @@
       </v-btn>
       <v-spacer></v-spacer>
     </v-card-actions>
+
+    <Dialog
+        header="Delete Notification?"
+        :show="deleteConfirmation"
+        text="Are you sure you want to delete this notification?"
+        @close-dialog="deleteNotification"
+    />
   </v-container>
 </template>
 
@@ -52,7 +59,7 @@ export default {
             this.dialog = true
           }
         },
-        {label: 'Draft', color: 'info', type: 'Drafts', action: this.action},
+        {label: 'Draft', color: 'info', type: 'Draft', action: this.action},
         {label: 'Remove', color: 'error', type: 'Delete', action: () => this.deleteConfirmation = true}
       ],
       dialog: false,
@@ -93,13 +100,14 @@ export default {
     },
     updateNotification: function () {
       const status = this.notification.status
-      this.$store.dispatch('showMessage/updateNotification').then(() => {
+      this.$store.dispatch('notification/updateNotification').then(() => {
         const message = "Notification updated successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
+        console.log(err.response.data)
         let message = err.response.data.error;
         this.$store.dispatch('showMessage', {message, color: 'error'});
-        this.$store.commit('showMessage/SET_STATUS', '')
+        this.$store.commit('notification/SET_STATUS', '')
       }).finally(() => this.loading[status] = false)
     },
     addScheduling: function (result) {
@@ -110,11 +118,11 @@ export default {
         this.action('Schedule')
       }
     },
-    deletePost: function (response) {
+    deleteNotification: function (response) {
       this.deleteConfirmation = false
       this.loading.Delete = true
       if (response) {
-        this.$store.dispatch('showMessage/deleteNotification').then(() => {
+        this.$store.dispatch('notification/deleteNotification').then(() => {
           const message = "Notification deleted successfully";
           this.$store.dispatch('showMessage', {message, color: 'success'});
           this.$router.push({name: 'Notification'})

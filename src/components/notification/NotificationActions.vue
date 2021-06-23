@@ -58,7 +58,7 @@ export default {
       dialog: false,
       deleteConfirmation: false,
       loading: {
-        Published: false,
+        Send: false,
         Schedule: false,
         Drafts: false,
         Delete: false
@@ -70,18 +70,18 @@ export default {
       this.loading[status] = true
       this.$store.commit('notification/SET_STATUS', status)
       if (this.update) {
-        await this.updatePost()
+        await this.updateNotification()
       } else {
-        await this.createPost()
+        await this.createNotification()
       }
     },
-    createPost: async function () {
+    createNotification: async function () {
       const status = this.notification.status
       this.$store.dispatch('notification/createNewNotification').then((resp) => {
         const message = "new notification created successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
-        const postID = resp.data.id
-        this.$router.push({name: 'PostView', query: {pID: postID}})
+        const notificationID = resp.data.id
+        this.$router.push({name: 'NotificationCompleteView', query: {nID: notificationID}})
       }).catch(err => {
         console.log(err.response)
         let message = err.response.data.error;
@@ -91,10 +91,10 @@ export default {
         this.loading[status] = false
       })
     },
-    updatePost: function () {
+    updateNotification: function () {
       const status = this.notification.status
-      this.$store.dispatch('showMessage/updatePost').then(() => {
-        const message = "Post updated successfully";
+      this.$store.dispatch('showMessage/updateNotification').then(() => {
+        const message = "Notification updated successfully";
         this.$store.dispatch('showMessage', {message, color: 'success'});
       }).catch(err => {
         let message = err.response.data.error;
@@ -114,10 +114,10 @@ export default {
       this.deleteConfirmation = false
       this.loading.Delete = true
       if (response) {
-        this.$store.dispatch('showMessage/deletePost').then(() => {
-          const message = "Post deleted successfully";
+        this.$store.dispatch('showMessage/deleteNotification').then(() => {
+          const message = "Notification deleted successfully";
           this.$store.dispatch('showMessage', {message, color: 'success'});
-          this.$router.push({name: 'Posts'})
+          this.$router.push({name: 'Notification'})
         }).catch(err => {
           const message = err.response.data.message
           this.$store.dispatch('showMessage', {message, color: 'error'})

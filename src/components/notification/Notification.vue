@@ -2,14 +2,13 @@
   <v-card class="text-capitalize pa-4 ma-2 v-card--hover" outlined width="700">
     <div @click="$emit('clickedOn')">
     <v-card-title>
-      {{ post.name }}
+      {{ notification.name }}
     </v-card-title>
     <v-card-subtitle>
       {{ date }}
     </v-card-subtitle>
     <v-card-subtitle>
-      <v-chip :color="statusColor" x-small>{{ post.status }}</v-chip>
-      <v-chip v-if="post.tag" dark :color="tagColor" x-small class="ml-1">{{ post.tag }}</v-chip>
+      <v-chip :color="statusColor" x-small>{{ notification.status }}</v-chip>
     </v-card-subtitle>
     </div>
 
@@ -37,16 +36,16 @@
 
         <v-card-text>
           <p>
-            Sender: {{ post.sender }}
+            Sender: {{ notification.sender }}
           </p>
           <p>
-            subject: {{ post.subject }}
+            subject: {{ notification.subject }}
           </p>
           <p class="mt-2">
             Body:
           </p>
           <p class="ml-2">
-          {{ post.body_text }}
+          {{ notification.body_text }}
           </p>
         </v-card-text>
       </div>
@@ -55,49 +54,30 @@
 </template>
 
 <script>
-
-import axios from "axios";
-
 export default {
-  name: "Post",
+  name: "Notification",
   components: {},
   props: {
-    post: Object
+    notification: Object
   },
   data() {
     return {
-      hasImg: false,
       expand: false,
       selectedNotificationId: 0,
     }
   },
   computed: {
     date: function () {
-      return new Date(this.post.created_at).toLocaleString('en-En',
+      return new Date(this.notification.created_at).toLocaleString('en-En',
           {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'})
-    },
-    imageUrl: function () {
-      return axios.defaults.baseURL + this.post.owner.profile_picture
     },
     statusColor: function () {
       const colors = {
         'Drafts': 'info',
-        'Published': 'primary'
+        'Sent': 'primary'
       }
-      return colors[this.post.status]
-    },
-    tagColor: function () {
-      const colors = {
-        'Sales': '#D32F2F',
-        'Ads': '#C2185B',
-        'Branding': '#7B1FA2',
-        'News': '#512DA8',
-        'Quote': '#303F9F',
-        'Celebration': '#1976D2'
-      }
-      return colors[this.post.tag]
+      return colors[this.notification.status]
     }
-
   },
   methods: {
     goToNotification: function (id) {
@@ -112,7 +92,7 @@ export default {
 </script>
 
 <style>
-.postText {
+.notificationText {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

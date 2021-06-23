@@ -15,25 +15,10 @@
                   v-model="searchKey"
                   filled
                   label="Search"
-                  placeholder="e.g. My Favorite Post"
+                  placeholder="e.g. My Favorite Notification"
                   rounded
                   @input="searchNotifications">
               </v-text-field>
-            </v-col>
-            <v-col class="justify-start" md="4">
-              <v-select
-                  v-model="searchTag"
-                  :items="tags"
-                  chips
-                  deletable-chips
-                  filled
-                  label="Tag"
-                  multiple
-                  rounded
-                  small-chips
-                  @input="searchNotifications">
-
-              </v-select>
             </v-col>
 
             <v-col class="justify-start" md="4">
@@ -61,8 +46,8 @@
       </v-col>
     </v-row>
     <v-row v-else>
-      <v-col v-for="p in filteredNotifications" :key="p.id" cols="12" lg="6" md="4" sm="6" xl="3">
-        <Notification :post="p" @clickedOn="goToNotification(p.id)"/>
+      <v-col v-for="n in filteredNotifications" :key="n.id" cols="12" lg="6" md="4" sm="6" xl="3">
+        <Notification :notification="n" @clickedOn="goToNotification(n.id)"/>
       </v-col>
       <v-col
           class="text-center"
@@ -72,7 +57,7 @@
             max-height="400"
             contain
             :src="require('@/assets/graphics/blank.svg')"/>
-        <span>It's empty here, add a post now!</span>
+        <span>It's empty here, add a notification now!</span>
       </v-col>
       <v-col
           class="text-center"
@@ -103,10 +88,8 @@ export default {
       notifications: [],
       filteredNotifications: [],
       selectedNotificationId: 0,
-      dialog: false,
       key: Math.random(),
       searchKey: '',
-      searchTag: [],
       searchStatus: [],
       loading: false
     }
@@ -127,25 +110,14 @@ export default {
     },
     goToNotification: function (id) {
       this.selectedNotificationId = id
-      this.dialog = true
       this.routeToSelectedNotificationsId()
     },
-    closeDialog: function () {
-      this.$store.dispatch('reset')
-      this.selectedNotificationId = ''
-      this.dialog = false
-      setTimeout(() => this.key = Math.random(), 300)
-    },
     routeToSelectedNotificationsId() {
-      this.$router.push({path: 'notification', query: {pID: this.selectedNotificationId}})
+      this.$router.push({path: 'notification', query: {nID: this.selectedNotificationId}})
     },
     searchNotifications: function () {
       const keyword = this.searchKey.toLowerCase()
       this.filteredNotifications = this.notifications.filter(p => p.name.toLowerCase().includes(keyword))
-      if (this.searchTag.length > 0) {
-        const tags = this.searchTag
-        this.filteredNotifications = this.filteredNotifications.filter(p => tags.includes(p.tag))
-      }
       if (this.searchStatus.length > 0) {
         const status = this.searchStatus
         this.filteredNotifications = this.filteredNotifications.filter(p => status.includes(p.status))
@@ -154,7 +126,7 @@ export default {
   },
   computed: {
     status: function () {
-      return ['Drafts', 'Send', 'Scheduled']
+      return ['Drafts', 'Send', 'Schedule']
     }
   }
 }

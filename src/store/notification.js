@@ -90,7 +90,7 @@ const notificationModule = {
           .then(resp => resolve(resp)).catch(err => reject(err))
       })
     },
-    deletenotification: function ({commit, state}) {
+    deleteNotification: function ({commit, state}) {
       return new Promise((resolve, reject) => {
         axios.delete(`api/v1/notification/update_notification/${state.notification.id}`).then(resp => {
           commit('RESET')

@@ -21,17 +21,6 @@ export default {
     return {
       loading: false
     }
-  },
-  methods: {
-  },
-  mounted() {
-
-  },
-  computed: {
-
-  },
-  beforeDestroy() {
-
   }
 }
 </script>

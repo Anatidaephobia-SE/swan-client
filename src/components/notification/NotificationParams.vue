@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import isURL from "validator/lib/isURL";
 import {mapState} from "vuex";
 
@@ -69,9 +68,6 @@ export default {
   data() {
     return {
       valid: false,
-      image: [],
-      addImage: true,
-      photoGalleryDialog: false,
       rule: [
         v => !!v || 'This field is required',
         v => (v || '').length <= 250 || 'Maximum length is over !'
@@ -105,10 +101,7 @@ export default {
     ...mapState('notification', ['owner', 'notification', 'canEdit']),
     date: function () {
       return new Date(this.notification.created_at).toLocaleString('en-En')
-    },
-    tags: function () {
-      return ['-', 'Sales', 'Ads', 'Branding', 'News', 'Quote', 'Celebration']
-    },
+    }
   }
 }
 </script>

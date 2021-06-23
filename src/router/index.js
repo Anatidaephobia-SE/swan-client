@@ -10,6 +10,7 @@ import Dispatch from "@/views/Dispatch";
 import Posts from "@/views/teams-subpaths/Posts";
 import Calender from "@/views/Calender";
 import Notifications from "@/views/Notifications";
+import NotificationCompleteView from "@/views/NotificationCompleteView";
 import CreateNotification from "@/views/CreateNotification";
 
 import Logout from "@/views/Logout";
@@ -52,8 +53,9 @@ const routes = [
       {path: 'compose', name: 'Compose', component: Compose},
       {path: 'ideas', name: 'Ideas', component: Ideas},
       {path: 'calender', name: 'Calender', component: Calender},
-      {path: 'notification', name: 'CreateNotification', component: CreateNotification},
+      {path: 'create-notification', name: 'CreateNotification', component: CreateNotification},
       {path: 'notifications', name: 'Notification', component: Notifications},
+      {path: 'notification', name: 'NotificationCompleteView', component: NotificationCompleteView},
     ]
   },
   {

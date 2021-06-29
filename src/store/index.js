@@ -5,6 +5,7 @@ import snackbarModule from "@/store/snackbar";
 import postModule from "@/store/post";
 import workspaceModule from '@/store/workspace';
 import ideaModule from "@/store/ideas";
+import notificationModule from "@/store/notification";
 
 Vue.use(Vuex)
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     snackbar: snackbarModule,
     post: postModule,
     workspace: workspaceModule,
-    ideas: ideaModule
+    ideas: ideaModule,
+    notification: notificationModule
   }
 })

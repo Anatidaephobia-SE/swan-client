@@ -46,6 +46,13 @@ const routes = [
     name: 'Workspace',
     redirect: {name: 'Posts'},
     component: Teams,
+    beforeEnter: (to, from, next) => {
+      if (store.getters["auth/isLoggedIn"]) {
+        next()
+      } else {
+        next('/login')
+      }
+    },
     children: [
       {path: 'posts', name: 'Posts', component: Posts},
       {path: 'post', name: 'PostView', component: PostView},

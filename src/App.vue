@@ -9,6 +9,7 @@
 
 <script>
 import SnackBar from "@/components/shared/SnackBar";
+import axios from "axios";
 
 export default {
   name: "App",
@@ -16,12 +17,13 @@ export default {
   components: {SnackBar},
   beforeMount() {
     // This checks if token expired, and
-    // axios.interceptors.response.use(undefined, (err) => {
-    //   if (err.response.status === 403 && err.config && !err.config.__isRetryRequest) {
-    //     this.$store.dispatch('logout');
-    //   }
-    //   return Promise.reject(err)
-    // });
+    axios.interceptors.response.use(undefined, (err) => {
+      if (err.response.status === 403 && err.config && !err.config.__isRetryRequest &&
+          err.response.data.hasOwnProperty('detail')) {
+        this.$store.dispatch('logout');
+      }
+      return Promise.reject(err)
+    });
 
     if (!this.$route.meta.hasOwnProperty('dontUpdate')) {
       this.$store.dispatch('auth/getUserInfo')

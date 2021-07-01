@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="!loading">
+  <v-container v-if="!loading && post.id">
     <PostData/>
     <v-divider></v-divider>
     <RetrieveHashtags v-if="post.status === 'Drafts'" />
@@ -40,7 +40,7 @@ export default {
     ...mapMutations('post', ['RESET']),
     getPostData: function (id) {
       this.loading = true
-      this.$store.dispatch('post/getPostById', id).then(() => this.loading = false)
+      this.$store.dispatch('post/getPostById', id).finally(() => this.loading = false)
     }
   },
   mounted() {

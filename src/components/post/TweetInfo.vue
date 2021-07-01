@@ -69,20 +69,17 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     if (this.post.status === 'Published') {
       this.getTweetInfo();
     }
   },
-
   methods: {
     getTweetInfo: function () {
       const postId = this.$route.query.pID;
-      axios.get(`api/v1/socialmedia/twitter/tweet/?post_id=${postId}`).then(
-          resp => {
-            this.tweet_info = resp.data;
-          }
-      )
+      axios.get(`api/v1/socialmedia/twitter/tweet/?post_id=${postId}`).then(resp => {
+        this.tweet_info = resp.data;
+      })
     }
   },
   computed: {

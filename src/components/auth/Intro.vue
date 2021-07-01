@@ -16,7 +16,7 @@
       >
       </v-img>
       <div class="text-center">
-        <p>Anatidaephobia&copy;2021 - v1.3.0</p>
+        <p>Anatidaephobia&copy;2021 - v1.3.0 - beta</p>
       </div>
     </div>
   </v-container>

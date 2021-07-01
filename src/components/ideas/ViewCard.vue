@@ -22,7 +22,7 @@
 
         <v-col cols="12" md="4">
 
-          <div class="mx-2 my-4 d-flex">
+          <div class="mx-2 my-4 d-flex" v-if="card.assignee">
             <UserAvatar :alt="card.assignee.first_name" :image="card.assignee.profile_picture" :size="45"/>
             <div class="ml-2">
               <span>{{ card.assignee.first_name }} {{ card.assignee.last_name }}</span>
